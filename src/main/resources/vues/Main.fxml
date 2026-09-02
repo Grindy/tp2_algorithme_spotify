@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.DropdownButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -13,13 +16,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="36.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="btnAccueil" mnemonicParsing="false" text="imgAccueil" />
-            <TextField fx:id="txtRecherche" minHeight="30.0" minWidth="400.0" text="Recherche" />
+            <TextField fx:id="fieldRecherche" minHeight="30.0" minWidth="400.0" text="Recherche" />
             <Button fx:id="btnGraph" mnemonicParsing="false" text="imgGraph" />
          </children>
          <padding>
@@ -31,7 +33,7 @@
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="imgLecteurAlbum" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
-            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="300.0" spacing="4.0">
+            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="295.0" spacing="4.0">
                <children>
                   <Label fx:id="labelLecteurTitre" text="Titre">
                      <font>
@@ -50,17 +52,25 @@
             </VBox>
             <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="551.0">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" prefHeight="200.0" prefWidth="504.0" spacing="24.0">
+                     <children>
+                        <Button fx:id="btnLecteurPrecedente" mnemonicParsing="false" prefHeight="40.0" text="Dernière" />
+                        <Button fx:id="btnLecteurJouer" mnemonicParsing="false" prefHeight="40.0" text="Jouer" />
+                        <Button fx:id="btnLecteurSuivante" mnemonicParsing="false" prefHeight="40.0" text="Prochaine" />
+                     </children></HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="18.0">
                      <children>
                         <Label fx:id="labelTempsActuel" text="0:00" />
-                        <Slider fx:id="sliderTemps" />
+                        <Slider fx:id="sliderTemps" prefWidth="350.0" />
                         <Label fx:id="labelTempsTotal" text="3:33" />
                      </children>
+                     <padding>
+                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                     </padding>
                   </HBox>
                </children>
             </VBox>
-            <Region prefHeight="100.0" prefWidth="178.0" />
+            <Region maxWidth="-Infinity" prefHeight="100.0" prefWidth="335.0" />
          </children>
          <padding>
             <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
@@ -70,7 +80,10 @@
    <left>
       <VBox prefHeight="620.0" prefWidth="337.0" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="listPlaylists" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="listPlaylists" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="12.0" left="12.0" right="6.0" top="12.0" />
+               </VBox.margin></ListView>
          </children>
       </VBox>
    </left>
@@ -80,7 +93,7 @@
             <ImageView fx:id="imgAlbum" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="labelTitre" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Titre" textAlignment="CENTER">
                <VBox.margin>
-                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                </VBox.margin>
                <font>
                   <Font size="24.0" />
@@ -131,9 +144,69 @@
          <padding>
             <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
          </padding>
+         <BorderPane.margin>
+            <Insets bottom="12.0" left="6.0" right="12.0" top="12.0" />
+         </BorderPane.margin>
       </VBox>
    </right>
    <center>
-      <VBox prefHeight="620.0" prefWidth="766.0" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="620.0" prefWidth="766.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="40.0" spacing="12.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label maxWidth="1.7976931348623157E308" text="Filtre par genre:" />
+                        <ComboBox fx:id="comboGenre" prefWidth="150.0" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label maxWidth="1.7976931348623157E308" text="Filtre durée max:" />
+                        <TextField fx:id="fieldDureeMax" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label maxWidth="1.7976931348623157E308" text="Filtre nombre d'écoutes:" />
+                        <TextField fx:id="fieldNombreEcoutes" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label maxWidth="1.7976931348623157E308" text="Trier par:" />
+                        <DropdownButton fx:id="dropTri" maxWidth="1.7976931348623157E308">
+                            <items>
+                                <MenuItem text="Choice 1" />
+                                <MenuItem text="Choice 2" />
+                                <MenuItem text="Choice 3" />
+                            </items>
+                        </DropdownButton>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <ListView fx:id="listChansons" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="12.0" left="6.0" right="6.0" top="12.0" />
+               </VBox.margin>
+            </ListView>
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="200.0" spacing="24.0">
+               <children>
+                  <Button fx:id="btnPagePrecedente" mnemonicParsing="false" prefHeight="40.0" text="&lt;" />
+                  <Label fx:id="labelPages" text="Label" />
+                  <Button fx:id="btnPageSuivante" mnemonicParsing="false" prefHeight="40.0" text="&gt;" />
+               </children>
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
+            </HBox>
+         </children></VBox>
    </center>
 </BorderPane>

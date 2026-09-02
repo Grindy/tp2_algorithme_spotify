@@ -1,14 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.GraphiqueController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="36.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="btnAccueil" mnemonicParsing="false" text="imgAccueil" />
+            <Label alignment="CENTER" text="Graphiques">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+         </padding>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="imgLecteurAlbum" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="295.0" spacing="4.0">
+               <children>
+                  <Label fx:id="labelLecteurTitre" text="Titre">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelLecteurArtiste" text="Artiste">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="551.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="200.0" prefWidth="504.0" spacing="24.0">
+                     <children>
+                        <Button fx:id="btnLecteurPrecedente" mnemonicParsing="false" prefHeight="40.0" text="Dernière" />
+                        <Button fx:id="btnLecteurJouer" mnemonicParsing="false" prefHeight="40.0" text="Jouer" />
+                        <Button fx:id="btnLecteurSuivante" mnemonicParsing="false" prefHeight="40.0" text="Prochaine" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="18.0">
+                     <children>
+                        <Label fx:id="labelTempsActuel" text="0:00" />
+                        <Slider fx:id="sliderTemps" prefWidth="350.0" />
+                        <Label fx:id="labelTempsTotal" text="3:33" />
+                     </children>
+                     <padding>
+                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+            <Region maxWidth="-Infinity" prefHeight="100.0" prefWidth="335.0" />
+         </children>
+         <padding>
+            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+         </padding>
+      </HBox>
+   </bottom>
+   <left>
+      <VBox alignment="CENTER_LEFT" prefHeight="620.0" prefWidth="350.0" spacing="12.0" BorderPane.alignment="CENTER">
+         <children>
+            <CheckBox fx:id="checkTriBulles" mnemonicParsing="false" text="Tri par bulles">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="24.0" />
+               </padding>
+            </CheckBox>
+            <CheckBox fx:id="checkTriSelection" mnemonicParsing="false" text="Tri par sélection">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="24.0" />
+               </padding>
+            </CheckBox>
+            <CheckBox fx:id="checkTriInsertion" mnemonicParsing="false" text="Tri par insertion">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="24.0" />
+               </padding>
+            </CheckBox>
+            <CheckBox fx:id="checkTriFusion" mnemonicParsing="false" text="Tri par fusion">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="24.0" />
+               </padding>
+            </CheckBox>
+            <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="12.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0">
+                     <children>
+                        <Label maxWidth="1.7976931348623157E308" text="Nombre de répétitions:" />
+                        <ComboBox fx:id="comboRepetitions" prefWidth="150.0" />
+                     </children>
+                  </VBox>
+                  <Button fx:id="btnGraphiqueLancer" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" text="Lancer" />
+                  <Button fx:id="btnGraphiqueReinitialiser" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" text="Réinit" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+         </padding>
+      </VBox>
+   </left>
+   <center>
+       <LineChart fx:id="chartLine" title="Temps d'execution" BorderPane.alignment="CENTER">
+           <xAxis>
+               <NumberAxis fx:id="AxeX" label="Taille (n)" side="BOTTOM" />
+           </xAxis>
+           <yAxis>
+               <NumberAxis fx:id="AxeY" label="Temps (ns)" side="LEFT" />
+           </yAxis>
+           <padding>
+               <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+           </padding>
+         <BorderPane.margin>
+            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+         </BorderPane.margin>
+       </LineChart>
+   </center>
+</BorderPane>
