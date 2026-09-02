@@ -9,6 +9,7 @@ public class Chanson {
     private String artiste;
     private String album;
     private String genre;
+    private String label;
     private int anneeSortie;
     private int duree;
     private int nbrEcoute;
@@ -18,17 +19,22 @@ public class Chanson {
     // Object Anemique
     public Chanson(){}
 
-    public Chanson(String id, String titre, String artiste, String album, String genre, int anneeSortie, int duree, int nbrEcoute, float dansabilitee, String imageUrl) {
+    public Chanson(String id, String titre, String artiste, String album, String genre, String label, int anneeSortie, int duree, int nbrEcoute, float dansabilitee, String imageUrl) {
         this.id = id;
         this.titre = titre;
         this.artiste = artiste;
         this.album = album;
         this.genre = genre;
+        this.label = label;
         this.anneeSortie = anneeSortie;
         this.duree = duree;
         this.nbrEcoute = nbrEcoute;
         this.dansabilitee = dansabilitee;
         this.imageUrl = imageUrl;
+    }
+
+    public String getLabel(){
+        return label;
     }
 
     public String getId() {
