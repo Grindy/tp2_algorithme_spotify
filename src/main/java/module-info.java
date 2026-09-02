@@ -7,4 +7,5 @@ module com.maisonneuve.tp2_algorithme_spotify {
 
     opens com.maisonneuve.tp2_algorithme_spotify to javafx.fxml;
     exports com.maisonneuve.tp2_algorithme_spotify;
+    exports com.maisonneuve.tp2_algorithme_spotify.controller;
 }
