@@ -17,7 +17,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField>
+            <TextField fx:id="fieldNomNouvelleListe">
                <font>
                   <Font size="18.0" />
                </font>
