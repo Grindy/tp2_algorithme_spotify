@@ -1,14 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.MainController"
-            prefHeight="400.0" prefWidth="600.0">
 
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="36.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="btnAccueil" mnemonicParsing="false" text="imgAccueil" />
+            <TextField fx:id="txtRecherche" minHeight="30.0" minWidth="400.0" text="Recherche" />
+            <Button fx:id="btnGraph" mnemonicParsing="false" text="imgGraph" />
+         </children>
+         <padding>
+            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+         </padding>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="imgLecteurAlbum" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="300.0" spacing="4.0">
+               <children>
+                  <Label fx:id="labelLecteurTitre" text="Titre">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelLecteurArtiste" text="Artiste">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="551.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="labelTempsActuel" text="0:00" />
+                        <Slider fx:id="sliderTemps" />
+                        <Label fx:id="labelTempsTotal" text="3:33" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Region prefHeight="100.0" prefWidth="178.0" />
+         </children>
+         <padding>
+            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+         </padding>
+      </HBox>
+   </bottom>
+   <left>
+      <VBox prefHeight="620.0" prefWidth="337.0" BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="listPlaylists" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+   </left>
+   <right>
+      <VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="imgAlbum" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="labelTitre" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Titre" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelAlbum" text="Album">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelArtiste" text="Artiste">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelAnnee" text="Année">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelGenre" text="Genre">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelMaisonDisques" text="Maison de disques">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Region prefHeight="83.0" prefWidth="241.0" />
+            <Label fx:id="labelDuree" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Durée" textAlignment="RIGHT">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelDansabilite" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Danceability" textAlignment="RIGHT">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelNbEcoutes" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Nombre d'écoutes" textAlignment="RIGHT">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+         </padding>
+      </VBox>
+   </right>
+   <center>
+      <VBox prefHeight="620.0" prefWidth="766.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
