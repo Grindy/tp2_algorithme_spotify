@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import com.gluonhq.charm.glisten.control.DropdownButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -16,6 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.MenuButton?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="36.0" BorderPane.alignment="CENTER">
@@ -175,13 +174,13 @@
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Label maxWidth="1.7976931348623157E308" text="Trier par:" />
-                        <DropdownButton fx:id="dropTri" maxWidth="1.7976931348623157E308">
+                        <MenuButton fx:id="dropTri" maxWidth="1.7976931348623157E308">
                             <items>
                                 <MenuItem text="Choice 1" />
                                 <MenuItem text="Choice 2" />
                                 <MenuItem text="Choice 3" />
                             </items>
-                        </DropdownButton>
+                        </MenuButton>
                      </children>
                   </VBox>
                </children>
