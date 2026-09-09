@@ -18,11 +18,11 @@ public class Bibliotheque {
     }
 
     public List<Chanson> getChansons() {
-        return new ArrayList<>(chansons);
+        return chansons;
     }
 
     public List<Playlist> getPlaylists() {
-        return new ArrayList<>(playlists);
+        return playlists;
     }
 
 }

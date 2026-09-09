@@ -79,6 +79,6 @@ public class Chanson {
 
     @Override
     public String toString() {
-        return titre + " - " + artiste + " - " + album;
+        return titre + " - " + artiste + " - " + album + " - " + anneeSortie ;
     }
 }
