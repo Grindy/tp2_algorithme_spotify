@@ -1,3 +1,14 @@
+.label,
+.text-field,
+.text-area,
+.combo-box,
+.combo-box .list-cell,
+.menu-button,
+.menu-item .label,
+.check-box {
+    -fx-font-family: "Tahoma";
+}
+
 .bg-black {
     -fx-background-color: black;
 }
@@ -38,7 +49,10 @@
     -fx-background-radius: 25px;
     -fx-text-fill: #dddddd;
     -fx-effect: dropshadow(gaussian, rgb(0,0,0,0.6), 8,0,0,0,5);
+}
 
+.combo-box .list-cell, .menu-button .label {
+    -fx-text-fill: #afafaf;
 }
 
 .combo-box-popup .list-view {
@@ -51,6 +65,50 @@
     -fx-background-color: #2f2f2f;
     -fx-text-fill: #dddddd;
     -fx-padding: 4px 6px;
+}
+
+.menu-item {
+    -fx-padding: 4px 6px;
+}
+
+.menu-item .label {
+    -fx-text-fill: #dddddd;
+}
+
+.context-menu {
+    -fx-background-color: #191919;
+    -fx-border-color: #4f4f4f;
+    -fx-border-width: 2px;
+}
+
+.menu-item:focused,
+.menu-item:hover {
+    -fx-background-color: #008f16;
+    -fx-text-fill: black;
+}
+
+.menu-item:focused .label,
+.menu-item:hover .label {
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+.menu-item {
+    -fx-padding: 4px 6px;
+}
+
+.menu-item .label {
+    -fx-text-fill: #dddddd;
+}
+
+#icone-shuffle {
+    -fx-shape: "M403.8 34.4c12-5 25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64c-9.2 9.2-22.9 11.9-34.9 6.9S384 204.9 384 192l0-32-32 0c-10.1 0-19.6 4.7-25.6 12.8l-32.4 43.2-40-53.3 21.2-28.3C293.3 110.2 321.8 96 352 96l32 0 0-32c0-12.9 7.8-24.6 19.8-29.6zM154 296l40 53.3-21.2 28.3C154.7 401.8 126.2 416 96 416l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c10.1 0 19.6-4.7 25.6-12.8L154 296zM438.6 470.6c-9.2 9.2-22.9 11.9-34.9 6.9S384 460.9 384 448l0-32-32 0c-30.2 0-58.7-14.2-76.8-38.4L121.6 172.8c-6-8.1-15.5-12.8-25.6-12.8l-64 0c-17.7 0-32-14.3-32-32S14.3 96 32 96l64 0c30.2 0 58.7 14.2 76.8 38.4L326.4 339.2c6 8.1 15.5 12.8 25.6 12.8l32 0 0-32c0-12.9 7.8-24.6 19.8-29.6s25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64z";
+    -fx-background-color: #757575;
+    -fx-pref-width: 16px;
+    -fx-pref-height: 16px;
+    -fx-max-width: 16px;
+    -fx-max-height: 16px;
+
 }
 
 #icone-next {
