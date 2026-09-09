@@ -7,17 +7,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<DialogPane prefHeight="95.0" prefWidth="504.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<DialogPane prefHeight="95.0" prefWidth="504.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.NouvellePlaylistController">
    <header>
-      <VBox alignment="CENTER" spacing="12.0" translateY="20.0">
+      <VBox alignment="CENTER" spacing="12.0" styleClass="dialog-pane" stylesheets="@style.css" translateY="20.0">
          <children>
-            <Label maxWidth="1.7976931348623157E308" text="Entrez le nom de votre nouvelle playlist:">
+            <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Entrez le nom de votre nouvelle playlist:" textFill="#d9d9d9">
                <font>
-                  <Font size="18.0" />
+                  <Font name="Dubai Medium" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="fieldNomNouvelleListe">
+            <TextField fx:id="fieldNomNouvelleListe" styleClass="champ-texte" stylesheets="@style.css">
                <font>
                   <Font size="18.0" />
                </font>

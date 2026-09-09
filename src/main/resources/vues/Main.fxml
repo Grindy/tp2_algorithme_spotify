@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
@@ -11,17 +13,29 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.MenuButton?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" stylesheets="style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.MainController">
    <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="36.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="36.0" styleClass="bg-black" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnAccueil" mnemonicParsing="false" text="imgAccueil" />
-            <TextField fx:id="fieldRecherche" minHeight="30.0" minWidth="400.0" text="Recherche" />
-            <Button fx:id="btnGraph" mnemonicParsing="false" text="imgGraph" />
+
+            <Button fx:id="btnAccueil" mnemonicParsing="false" styleClass="btn-round" stylesheets="@style.css">
+               <graphic>
+                  <Region id="icone-accueil" />
+               </graphic>
+            </Button>
+
+            <TextField fx:id="fieldRecherche" minHeight="30.0" minWidth="400.0" prefHeight="50.0" styleClass="champ-texte" stylesheets="@style.css" text="Recherche" />
+
+            <Button fx:id="btnGraph" mnemonicParsing="false" styleClass="btn-round" stylesheets="@style.css">
+               <graphic>
+                  <Region id="icone-graph" />
+               </graphic>
+            </Button>
+
          </children>
          <padding>
             <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
@@ -29,9 +43,12 @@
       </HBox>
    </top>
    <bottom>
-      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" styleClass="bg-black" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="imgLecteurAlbum" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+            <StackPane styleClass="img-border">
+               <ImageView fx:id="imgLecteurAlbum" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+            </StackPane>
+
             <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="295.0" spacing="4.0">
                <children>
                   <Label fx:id="labelLecteurTitre" text="Titre">
@@ -53,9 +70,31 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="200.0" prefWidth="504.0" spacing="24.0">
                      <children>
-                        <Button fx:id="btnLecteurPrecedente" mnemonicParsing="false" prefHeight="40.0" text="Dernière" />
-                        <Button fx:id="btnLecteurJouer" mnemonicParsing="false" prefHeight="40.0" text="Jouer" />
-                        <Button fx:id="btnLecteurSuivante" mnemonicParsing="false" prefHeight="40.0" text="Prochaine" />
+
+
+
+                        <Button fx:id="btnLecteurPrecedente" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                           <graphic>
+                              <Region id="icone-previous" />
+                           </graphic>
+                        </Button>
+
+
+                        <Button id="btn-play" fx:id="btnLecteurJouer" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                           <graphic>
+                              <Region id="icone-play" />
+                           </graphic>
+                        </Button>
+
+
+                        <Button fx:id="btnLecteurSuivante" maxHeight="40.0" maxWidth="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                           <graphic>
+                              <Region id="icone-next" />
+                           </graphic>
+                        </Button>
+
+
+
                      </children></HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="18.0">
                      <children>
@@ -77,9 +116,9 @@
       </HBox>
    </bottom>
    <left>
-      <VBox prefHeight="620.0" prefWidth="337.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="620.0" prefWidth="337.0" styleClass="bg-dark-grey" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="listPlaylists" VBox.vgrow="ALWAYS">
+            <ListView fx:id="listPlaylists" styleClass="bg-dark-grey" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="12.0" left="12.0" right="6.0" top="12.0" />
                </VBox.margin></ListView>
@@ -87,7 +126,7 @@
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" styleClass="bg-dark-grey" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="imgAlbum" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="labelTitre" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Titre" textAlignment="CENTER">
@@ -149,32 +188,32 @@
       </VBox>
    </right>
    <center>
-      <VBox prefHeight="620.0" prefWidth="766.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="620.0" prefWidth="766.0" styleClass="bg-dark-grey" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="40.0" spacing="12.0">
+            <HBox alignment="CENTER" prefHeight="40.0" spacing="12.0" styleClass="bg-dark-grey" stylesheets="@style.css">
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" text="Filtre par genre:" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre par genre:" />
                         <ComboBox fx:id="comboGenre" prefWidth="150.0" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" text="Filtre durée max:" />
-                        <TextField fx:id="fieldDureeMax" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre durée max:" />
+                        <TextField fx:id="fieldDureeMax" styleClass="champ-tri" stylesheets="@style.css" text="dsdadd" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" text="Filtre nombre d'écoutes:" />
-                        <TextField fx:id="fieldNombreEcoutes" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre nombre d'écoutes:" />
+                        <TextField fx:id="fieldNombreEcoutes" styleClass="champ-tri" stylesheets="@style.css" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" text="Trier par:" />
-                        <MenuButton fx:id="dropTri" maxWidth="1.7976931348623157E308">
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Trier par:" />
+                        <MenuButton fx:id="dropTri" maxWidth="1.7976931348623157E308" stylesheets="@style.css">
                             <items>
                                 <MenuItem text="Choice 1" />
                                 <MenuItem text="Choice 2" />
@@ -191,16 +230,33 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <ListView fx:id="listChansons" VBox.vgrow="ALWAYS">
+            <ListView fx:id="listChansons" styleClass="bg-black" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="12.0" left="6.0" right="6.0" top="12.0" />
                </VBox.margin>
             </ListView>
-            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="200.0" spacing="24.0">
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="200.0" spacing="24.0" stylesheets="@style.css">
                <children>
-                  <Button fx:id="btnPagePrecedente" mnemonicParsing="false" prefHeight="40.0" text="&lt;" />
-                  <Label fx:id="labelPages" text="Label" />
-                  <Button fx:id="btnPageSuivante" mnemonicParsing="false" prefHeight="40.0" text="&gt;" />
+
+
+                  <Button fx:id="btnPagePrecedente" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                     <graphic>
+                        <Region id="icone-page-precedente" />
+                     </graphic></Button>
+
+
+                  <Label fx:id="labelPages" style="-fx-font-weight: bold;" styleClass="label-gris" stylesheets="@style.css" text="Label">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+
+
+                  <Button fx:id="btnPageSuivante" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                     <graphic>
+                        <Region id="icone-page-suivante" styleClass="btn-lecteur" stylesheets="@style.css" />
+                     </graphic></Button>
+
+
                </children>
                <padding>
                   <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
