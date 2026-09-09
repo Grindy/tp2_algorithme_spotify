@@ -116,17 +116,20 @@
       </HBox>
    </bottom>
    <left>
-      <VBox prefHeight="620.0" prefWidth="337.0" styleClass="bg-dark-grey" stylesheets="@style.css" BorderPane.alignment="CENTER">
+      <VBox prefHeight="620.0" prefWidth="337.0" style="-fx-border-color: transparent #008F16 transparent transparent; -fx-border-width: 0 3px 0 0;" styleClass="bg-dark-grey" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
             <ListView fx:id="listPlaylists" styleClass="bg-dark-grey" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="12.0" left="12.0" right="6.0" top="12.0" />
                </VBox.margin></ListView>
          </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" styleClass="bg-dark-grey" stylesheets="@style.css" BorderPane.alignment="CENTER">
+      <VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" style="-fx-border-color: transparent transparent transparent #008F16; -fx-border-width: 0 0 0 3px;" styleClass="bg-dark-grey" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="imgAlbum" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="labelTitre" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Titre" textAlignment="CENTER">
@@ -183,7 +186,7 @@
             <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
          </padding>
          <BorderPane.margin>
-            <Insets bottom="12.0" left="6.0" right="12.0" top="12.0" />
+            <Insets />
          </BorderPane.margin>
       </VBox>
    </right>
