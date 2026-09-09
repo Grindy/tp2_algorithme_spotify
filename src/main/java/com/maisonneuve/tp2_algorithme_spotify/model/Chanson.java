@@ -14,7 +14,7 @@ public class Chanson {
     private int duree;
     private int nbrEcoute;
     private float dansabilitee;
-    private String imageUrl;;
+    private String imageUrl;
 
     // Object Anemique
     public Chanson(){}

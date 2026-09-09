@@ -25,11 +25,4 @@ public class Bibliotheque {
         return new ArrayList<>(playlists);
     }
 
-    public void ajouterPlaylist(Playlist playlist) {
-        this.playlists.add(playlist);
-    }
-
-    public void retirerPlaylist(Playlist playlist) {
-        this.playlists.remove(playlist);
-    }
 }
