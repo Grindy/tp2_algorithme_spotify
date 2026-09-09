@@ -1,6 +1,7 @@
 package com.maisonneuve.tp2_algorithme_spotify.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +44,21 @@ public class Playlist {
 
     public int getDureeTotale() {
         return chansons.stream().mapToInt(Chanson::getDuree).sum();
+    }
+
+    public void viderPlaylist() {
+        chansons.clear();
+    }
+
+    public void deplacerChanson(Chanson chanson, String direction) {
+        int i = chansons.indexOf(chanson);
+        if (i < 0 ) return;
+        if (direction.equals("up") && i > 0) {
+            Collections.swap(chansons, i-1, i);
+        }
+        if (direction.equals("down") && i < chansons.size() - 1){
+            Collections.swap(chansons, i, i +1);
+        }
     }
 
     public Date getDateCreation() {
