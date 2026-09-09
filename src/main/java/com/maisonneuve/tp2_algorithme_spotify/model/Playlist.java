@@ -11,10 +11,10 @@ public class Playlist {
     private List<Chanson> chansons;
     private Date dateCreation;
 
-    public Playlist(String id, String nom) {
+    public Playlist(String id, String nom, List<Chanson> chansons) {
         this.id = id;
         this.nom = nom;
-        this.chansons = new ArrayList<>();
+        this.chansons = chansons;
         this.dateCreation = new Date();
     }
 
@@ -65,5 +65,8 @@ public class Playlist {
         return dateCreation;
     }
 
-
+    @Override
+    public String toString() {
+        return nom;
+    }
 }

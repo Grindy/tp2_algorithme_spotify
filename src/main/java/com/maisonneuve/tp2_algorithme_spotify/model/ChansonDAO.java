@@ -15,7 +15,13 @@ public class ChansonDAO {
             br.readLine();
 
             while ((ligne = br.readLine()) != null) {
-                String[] donnees = ligne.split(",");
+                // Sépare uniquement là où les virgules ne sont pas entourées de guillemets
+                String[] donnees = ligne.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+                // Nettoie les guillemets
+                for (int i = 0; i < donnees.length; i++) {
+                    donnees[i] = donnees[i].replace("\"", "").trim();
+                }
 
                 Chanson c = new Chanson(
                         donnees[0],                      // Track URI → id

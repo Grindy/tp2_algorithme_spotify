@@ -124,7 +124,13 @@
    <left>
       <VBox prefHeight="620.0" prefWidth="337.0" style="-fx-border-width: 0 3px 0 0;" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="listPlaylists" styleClass="bg-dark-grey" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="btnVotreBibliotheque" mnemonicParsing="false" text="Votre Bibliothèque" />
+                  <Button fx:id="btnAjouterPlaylist" mnemonicParsing="false" text="+" />
+               </children>
+            </HBox>
+            <ListView fx:id="listPlaylists" prefWidth="319.0" styleClass="bg-dark-grey" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="12.0" left="12.0" right="6.0" top="12.0" />
                </VBox.margin></ListView>
