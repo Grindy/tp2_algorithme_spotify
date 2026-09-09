@@ -8,7 +8,7 @@ import java.util.List;
 public class Playlist {
     private String id;
     private String nom;
-    private ArrayList<Chanson> chansons;
+    private List<Chanson> chansons;
     private Date dateCreation;
 
     public Playlist(String id, String nom) {

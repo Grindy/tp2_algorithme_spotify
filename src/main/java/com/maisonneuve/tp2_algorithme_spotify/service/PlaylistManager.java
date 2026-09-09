@@ -2,27 +2,30 @@ package com.maisonneuve.tp2_algorithme_spotify.service;
 
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistManager {
 
-    private List<Playlist> playlists = new ArrayList<>();
+    private final Bibliotheque bibliotheque;
+
+    public PlaylistManager(Bibliotheque bibliotheque) {
+        this.bibliotheque = bibliotheque;
+    }
 
     public void ajouterPlaylist(Playlist playlist) {
-        playlists.add(playlist);
+        bibliotheque.getPlaylists().add(playlist);
     }
 
     public void retirerPlaylist(Playlist playlist) {
-        playlists.remove(playlist);
+        bibliotheque.getPlaylists().remove(playlist);
     }
 
     public List<Playlist> getPlaylists() {
-        return playlists;
+        return bibliotheque.getPlaylists();
     }
 
     public Playlist trouverParId(String id) {
-        return playlists.stream()
+        return bibliotheque.getPlaylists().stream()
                 .filter(p -> p.getId().equals(id))
                 .findFirst()
                 .orElse(null);
