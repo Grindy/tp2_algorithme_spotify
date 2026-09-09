@@ -8,18 +8,6 @@ import java.util.stream.Collectors;
 
 public class PlaylistService {
 
-    public void ajouterChansons(Playlist playlist, Chanson chanson) {
-        playlist.ajouterChanson(chanson);
-    }
-
-    public void retirerChansons(Playlist playlist, Chanson chanson) {
-        playlist.retirerChanson(chanson);
-    }
-
-    public int calculerDuree(Playlist playlist) {
-        return playlist.getDureeTotale();
-    }
-
     public List<Chanson> filtrer(
             Playlist playlist,
             String genre,
