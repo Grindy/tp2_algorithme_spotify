@@ -14,7 +14,7 @@ public class Playlist {
     public Playlist(String id, String nom, List<Chanson> chansons) {
         this.id = id;
         this.nom = nom;
-        this.chansons = chansons;
+        this.chansons = new ArrayList<>(chansons);
         this.dateCreation = new Date();
     }
 
@@ -31,7 +31,7 @@ public class Playlist {
     }
 
     public List<Chanson> getChansons() {
-        return new ArrayList<>(chansons);
+        return chansons;
     }
 
     public void ajouterChanson(Chanson chanson) {
