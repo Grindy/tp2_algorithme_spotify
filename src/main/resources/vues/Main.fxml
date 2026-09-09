@@ -30,7 +30,7 @@
                </graphic>
             </Button>
 
-            <TextField fx:id="fieldRecherche" minHeight="30.0" minWidth="400.0" prefHeight="50.0" styleClass="champ-texte" stylesheets="@style.css" text="Recherche" />
+            <TextField fx:id="fieldRecherche" minHeight="30.0" minWidth="400.0" prefHeight="50.0" promptText="Titre, artiste, album..." styleClass="champ-texte" stylesheets="@style.css" />
 
             <Button fx:id="btnGraph" mnemonicParsing="false" styleClass="btn-round" stylesheets="@style.css">
                <graphic>
@@ -76,6 +76,11 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="200.0" prefWidth="504.0" spacing="24.0">
                      <children>
+                        <Button fx:id="btnLecteurPrecedente1" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                           <graphic>
+                              <Region id="icone-shuffle" />
+                           </graphic>
+                        </Button>
 
 
 
@@ -238,7 +243,7 @@
                            <padding>
                               <Insets left="12.0" />
                            </padding></Label>
-                        <ComboBox fx:id="comboGenre" prefWidth="150.0" />
+                        <ComboBox fx:id="comboGenre" prefWidth="150.0" promptText="Genre" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="4.0" HBox.hgrow="ALWAYS">
@@ -246,8 +251,11 @@
                         <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre durée max:">
                            <padding>
                               <Insets left="12.0" />
-                           </padding></Label>
-                        <TextField fx:id="fieldDureeMax" styleClass="champ-tri" stylesheets="@style.css" text="dsdadd" />
+                           </padding>
+                           <font>
+                              <Font size="12.0" />
+                           </font></Label>
+                        <TextField fx:id="fieldDureeMax" promptText="ex: 3:33" styleClass="champ-tri" stylesheets="@style.css" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="4.0" HBox.hgrow="ALWAYS">
@@ -256,7 +264,7 @@
                            <padding>
                               <Insets left="12.0" />
                            </padding></Label>
-                        <TextField fx:id="fieldNombreEcoutes" styleClass="champ-tri" stylesheets="@style.css" />
+                        <TextField fx:id="fieldNombreEcoutes" promptText="ex: 12000" styleClass="champ-tri" stylesheets="@style.css" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="4.0" HBox.hgrow="ALWAYS">
@@ -265,7 +273,7 @@
                            <padding>
                               <Insets left="12.0" />
                            </padding></Label>
-                        <MenuButton fx:id="dropTri" maxWidth="1.7976931348623157E308" stylesheets="@style.css">
+                        <MenuButton fx:id="dropTri" maxWidth="1.7976931348623157E308" stylesheets="@style.css" text="---">
                             <items>
                                 <MenuItem text="Choice 1" />
                                 <MenuItem text="Choice 2" />
@@ -297,7 +305,7 @@
                      </graphic></Button>
 
 
-                  <Label fx:id="labelPages" stylesheets="@style.css" text="Label">
+                  <Label fx:id="labelPages" text="Label">
                      <font>
                         <Font size="18.0" />
                      </font>
