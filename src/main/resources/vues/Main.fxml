@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -7,6 +8,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -55,8 +57,12 @@
                      <font>
                         <Font size="18.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="label-gris" />
+                        <String fx:value="bold" />
+                     </styleClass>
                   </Label>
-                  <Label fx:id="labelLecteurArtiste" text="Artiste">
+                  <Label fx:id="labelLecteurArtiste" styleClass="label-gris" text="Artiste">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -116,7 +122,7 @@
       </HBox>
    </bottom>
    <left>
-      <VBox prefHeight="620.0" prefWidth="337.0" style="-fx-border-color: transparent #008F16 transparent transparent; -fx-border-width: 0 3px 0 0;" styleClass="bg-dark-grey" stylesheets="@style.css" BorderPane.alignment="CENTER">
+      <VBox prefHeight="620.0" prefWidth="337.0" style="-fx-border-width: 0 3px 0 0;" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
             <ListView fx:id="listPlaylists" styleClass="bg-dark-grey" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <VBox.margin>
@@ -126,13 +132,19 @@
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
+         <styleClass>
+            <String fx:value="bg-dark-grey" />
+            <String fx:value="degrade-vert" />
+         </styleClass>
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" style="-fx-border-color: transparent transparent transparent #008F16; -fx-border-width: 0 0 0 3px;" styleClass="bg-dark-grey" stylesheets="@style.css" BorderPane.alignment="CENTER">
+      <VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" style="-fx-border-width: 0 0 0 3px;" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="imgAlbum" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="labelTitre" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Titre" textAlignment="CENTER">
+            <StackPane styleClass="img-border">
+               <ImageView fx:id="imgAlbum" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
+            </StackPane>
+            <Label fx:id="labelTitre" alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="label-gris" stylesheets="@style.css" text="Titre" textAlignment="CENTER">
                <VBox.margin>
                   <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                </VBox.margin>
@@ -140,43 +152,64 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelAlbum" text="Album">
+            <Label fx:id="labelAlbum" stylesheets="@style.css" text="Album">
                <font>
                   <Font size="14.0" />
                </font>
+               <styleClass>
+                  <String fx:value="label-gris" />
+                  <String fx:value="bold" />
+               </styleClass>
             </Label>
             <Label fx:id="labelArtiste" text="Artiste">
                <font>
                   <Font size="14.0" />
                </font>
+               <styleClass>
+                  <String fx:value="label-gris" />
+                  <String fx:value="bold" />
+               </styleClass>
             </Label>
             <Label fx:id="labelAnnee" text="Année">
                <font>
                   <Font size="14.0" />
                </font>
+               <styleClass>
+                  <String fx:value="label-gris" />
+                  <String fx:value="bold" />
+               </styleClass>
             </Label>
             <Label fx:id="labelGenre" text="Genre">
                <font>
                   <Font size="14.0" />
                </font>
+               <styleClass>
+                  <String fx:value="label-gris" />
+                  <String fx:value="bold" />
+               </styleClass>
             </Label>
             <Label fx:id="labelMaisonDisques" text="Maison de disques">
                <font>
                   <Font size="14.0" />
                </font>
+               <styleClass>
+                  <String fx:value="label-gris" />
+                  <String fx:value="bold" />
+               </styleClass>
             </Label>
+            <Separator opacity="0.3" prefWidth="200.0" stylesheets="@style.css" />
             <Region prefHeight="83.0" prefWidth="241.0" />
-            <Label fx:id="labelDuree" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Durée" textAlignment="RIGHT">
+            <Label fx:id="labelDuree" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="Durée" textAlignment="RIGHT">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="labelDansabilite" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Danceability" textAlignment="RIGHT">
+            <Label fx:id="labelDansabilite" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="Danceability" textAlignment="RIGHT">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="labelNbEcoutes" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Nombre d'écoutes" textAlignment="RIGHT">
+            <Label fx:id="labelNbEcoutes" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="Nombre d'écoutes" textAlignment="RIGHT">
                <font>
                   <Font size="14.0" />
                </font>
@@ -188,6 +221,10 @@
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
+         <styleClass>
+            <String fx:value="bg-dark-grey" />
+            <String fx:value="degrade-vert" />
+         </styleClass>
       </VBox>
    </right>
    <center>
@@ -195,27 +232,39 @@
          <children>
             <HBox alignment="CENTER" prefHeight="40.0" spacing="12.0" styleClass="bg-dark-grey" stylesheets="@style.css">
                <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre par genre:" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre par genre:">
+                           <padding>
+                              <Insets left="12.0" />
+                           </padding></Label>
                         <ComboBox fx:id="comboGenre" prefWidth="150.0" />
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre durée max:" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre durée max:">
+                           <padding>
+                              <Insets left="12.0" />
+                           </padding></Label>
                         <TextField fx:id="fieldDureeMax" styleClass="champ-tri" stylesheets="@style.css" text="dsdadd" />
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre nombre d'écoutes:" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre nombre d'écoutes:">
+                           <padding>
+                              <Insets left="12.0" />
+                           </padding></Label>
                         <TextField fx:id="fieldNombreEcoutes" styleClass="champ-tri" stylesheets="@style.css" />
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Trier par:" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Trier par:">
+                           <padding>
+                              <Insets left="12.0" />
+                           </padding></Label>
                         <MenuButton fx:id="dropTri" maxWidth="1.7976931348623157E308" stylesheets="@style.css">
                             <items>
                                 <MenuItem text="Choice 1" />
@@ -235,7 +284,7 @@
             </HBox>
             <ListView fx:id="listChansons" styleClass="bg-black" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <VBox.margin>
-                  <Insets bottom="12.0" left="6.0" right="6.0" top="12.0" />
+                  <Insets bottom="12.0" top="12.0" />
                </VBox.margin>
             </ListView>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="200.0" spacing="24.0" stylesheets="@style.css">
@@ -248,10 +297,14 @@
                      </graphic></Button>
 
 
-                  <Label fx:id="labelPages" style="-fx-font-weight: bold;" styleClass="label-gris" stylesheets="@style.css" text="Label">
+                  <Label fx:id="labelPages" stylesheets="@style.css" text="Label">
                      <font>
                         <Font size="18.0" />
-                     </font></Label>
+                     </font>
+                     <styleClass>
+                        <String fx:value="label-gris" />
+                        <String fx:value="bold" />
+                     </styleClass></Label>
 
 
                   <Button fx:id="btnPageSuivante" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
