@@ -3,6 +3,7 @@ package com.maisonneuve.tp2_algorithme_spotify.service;
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.model.TriMap;
+import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,11 +17,21 @@ public class PlaylistService {
             Playlist playlist,
             String recherche,
             String genre,
-            String dureeMax,
+            String dureeMaxString,
             String nbEcoutes
     ) {
         final String recherchePropre = (recherche != null) ? recherche.trim().toLowerCase(Locale.ROOT) : "";
-        final Integer dureeMaxInt = parserEntier(dureeMax);
+        final int dureeMaxInt;
+
+        if (TimeUtils.estFormatTempsValide(dureeMaxString)) {
+            try {
+                dureeMaxInt = TimeUtils.MinToMs(dureeMaxString);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                return playlist;
+            }
+        } else return playlist;
+
         final Integer nbEcoutesInt = parserEntier(nbEcoutes);
 
         return new Playlist(playlist.getId(), playlist.getNom(), playlist.getChansons()
@@ -36,7 +47,7 @@ public class PlaylistService {
                 })
                 .filter(c -> genre == null || genre.trim().isEmpty() ||
                         (c.getGenre() != null && c.getGenre().equalsIgnoreCase(genre.trim())))
-                .filter(c -> dureeMaxInt == null || c.getDuree() <= dureeMaxInt)
+                .filter(c -> dureeMaxInt == 0 || c.getDuree() <= dureeMaxInt)
                 .filter(c -> nbEcoutesInt == null || c.getNbrEcoute() >= nbEcoutesInt)
                 .collect(Collectors.toList()));
     }
