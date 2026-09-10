@@ -4,8 +4,7 @@
 .combo-box,
 .combo-box .list-cell,
 .menu-button,
-.menu-item .label,
-.check-box {
+.menu-item .label {
     -fx-font-family: "Tahoma";
 }
 
@@ -101,6 +100,43 @@
     -fx-text-fill: #dddddd;
 }
 
+
+/* gère l'aspect transparent des boutons */
+.btn-lecteur {
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
+    -fx-background-color: transparent;
+    -fx-background-radius: 9999px;
+    -fx-border-color: transparent;
+    -fx-border-width: 3px;
+    -fx-border-radius: 9999px;
+}
+
+.btn-lecteur:hover {
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+}
+
+#btn-play {
+    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-border-color: rgba(255,255,255,0.2);
+}
+
+#btn-play:hover {
+    -fx-border-color: #008F16;
+}
+
+.btn-lecteur:hover #icone-next, .btn-lecteur:hover #icone-previous, .btn-lecteur:hover #icone-page-precedente, .btn-lecteur:hover #icone-page-suivante, .btn-lecteur:hover #icone-shuffle, .btn-round:hover #icone-reinitialiser, .btn-round:hover #icone-lancer {
+    -fx-background-color: #008F16;
+}
+
+.btn-lecteur:hover #icone-play {
+    -fx-background-color: #008F16;
+
+}
+
 #icone-shuffle {
     -fx-shape: "M403.8 34.4c12-5 25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64c-9.2 9.2-22.9 11.9-34.9 6.9S384 204.9 384 192l0-32-32 0c-10.1 0-19.6 4.7-25.6 12.8l-32.4 43.2-40-53.3 21.2-28.3C293.3 110.2 321.8 96 352 96l32 0 0-32c0-12.9 7.8-24.6 19.8-29.6zM154 296l40 53.3-21.2 28.3C154.7 401.8 126.2 416 96 416l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c10.1 0 19.6-4.7 25.6-12.8L154 296zM438.6 470.6c-9.2 9.2-22.9 11.9-34.9 6.9S384 460.9 384 448l0-32-32 0c-30.2 0-58.7-14.2-76.8-38.4L121.6 172.8c-6-8.1-15.5-12.8-25.6-12.8l-64 0c-17.7 0-32-14.3-32-32S14.3 96 32 96l64 0c30.2 0 58.7 14.2 76.8 38.4L326.4 339.2c6 8.1 15.5 12.8 25.6 12.8l32 0 0-32c0-12.9 7.8-24.6 19.8-29.6s25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64z";
     -fx-background-color: #757575;
@@ -128,7 +164,6 @@
     -fx-pref-height: 16px;
     -fx-max-width: 16px;
     -fx-max-height: 16px;
-
 }
 
 #icone-play {
@@ -140,39 +175,13 @@
     -fx-max-height: 16px;
 }
 
-.btn-lecteur {
-    -fx-max-width: 40px;
-    -fx-max-height: 40px;
-    -fx-pref-width: 40px;
-    -fx-pref-height: 40px;
-    -fx-background-color: transparent;
-    -fx-background-radius: 9999px;
-    -fx-border-color: transparent;
-    -fx-border-width: 3px;
-    -fx-border-radius: 9999px;
-}
-
-.btn-lecteur:hover {
-    -fx-scale-x: 1.15;
-    -fx-scale-y: 1.15;
-}
-
-#btn-play {
-    -fx-background-color: rgba(255,255,255,0.1);
-    -fx-border-color: rgba(255,255,255,0.2);
-}
-
-#btn-play:hover {
-    -fx-border-color: #008F16;
-}
-
-#icone-next:hover, #icone-previous:hover, #icone-page-precedente:hover, #icone-page-suivante:hover, #icone-shuffle:hover {
-    -fx-background-color: #008F16;
-}
-
-.btn-lecteur:hover #icone-play {
-    -fx-background-color: #008F16;
-
+#icone-lancer {
+    -fx-shape: "M91.2 36.9c-12.4-6.8-27.4-6.5-39.6 .7S32 57.9 32 72l0 368c0 14.1 7.5 27.2 19.6 34.4s27.2 7.5 39.6 .7l336-184c12.8-7 20.8-20.5 20.8-35.1s-8-28.1-20.8-35.1l-336-184z";
+    -fx-background-color: #757575;
+    -fx-pref-width: 16px;
+    -fx-pref-height: 16px;
+    -fx-max-width: 16px;
+    -fx-max-height: 16px;
 }
 
 #icone-page-suivante {
@@ -182,7 +191,6 @@
     -fx-pref-height: 16px;
     -fx-max-width: 16px;
     -fx-max-height: 16px;
-
 }
 
 #icone-page-precedente {
@@ -192,14 +200,6 @@
     -fx-pref-height: 16px;
     -fx-max-width: 16px;
     -fx-max-height: 16px;
-
-}
-
-.img-border {
-    -fx-border-color: #4f4f4f;
-    -fx-border-width: 3px;
-    -fx-border-radius: 12px;
-    -fx-background-radius: 12px;
 }
 
 #icone-graph {
@@ -220,6 +220,21 @@
     -fx-max-height: 24px;
 }
 
+#icone-reinitialiser {
+    -fx-shape: "M65.9 228.5c13.3-93 93.4-164.5 190.1-164.5 53 0 101 21.5 135.8 56.2 .2 .2 .4 .4 .6 .6l7.6 7.2-47.9 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l128 0c17.7 0 32-14.3 32-32l0-128c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 53.4-11.3-10.7C390.5 28.6 326.5 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1zm443.5 64c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-53 0-101-21.5-135.8-56.2-.2-.2-.4-.4-.6-.6l-7.6-7.2 47.9 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 320c-8.5 0-16.7 3.4-22.7 9.5S-.1 343.7 0 352.3l1 127c.1 17.7 14.6 31.9 32.3 31.7S65.2 496.4 65 478.7l-.4-51.5 10.7 10.1c46.3 46.1 110.2 74.7 180.7 74.7 129 0 235.7-95.4 253.4-219.5z";
+    -fx-background-color: #757575;
+    -fx-pref-width: 16px;
+    -fx-pref-height: 16px;
+    -fx-max-width: 16px;
+    -fx-max-height: 16px;
+}
+
+.img-border {
+    -fx-border-color: #4f4f4f;
+    -fx-border-width: 3px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+}
 
 .btn-round {
     -fx-max-width: 50px;
@@ -258,6 +273,43 @@
     -fx-border-color: #005c0a;
     -fx-border-width: 2px;
     -fx-border-radius: 9999px;
+}
+
+/* Sous cette ligne se trouvent les éléments uniques à la page des graphiques */
+
+.check-box .box {
+    -fx-background-color: linear-gradient(to bottom, #005c0a 60%, #013208 100%);
+}
+
+.check-box:selected .box {
+    -fx-background-color: linear-gradient(to bottom, #008f16 60%, #005c0a 100%);
+}
+
+.check-box:hover .box {
+    -fx-background-color: linear-gradient(to bottom, #008f16 60%, #005c0a 100%);
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+.chart-plot-background {
+    -fx-background-color: #505050;
+}
+
+.axis {
+    -fx-tick-label-fill: #dddddd;
+}
+
+.axis-label {
+    -fx-text-fill: #dddddd;
+    -fx-font-size: 14px;
+}
+
+.chart-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #dddddd;
 }
 
 
