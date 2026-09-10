@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -12,17 +13,21 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1"
-            stylesheets="style.css"
-            fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.GraphiqueController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" stylesheets="style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.GraphiqueController">
    <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="36.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="36.0" styleClass="bg-black" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnAccueil" mnemonicParsing="false" text="imgAccueil" />
-            <Label alignment="CENTER" text="Graphiques">
+            <Button fx:id="btnAccueil" mnemonicParsing="false" styleClass="btn-round" text="imgAccueil">
+               <graphic>
+                  <Region id="icone-accueil" />
+               </graphic>
+            </Button>
+
+            <Label alignment="CENTER" styleClass="label-gris" text="Graphiques">
                <font>
                   <Font size="24.0" />
                </font>
@@ -34,17 +39,23 @@
       </HBox>
    </top>
    <bottom>
-      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" styleClass="bg-black" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="imgLecteurAlbum" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+            <StackPane styleClass="img-border">
+               <ImageView fx:id="imgLecteurAlbum" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+            </StackPane>
             <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="295.0" spacing="4.0">
                <children>
                   <Label fx:id="labelLecteurTitre" text="Titre">
                      <font>
                         <Font size="18.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="label-gris" />
+                        <String fx:value="bold" />
+                     </styleClass>
                   </Label>
-                  <Label fx:id="labelLecteurArtiste" text="Artiste">
+                  <Label fx:id="labelLecteurArtiste" styleClass="label-gris" text="Artiste">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -56,18 +67,43 @@
             </VBox>
             <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="551.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="200.0" prefWidth="504.0" spacing="24.0">
+                  <HBox alignment="CENTER" prefHeight="200.0" prefWidth="504.0" spacing="24.0" translateX="-26.0">
                      <children>
-                        <Button fx:id="btnLecteurPrecedente" mnemonicParsing="false" prefHeight="40.0" text="Dernière" />
-                        <Button fx:id="btnLecteurJouer" mnemonicParsing="false" prefHeight="40.0" text="Jouer" />
-                        <Button fx:id="btnLecteurSuivante" mnemonicParsing="false" prefHeight="40.0" text="Prochaine" />
+                        <Button fx:id="btnLecteurShuffle" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                           <graphic>
+                              <Region id="icone-shuffle" />
+                           </graphic>
+                        </Button>
+
+
+
+                        <Button fx:id="btnLecteurPrecedente" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                           <graphic>
+                              <Region id="icone-previous" />
+                           </graphic>
+                        </Button>
+
+
+                        <Button id="btn-play" fx:id="btnLecteurJouer" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                           <graphic>
+                              <Region id="icone-play" />
+                           </graphic>
+                        </Button>
+
+
+                        <Button fx:id="btnLecteurSuivante" maxHeight="40.0" maxWidth="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                           <graphic>
+                              <Region id="icone-next" />
+                           </graphic>
+                        </Button>
+
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="18.0">
                      <children>
-                        <Label fx:id="labelTempsActuel" text="0:00" />
+                        <Label fx:id="labelTempsActuel" styleClass="label-gris" text="0:00" />
                         <Slider fx:id="sliderTemps" prefWidth="350.0" />
-                        <Label fx:id="labelTempsTotal" text="3:33" />
+                        <Label fx:id="labelTempsTotal" styleClass="label-gris" text="3:33" />
                      </children>
                      <padding>
                         <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
@@ -83,9 +119,9 @@
       </HBox>
    </bottom>
    <left>
-      <VBox alignment="CENTER_LEFT" prefHeight="620.0" prefWidth="350.0" spacing="12.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER_LEFT" prefHeight="620.0" prefWidth="350.0" spacing="12.0" style="-fx-border-width: 0 3px 0 0;" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <CheckBox fx:id="checkTriBulles" mnemonicParsing="false" text="Tri par bulles">
+            <CheckBox fx:id="checkTriBulles" mnemonicParsing="false" styleClass="label-gris" text="Tri par bulles">
                <font>
                   <Font size="18.0" />
                </font>
@@ -93,7 +129,7 @@
                   <Insets left="24.0" />
                </padding>
             </CheckBox>
-            <CheckBox fx:id="checkTriSelection" mnemonicParsing="false" text="Tri par sélection">
+            <CheckBox fx:id="checkTriSelection" mnemonicParsing="false" styleClass="label-gris" text="Tri par sélection">
                <font>
                   <Font size="18.0" />
                </font>
@@ -101,7 +137,7 @@
                   <Insets left="24.0" />
                </padding>
             </CheckBox>
-            <CheckBox fx:id="checkTriInsertion" mnemonicParsing="false" text="Tri par insertion">
+            <CheckBox fx:id="checkTriInsertion" mnemonicParsing="false" styleClass="label-gris" stylesheets="@style.css" text="Tri par insertion">
                <font>
                   <Font size="18.0" />
                </font>
@@ -109,7 +145,7 @@
                   <Insets left="24.0" />
                </padding>
             </CheckBox>
-            <CheckBox fx:id="checkTriFusion" mnemonicParsing="false" text="Tri par fusion">
+            <CheckBox fx:id="checkTriFusion" mnemonicParsing="false" styleClass="label-gris" stylesheets="@style.css" text="Tri par fusion">
                <font>
                   <Font size="18.0" />
                </font>
@@ -122,12 +158,35 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" text="Nombre de répétitions:" />
-                        <ComboBox fx:id="comboRepetitions" prefWidth="150.0" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Nombre de répétitions:">
+                           <padding>
+                              <Insets bottom="4.0" left="12.0" />
+                           </padding></Label>
+                        <ComboBox fx:id="comboRepetitions" prefWidth="150.0" promptText="---" />
                      </children>
                   </VBox>
-                  <Button fx:id="btnGraphiqueLancer" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" text="Lancer" />
-                  <Button fx:id="btnGraphiqueReinitialiser" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" text="Réinit" />
+                  <Button fx:id="btnGraphiqueLancer" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-round" stylesheets="@style.css">
+
+
+                     <graphic>
+                        <Region id="icone-lancer" stylesheets="@style.css" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets top="16.0" />
+                     </HBox.margin>
+
+                  </Button>
+
+                  <Button fx:id="btnGraphiqueReinitialiser" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-round" stylesheets="@style.css">
+
+                     <graphic>
+                        <Region id="icone-reinitialiser" stylesheets="@style.css" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets top="16.0" />
+                     </HBox.margin>
+
+                  </Button>
                </children>
                <VBox.margin>
                   <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
@@ -135,15 +194,19 @@
             </HBox>
          </children>
          <BorderPane.margin>
-            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+            <Insets />
          </BorderPane.margin>
          <padding>
             <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
          </padding>
+         <styleClass>
+            <String fx:value="bg-dark-grey" />
+            <String fx:value="degrade-vert" />
+         </styleClass>
       </VBox>
    </left>
    <center>
-       <LineChart fx:id="chartLine" title="Temps d'execution" BorderPane.alignment="CENTER">
+       <LineChart fx:id="chartLine" styleClass="bg-dark-grey" stylesheets="@style.css" title="Temps d'execution en fonction de la taille de la liste triée" BorderPane.alignment="CENTER">
            <xAxis>
                <NumberAxis fx:id="AxeX" label="Taille (n)" side="BOTTOM" />
            </xAxis>
@@ -151,10 +214,10 @@
                <NumberAxis fx:id="AxeY" label="Temps (ns)" side="LEFT" />
            </yAxis>
            <padding>
-               <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+               <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
            </padding>
          <BorderPane.margin>
-            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+            <Insets />
          </BorderPane.margin>
        </LineChart>
    </center>

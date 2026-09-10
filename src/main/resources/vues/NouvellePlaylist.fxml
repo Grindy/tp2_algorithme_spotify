@@ -13,10 +13,10 @@
          <children>
             <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Entrez le nom de votre nouvelle playlist:" textFill="#d9d9d9">
                <font>
-                  <Font name="Dubai Medium" size="18.0" />
+                  <Font name="Tahoma Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="fieldNomNouvelleListe" styleClass="champ-texte" stylesheets="@style.css">
+            <TextField fx:id="fieldNomNouvelleListe" minHeight="30.0" prefHeight="50.0" promptText="Nom de playlist..." styleClass="champ-texte" stylesheets="@style.css">
                <font>
                   <Font size="18.0" />
                </font>

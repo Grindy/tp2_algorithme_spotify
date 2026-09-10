@@ -76,7 +76,9 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="200.0" prefWidth="504.0" spacing="24.0" translateX="-26.0">
                      <children>
-                        <Button fx:id="btnLecteurPrecedente1" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+
+
+                        <Button fx:id="btnLecteurShuffle" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
                            <graphic>
                               <Region id="icone-shuffle" />
                            </graphic>
@@ -109,9 +111,9 @@
                      </children></HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="18.0">
                      <children>
-                        <Label fx:id="labelTempsActuel" text="0:00" />
+                        <Label fx:id="labelTempsActuel" styleClass="label-gris" text="0:00" />
                         <Slider fx:id="sliderTemps" prefWidth="350.0" />
-                        <Label fx:id="labelTempsTotal" text="3:33" />
+                        <Label fx:id="labelTempsTotal" styleClass="label-gris" text="3:33" />
                      </children>
                      <padding>
                         <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
