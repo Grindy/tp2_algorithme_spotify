@@ -12,34 +12,56 @@ import java.util.stream.Collectors;
 
 public class PlaylistService {
 
-    public List<Chanson> filtrer(
+    public Playlist filtrer(
             Playlist playlist,
             String recherche,
             String genre,
-            Integer dureeMax,
-            Integer nbrEcoute
+            String dureeMax,
+            String nbEcoutes
     ) {
-        String recherchePropre = recherche.trim().toLowerCase(Locale.ROOT);
-        return playlist.getChansons()
+        final String recherchePropre = (recherche != null) ? recherche.trim().toLowerCase(Locale.ROOT) : "";
+        final Integer dureeMaxInt = parserEntier(dureeMax);
+        final Integer nbEcoutesInt = parserEntier(nbEcoutes);
+
+        return new Playlist(playlist.getId(), playlist.getNom(), playlist.getChansons()
                 .stream()
-                .filter(c -> (c.getTitre() + " " + c.getArtiste() + " " + c.getAlbum())
-                        .toLowerCase(Locale.ROOT)
-                        .contains(recherchePropre))
-                .filter(c -> genre == null || c.getGenre().equalsIgnoreCase(genre))
-                .filter(c -> dureeMax == null || c.getDuree() <= dureeMax)
-                .filter(c -> nbrEcoute == null || c.getNbrEcoute() <= nbrEcoute)
-                .collect(Collectors.toList());
+                .filter(c -> {
+                    if (recherchePropre.isEmpty()) return true;
+                    String texte = String.join(" ",
+                            c.getTitre() != null ? c.getTitre() : "",
+                            c.getArtiste() != null ? c.getArtiste() : "",
+                            c.getAlbum() != null ? c.getAlbum() : ""
+                    ).toLowerCase(Locale.ROOT);
+                    return texte.contains(recherchePropre);
+                })
+                .filter(c -> genre == null || genre.trim().isEmpty() ||
+                        (c.getGenre() != null && c.getGenre().equalsIgnoreCase(genre.trim())))
+                .filter(c -> dureeMaxInt == null || c.getDuree() <= dureeMaxInt)
+                .filter(c -> nbEcoutesInt == null || c.getNbrEcoute() >= nbEcoutesInt)
+                .collect(Collectors.toList()));
     }
 
-    public Playlist trierSelon(TriMap critereTri, Playlist playList) {
+    private Integer parserEntier(String texte) {
+        if (texte == null || texte.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(texte.trim());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public Playlist trierSelon(String critereTri, Playlist playList) {
+        TriMap critereTriEnum = TriMap.fromTexte(critereTri);
         List<Chanson> chansonsTriees = new ArrayList<>(playList.getChansons());
-        switch (critereTri) {
+        switch (critereTriEnum) {
             case TITRE -> chansonsTriees.sort(Comparator.comparing(Chanson::getTitre, String.CASE_INSENSITIVE_ORDER));
             case ARTISTE ->
                     chansonsTriees.sort(Comparator.comparing(Chanson::getArtiste, String.CASE_INSENSITIVE_ORDER));
             case ANNEE -> chansonsTriees.sort(Comparator.comparingInt(Chanson::getAnneeSortie));
             case NB_ECOUTES -> chansonsTriees.sort(Comparator.comparingInt(Chanson::getNbrEcoute).reversed());
-            case null -> System.err.println("Critère invalide");
+            case null -> {}
         }
         return new Playlist(playList.getId(), playList.getNom(), chansonsTriees);
     }

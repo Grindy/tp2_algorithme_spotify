@@ -1,6 +1,7 @@
 package com.maisonneuve.tp2_algorithme_spotify.controller;
 
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
+import com.maisonneuve.tp2_algorithme_spotify.model.Genre;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.model.TriMap;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
@@ -11,7 +12,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainController {
 
@@ -72,10 +75,14 @@ public class MainController {
     private Label labelDansabilite;
     @FXML
     private Label labelNbEcoutes;
+    @FXML
+    private Button btnResetFiltres;
+    @FXML
+    private Button btnAppliquerFiltres;
 
     // Center (Filtres, Liste, Pagination)
     @FXML
-    private ComboBox<?> comboGenre;
+    private ComboBox<String> comboGenre;
     @FXML
     private TextField fieldDureeMax;
     @FXML
@@ -99,13 +106,22 @@ public class MainController {
     private int nbPagesTotales;
     private int pageCourante = 1;
     private Playlist playListSelectionne;
-
+    private Map<String, String> dataFiltreTri = new HashMap<>() {
+        {
+            put("filtreRecherche", "");
+            put("filtreGenre", "");
+            put("filtreDureeMax", "");
+            put("filtreNbEcoutes", "");
+            put("critereTri", "");
+        }
+    };
 
     @FXML
     public void initialize() {
         creerBibliothequeEtPlaylists();
         rafraichirListePlaylist();
         definirEcouteursDEvenements();
+        chargerChoixGenres();
 
         // Au démarrage, la liste d'accueil est sélectionnée (Votre Bibliothèque)
         playListSelectionne = toutesLesChansons;
@@ -144,14 +160,20 @@ public class MainController {
         // Écouteur sur le dropdown de tri
         for (MenuItem i : dropTri.getItems()) {
             i.setOnAction(e -> {
-                TriMap critereTri = TriMap.fromTexte(i.getText());
-                Playlist playlistTrie = playlistService.trierSelon(critereTri, playListSelectionne);
-                rafraichirListeChansons(playlistTrie, 1);
                 dropTri.setText(i.getText());
             });
         }
 
-        // Écouteurs sur les champs de filtre
+        // Écouteur sur le bouton pour appliques les filtres/tri
+        btnAppliquerFiltres.setOnAction(e -> {
+            rafraichirListeChansons(playListSelectionne, 1);
+        });
+
+        // Écouteur sur le bouton pour rénitialiser les filtres/tri
+        btnResetFiltres.setOnAction(e -> {
+            renitialiserFiltresEtTri();
+            rafraichirListeChansons(playListSelectionne, 1);
+        });
 
     }
 
@@ -182,9 +204,18 @@ public class MainController {
     }
 
     public void rafraichirListeChansons(Playlist playlist, int page) {
-        dropTri.setText("");
         playListSelectionne = playlist;
-        List<Chanson> chansons = playlist.getChansons();
+        recupererFiltresEtTri();
+
+        Playlist playlistTrie = playlistService.filtrer(playlist,
+                dataFiltreTri.get("filtreRecherche"),
+                dataFiltreTri.get("filtreGenre"),
+                dataFiltreTri.get("filtreDureeMax"),
+                dataFiltreTri.get("filtreNbEcoutes")
+                );
+
+        Playlist playlistTrieEtFiltre = playlistService.trierSelon(dataFiltreTri.get("critereTri"), playlistTrie);
+        List<Chanson> chansons = playlistTrieEtFiltre.getChansons();
 
         pageCourante = page;
         nbPagesTotales = (int) Math.ceil((double) chansons.size() / NB_CHANSONS_PAR_PAGE);
@@ -193,6 +224,10 @@ public class MainController {
         int indexDebut = (page - 1) * NB_CHANSONS_PAR_PAGE;
         int indexFin = Math.min(indexDebut + NB_CHANSONS_PAR_PAGE, chansons.size());
 
+        if (indexDebut > indexFin) {
+            indexDebut = indexFin;
+        }
+
         listChansons.setItems(FXCollections.observableArrayList(chansons.subList(indexDebut, indexFin)));
     }
 
@@ -200,4 +235,27 @@ public class MainController {
         return page >= 1 && page <= nbPagesTotales;
     }
 
+    public void recupererFiltresEtTri() {
+        dataFiltreTri.put("filtreRecherche", fieldRecherche.getText());
+        dataFiltreTri.put("filtreGenre", (String) comboGenre.getValue());
+        dataFiltreTri.put("filtreDureeMax", fieldDureeMax.getText());
+        dataFiltreTri.put("filtreNbEcoutes", fieldNombreEcoutes.getText());
+        dataFiltreTri.put("critereTri", dropTri.getText());
+    }
+
+    public void renitialiserFiltresEtTri() {
+        fieldRecherche.setText("");
+        comboGenre.getSelectionModel().clearSelection();
+        fieldDureeMax.setText("");
+        fieldNombreEcoutes.setText("");
+        dropTri.setText("");
+
+        dataFiltreTri.clear();
+    }
+
+    public void chargerChoixGenres() {
+        for (Genre g : Genre.values()) {
+            comboGenre.getItems().add(g.getNomFormate());
+        }
+    }
 }
