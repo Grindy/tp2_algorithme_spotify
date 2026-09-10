@@ -7,14 +7,20 @@ import com.maisonneuve.tp2_algorithme_spotify.model.TriMap;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 public class MainController {
 
@@ -52,7 +58,11 @@ public class MainController {
     @FXML
     private Button btnAjouterPlaylist;
     @FXML
-    private ListView<Playlist> listPlaylists;
+    private TableView<Playlist> tablePlaylists;
+    @FXML
+    private TableColumn<Playlist, String> colPlaylists;
+    @FXML
+    private TableColumn<Playlist, Void> colSupprimerPlaylist;
 
     // Right (Détails)
     @FXML
@@ -90,7 +100,17 @@ public class MainController {
     @FXML
     private MenuButton dropTri;
     @FXML
-    private ListView<Chanson> listChansons;
+    private TableView<Chanson> tableChansons;
+    @FXML
+    private TableColumn<Chanson, String> colTitre;
+    @FXML
+    private TableColumn<Chanson, String> colArtiste;
+    @FXML
+    private TableColumn<Chanson, String> colAlbum;
+    @FXML
+    private TableColumn<Chanson, Integer> colAnnee;
+    @FXML
+    private TableColumn<Chanson, Void> colActions;
     @FXML
     private Button btnPagePrecedente;
     @FXML
@@ -119,6 +139,8 @@ public class MainController {
     @FXML
     public void initialize() {
         creerBibliothequeEtPlaylists();
+        formaterFieldDureeMax();
+        configurerColonnesTables();
         rafraichirListePlaylist();
         definirEcouteursDEvenements();
         chargerChoixGenres();
@@ -128,10 +150,187 @@ public class MainController {
         rafraichirListeChansons(playListSelectionne, pageCourante);
     }
 
+    // Fonction générée par Gemini
+    private void formaterFieldDureeMax() {
+        // Regex pour le format mm:ss
+        Pattern pattern = Pattern.compile("^$|^[0-9]{1,2}$|^[0-9]{1,2}:$|^[0-9]{1,2}:[0-5]$|^[0-9]{1,2}:[0-5][0-9]$");
+
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            // Autorise la réinitialisation directe via setText("00:00") ou toute valeur valide complète
+            if (change.getText().matches("^[0-9]{2}:[0-5][0-9]$")) {
+                return change;
+            }
+            // Récupère le texte actuel ou "00:00" s'il est vide/incomplet
+            String currentText = change.getControlText();
+            if (currentText.length() != 5) {
+                currentText = "00:00";
+            }
+
+            // 1. Touche Backspace / Delete
+            if (change.getText().isEmpty()) {
+                int start = change.getRangeStart();
+                int end = change.getRangeEnd();
+
+                if (start != end) {
+                    char[] chars = currentText.toCharArray();
+                    for (int i = start; i < end; i++) {
+                        if (i != 2) {
+                            chars[i] = '0';
+                        }
+                    }
+                    change.setRange(0, change.getControlText().length());
+                    change.setText(new String(chars));
+                    change.setCaretPosition(start);
+                    change.setAnchor(start);
+                    return change;
+                }
+                return change;
+            }
+
+            // 2. Frappe d'un chiffre
+            if (change.getText().matches("[0-9]")) {
+                int pos = change.getRangeStart();
+
+                // Si le curseur est sur le ':', on passe directement au chiffre des secondes
+                if (pos == 2) {
+                    pos = 3;
+                }
+
+                // Bloque si le curseur est au-delà du 5e caractère
+                if (pos >= 5) {
+                    return null;
+                }
+
+                char digit = change.getText().charAt(0);
+
+                // Validation des dizaines de secondes (index 3 : max 59 secondes)
+                if (pos == 3 && digit > '5') {
+                    return null;
+                }
+
+                char[] chars = currentText.toCharArray();
+                chars[pos] = digit;
+
+                int nextCaret = (pos + 1 == 2) ? 3 : pos + 1;
+
+                change.setRange(0, change.getControlText().length());
+                change.setText(new String(chars));
+                change.setCaretPosition(nextCaret);
+                change.setAnchor(nextCaret);
+                return change;
+            }
+
+            // Rejette toute autre touche non numérique
+            return null;
+        };
+
+// Initialise le TextFormatter avec "00:00" par défaut
+        fieldDureeMax.setTextFormatter(new TextFormatter<>(filter));
+        fieldDureeMax.setText("00:00");
+    }
+
+    private void configurerColonnesTables() {
+
+        // Lier les colonnes de la liste des playlists
+        colPlaylists.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        colSupprimerPlaylist.setCellFactory(col -> new TableCell<Playlist, Void>() {
+            // Ajouter un bouton "supprimerPlaylist" à chaque playlist
+            private final Button btnSupprimerPlaylist = new Button("🗑");
+
+            {
+                btnSupprimerPlaylist.setOnAction(event -> {
+                    Playlist playlist = getTableRow().getItem();
+                    if (playlist != null) {
+                        // Logique de lecture
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btnSupprimerPlaylist);
+                }
+            }
+
+        });
+
+        // Définir les proportions des colonnes de la liste des chansons
+        colPlaylists.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.90));
+        colSupprimerPlaylist.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.1));
+
+
+        // Lier les colonnes de la liste des chansons
+        colTitre.setCellValueFactory(new PropertyValueFactory<>("titre"));
+        colArtiste.setCellValueFactory(new PropertyValueFactory<>("artiste"));
+        colAlbum.setCellValueFactory(new PropertyValueFactory<>("album"));
+        colAnnee.setCellValueFactory(new PropertyValueFactory<>("anneeSortie"));
+
+        // Définir les proportions des colonnes de la liste des chansons
+        colTitre.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.25));
+        colArtiste.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.25));
+        colAlbum.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.25));
+        colAnnee.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.1));
+        colActions.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.15));
+        colActions.setCellFactory(col -> new TableCell<Chanson, Void>() {
+
+            // Ajout des boutons d'actions pour chaque chanson (play, ajouter, supprimer)
+            private final Button btnLire = new Button("▶");
+            private final Button btnAjouterAPlaylist = new Button("+");
+            private final Button btnSupprimer = new Button("🗑");
+            private final HBox conteneurBoutons = new HBox(8, btnLire, btnAjouterAPlaylist, btnSupprimer);
+
+            {
+                conteneurBoutons.setAlignment(Pos.CENTER);
+
+                // Actions des boutons
+                btnLire.setOnAction(event -> {
+                    Chanson chanson = getTableRow().getItem();
+                    if (chanson != null) {
+                        // Logique de lecture
+                    }
+                });
+
+                btnSupprimer.setOnAction(event -> {
+                    Chanson chanson = getTableRow().getItem();
+                    if (chanson != null) {
+                        // Logique de suppression
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(conteneurBoutons);
+                }
+            }
+        });
+
+        // Empêcher les comportements par défaut des TableViews (tri natif, déplacer les colonnes)
+        for (TableColumn<?, ?> col : tableChansons.getColumns()) {
+            col.setSortable(false);
+            col.setReorderable(false);
+        }
+        for (TableColumn<?, ?> col : tablePlaylists.getColumns()) {
+            col.setSortable(false);
+            col.setReorderable(false);
+        }
+    }
+
+
     public void definirEcouteursDEvenements() {
 
         // Écouteur sur la sélection de la playlist
-        listPlaylists.getSelectionModel().selectedItemProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
+        tablePlaylists.getSelectionModel().selectedItemProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
             if (nouvellePlaylist != null) {
                 rafraichirListeChansons(nouvellePlaylist, 1);
             }
@@ -139,7 +338,7 @@ public class MainController {
 
         // Écouteur sur le bouton "Votre Bibliothèqeue"
         btnVotreBibliotheque.setOnAction(e -> {
-            listPlaylists.getSelectionModel().clearSelection();
+            tablePlaylists.getSelectionModel().clearSelection();
             rafraichirListeChansons(toutesLesChansons, 1);
         });
 
@@ -199,8 +398,8 @@ public class MainController {
     }
 
     public void rafraichirListePlaylist() {
-        // Afficher la liste des playlists dans la ListView à gauche
-        listPlaylists.setItems(FXCollections.observableArrayList(biblio.getPlaylists()));
+        // Afficher la liste des playlists dans la TableView à gauche
+        tablePlaylists.setItems(FXCollections.observableArrayList(biblio.getPlaylists()));
     }
 
     public void rafraichirListeChansons(Playlist playlist, int page) {
@@ -212,7 +411,7 @@ public class MainController {
                 dataFiltreTri.get("filtreGenre"),
                 dataFiltreTri.get("filtreDureeMax"),
                 dataFiltreTri.get("filtreNbEcoutes")
-                );
+        );
 
         Playlist playlistTrieEtFiltre = playlistService.trierSelon(dataFiltreTri.get("critereTri"), playlistTrie);
         List<Chanson> chansons = playlistTrieEtFiltre.getChansons();
@@ -228,7 +427,7 @@ public class MainController {
             indexDebut = indexFin;
         }
 
-        listChansons.setItems(FXCollections.observableArrayList(chansons.subList(indexDebut, indexFin)));
+        tableChansons.setItems(FXCollections.observableArrayList(chansons.subList(indexDebut, indexFin)));
     }
 
     public boolean estPageValide(int page) {
@@ -237,7 +436,7 @@ public class MainController {
 
     public void recupererFiltresEtTri() {
         dataFiltreTri.put("filtreRecherche", fieldRecherche.getText());
-        dataFiltreTri.put("filtreGenre", (String) comboGenre.getValue());
+        dataFiltreTri.put("filtreGenre", comboGenre.getValue());
         dataFiltreTri.put("filtreDureeMax", fieldDureeMax.getText());
         dataFiltreTri.put("filtreNbEcoutes", fieldNombreEcoutes.getText());
         dataFiltreTri.put("critereTri", dropTri.getText());
@@ -246,7 +445,7 @@ public class MainController {
     public void renitialiserFiltresEtTri() {
         fieldRecherche.setText("");
         comboGenre.getSelectionModel().clearSelection();
-        fieldDureeMax.setText("");
+        fieldDureeMax.setText("00:00");
         fieldNombreEcoutes.setText("");
         dropTri.setText("");
 
