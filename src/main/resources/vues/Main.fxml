@@ -20,20 +20,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" stylesheets="style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.MainController">
+<BorderPane stylesheets="@style.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.MainController">
    <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="36.0" styleClass="bg-black" stylesheets="@style.css" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="36.0" styleClass="bg-black" BorderPane.alignment="CENTER">
          <children>
 
-            <Button fx:id="btnAccueil" mnemonicParsing="false" styleClass="btn-round" stylesheets="@style.css">
+            <Button fx:id="btnAccueil" mnemonicParsing="false" styleClass="btn-round">
                <graphic>
                   <Region id="icone-accueil" />
                </graphic>
             </Button>
 
-            <TextField fx:id="fieldRecherche" minHeight="30.0" minWidth="400.0" prefHeight="50.0" promptText="Titre, artiste, album..." styleClass="champ-texte" stylesheets="@style.css" />
+            <TextField fx:id="fieldRecherche" minHeight="30.0" minWidth="400.0" prefHeight="50.0" promptText="Titre, artiste, album..." styleClass="champ-texte" />
 
-            <Button fx:id="btnGraph" mnemonicParsing="false" styleClass="btn-round" stylesheets="@style.css">
+            <Button fx:id="btnGraph" mnemonicParsing="false" styleClass="btn-round">
                <graphic>
                   <Region id="icone-graph" />
                </graphic>
@@ -46,7 +46,7 @@
       </HBox>
    </top>
    <bottom>
-      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" styleClass="bg-black" stylesheets="@style.css" BorderPane.alignment="CENTER">
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" styleClass="bg-black" BorderPane.alignment="CENTER">
          <children>
             <StackPane styleClass="img-border">
                <ImageView fx:id="imgLecteurAlbum" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
@@ -79,7 +79,7 @@
                      <children>
 
 
-                        <Button fx:id="btnLecteurShuffle" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                        <Button fx:id="btnLecteurShuffle" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
                            <graphic>
                               <Region id="icone-shuffle" fx:id="regionShuffle" />
                            </graphic>
@@ -87,21 +87,21 @@
 
 
 
-                        <Button fx:id="btnLecteurPrecedente" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                        <Button fx:id="btnLecteurPrecedente" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
                            <graphic>
                               <Region id="icone-previous" />
                            </graphic>
                         </Button>
 
 
-                        <Button id="btn-play" fx:id="btnLecteurJouer" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                        <Button id="btn-play" fx:id="btnLecteurJouer" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
                            <graphic>
                               <Region id="icone-play" fx:id="regionLecteurJouer" />
                            </graphic>
                         </Button>
 
 
-                        <Button fx:id="btnLecteurSuivante" maxHeight="40.0" maxWidth="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                        <Button fx:id="btnLecteurSuivante" maxHeight="40.0" maxWidth="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="btn-lecteur">
                            <graphic>
                               <Region id="icone-next" />
                            </graphic>
@@ -130,7 +130,7 @@
       </HBox>
    </bottom>
    <left>
-      <VBox prefHeight="620.0" prefWidth="337.0" style="-fx-border-width: 0 3px 0 0;" stylesheets="@style.css" BorderPane.alignment="CENTER">
+      <VBox prefHeight="620.0" prefWidth="337.0" style="-fx-border-width: 0 3px 0 0;" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
@@ -139,10 +139,10 @@
                </children>
             </HBox>
             <TableView fx:id="tablePlaylists" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-              <columns>
-                <TableColumn fx:id="colPlaylists" prefWidth="75.0" text="Vos Playlists" />
-                <TableColumn fx:id="colSupprimerPlaylist" prefWidth="75.0" />
-              </columns>
+               <columns>
+                  <TableColumn fx:id="colPlaylists" prefWidth="75.0" text="Vos Playlists" />
+                  <TableColumn fx:id="colSupprimerPlaylist" prefWidth="75.0" />
+               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
@@ -158,12 +158,12 @@
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" style="-fx-border-width: 0 0 0 3px;" stylesheets="@style.css" BorderPane.alignment="CENTER">
+      <VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" style="-fx-border-width: 0 0 0 3px;" BorderPane.alignment="CENTER">
          <children>
             <StackPane styleClass="img-border">
                <ImageView fx:id="imgAlbum" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
             </StackPane>
-            <Label fx:id="labelTitre" alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="label-gris" stylesheets="@style.css" text="Titre" textAlignment="CENTER">
+            <Label fx:id="labelTitre" alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="label-gris" text="Titre" textAlignment="CENTER">
                <VBox.margin>
                   <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                </VBox.margin>
@@ -171,7 +171,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelAlbum" stylesheets="@style.css" text="Album">
+            <Label fx:id="labelAlbum" text="Album">
                <font>
                   <Font size="14.0" />
                </font>
@@ -216,7 +216,7 @@
                   <String fx:value="bold" />
                </styleClass>
             </Label>
-            <Separator opacity="0.3" prefWidth="200.0" stylesheets="@style.css" />
+            <Separator opacity="0.3" prefWidth="200.0" />
             <Region prefHeight="83.0" prefWidth="241.0" />
             <Label fx:id="labelDuree" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="Durée" textAlignment="RIGHT">
                <font>
@@ -247,13 +247,13 @@
       </VBox>
    </right>
    <center>
-      <VBox prefHeight="620.0" prefWidth="766.0" styleClass="bg-dark-grey" stylesheets="@style.css" BorderPane.alignment="CENTER">
+      <VBox prefHeight="620.0" prefWidth="766.0" styleClass="bg-dark-grey" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="40.0" spacing="12.0" styleClass="bg-dark-grey" stylesheets="@style.css">
+            <HBox alignment="CENTER" prefHeight="40.0" spacing="12.0" styleClass="bg-dark-grey">
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre par genre:">
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" text="Filtre par genre:">
                            <padding>
                               <Insets left="12.0" />
                            </padding></Label>
@@ -262,38 +262,38 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre durée max:">
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" text="Filtre durée max:">
                            <padding>
                               <Insets left="12.0" />
                            </padding>
                            <font>
                               <Font size="12.0" />
                            </font></Label>
-                        <TextField fx:id="fieldDureeMax" promptText="00:00" styleClass="champ-tri" stylesheets="@style.css" />
+                        <TextField fx:id="fieldDureeMax" promptText="00:00" styleClass="champ-tri" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Filtre nombre d'écoutes:">
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" text="Filtre nombre d'écoutes:">
                            <padding>
                               <Insets left="12.0" />
                            </padding></Label>
-                        <TextField fx:id="fieldNombreEcoutes" promptText="ex: 12000" styleClass="champ-tri" stylesheets="@style.css" />
+                        <TextField fx:id="fieldNombreEcoutes" promptText="ex: 12000" styleClass="champ-tri" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="4.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" stylesheets="@style.css" text="Trier par:">
+                        <Label maxWidth="1.7976931348623157E308" styleClass="label-gris" text="Trier par:">
                            <padding>
                               <Insets left="12.0" />
                            </padding></Label>
-                        <MenuButton fx:id="dropTri" maxWidth="1.7976931348623157E308" stylesheets="@style.css" text="---">
-                            <items>
-                                <MenuItem text="Titre" />
-                                <MenuItem text="Artiste" />
-                                <MenuItem text="Année" />
+                        <MenuButton fx:id="dropTri" maxWidth="1.7976931348623157E308" text="---">
+                           <items>
+                              <MenuItem text="Titre" />
+                              <MenuItem text="Artiste" />
+                              <MenuItem text="Année" />
                               <MenuItem text="Nombre d'écoutes" />
-                            </items>
+                           </items>
                         </MenuButton>
                      </children>
                   </VBox>
@@ -312,22 +312,22 @@
                </VBox.margin>
             </HBox>
             <TableView fx:id="tableChansons" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-              <columns>
-                <TableColumn fx:id="colTitre" resizable="false" text="Titre" />
-                <TableColumn fx:id="colArtiste" resizable="false" text="Artiste" />
+               <columns>
+                  <TableColumn fx:id="colTitre" resizable="false" text="Titre" />
+                  <TableColumn fx:id="colArtiste" resizable="false" text="Artiste" />
                   <TableColumn fx:id="colAlbum" resizable="false" text="Album" />
                   <TableColumn fx:id="colAnnee" resizable="false" text="Année" />
                   <TableColumn fx:id="colActions" resizable="false" />
-              </columns>
+               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="200.0" spacing="24.0" stylesheets="@style.css">
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="200.0" spacing="24.0">
                <children>
 
 
-                  <Button fx:id="btnPagePrecedente" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                  <Button fx:id="btnPagePrecedente" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
                      <graphic>
                         <Region id="icone-page-precedente" />
                      </graphic></Button>
@@ -343,9 +343,9 @@
                      </styleClass></Label>
 
 
-                  <Button fx:id="btnPageSuivante" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
+                  <Button fx:id="btnPageSuivante" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
                      <graphic>
-                        <Region id="icone-page-suivante" styleClass="btn-lecteur" stylesheets="@style.css" />
+                        <Region id="icone-page-suivante" styleClass="btn-lecteur" />
                      </graphic></Button>
 
 
