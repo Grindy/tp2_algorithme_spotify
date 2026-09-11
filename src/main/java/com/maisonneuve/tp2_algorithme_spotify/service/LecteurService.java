@@ -16,10 +16,12 @@ public class LecteurService {
     private int indexEnLecture;
     private int tempsEcouleMs;
     private boolean estEnLecture;
+    private boolean estEnAleatoire = false;
 
     private final Timeline timeline;
     private Consumer<Integer> onTick;
     private Consumer<Chanson> onChansonChangee;
+    private Consumer<Boolean> onEtatLectureChangee;
 
     public LecteurService() {
         // on crée un timeline d'une seconde, qui après avoir joué crée une autre timeline
@@ -36,6 +38,8 @@ public class LecteurService {
         this.onChansonChangee = callback;
     }
 
+    public void setOnEtatLectureChangee(Consumer<Boolean> callback) { this.onEtatLectureChangee = callback; }
+
     public void demarrerLecture(Chanson chanson, Playlist contexte) {
         this.contexteEnLecture = contexte;
         this.chansonEnLecture = chanson;
@@ -45,6 +49,7 @@ public class LecteurService {
 
         if (onChansonChangee != null) onChansonChangee.accept(chanson);
         if (onTick != null) onTick.accept(tempsEcouleMs);
+        if (onEtatLectureChangee != null) onEtatLectureChangee.accept(estEnLecture);
 
         // stop la timeline et la relance du départ quand on démarre la lecture d'une chanson
         timeline.stop();
@@ -60,6 +65,8 @@ public class LecteurService {
             timeline.play();
         }
         estEnLecture = !estEnLecture;
+
+        if (onEtatLectureChangee != null) onEtatLectureChangee.accept(estEnLecture);
     }
 
     public void tick() {
@@ -71,10 +78,34 @@ public class LecteurService {
         }
     }
 
+
     public void passerSuivante() {
         List<Chanson> chansons = contexteEnLecture.getChansons();
-        int prochainIndex = (indexEnLecture + 1) % chansons.size();
+        int prochainIndex;
+
+        if(estEnAleatoire) {
+            prochainIndex = (int) (Math.random() * chansons.size());
+        } else {
+            prochainIndex = (indexEnLecture + 1) % chansons.size();
+        }
+
         demarrerLecture(chansons.get(prochainIndex), contexteEnLecture);
+    }
+
+    public void passerPrecedente() {
+        List<Chanson> chansons = contexteEnLecture.getChansons();
+        int precedentIndex = indexEnLecture - 1;
+        if(precedentIndex < 0) { precedentIndex = (chansons.toArray().length - 1);
+        }
+        demarrerLecture(chansons.get(precedentIndex), contexteEnLecture);
+    }
+
+    public void toggleAleatoire() {
+        estEnAleatoire = !estEnAleatoire;
+    }
+
+    public boolean getEstEnAleatoire() {
+        return estEnAleatoire;
     }
 
     public boolean estEnLecture() {

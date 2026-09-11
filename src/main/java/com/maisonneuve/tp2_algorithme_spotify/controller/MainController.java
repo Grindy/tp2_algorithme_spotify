@@ -20,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 
 
 import java.util.HashMap;
@@ -46,9 +47,15 @@ public class MainController {
     @FXML
     private Label labelLecteurArtiste;
     @FXML
+    private Button btnLecteurShuffle;
+    @FXML
+    private Region regionShuffle;
+    @FXML
     private Button btnLecteurPrecedente;
     @FXML
     private Button btnLecteurJouer;
+    @FXML
+    private Region regionLecteurJouer;
     @FXML
     private Button btnLecteurSuivante;
     @FXML
@@ -319,6 +326,32 @@ public class MainController {
                         // Logique de suppression
                     }
                 });
+
+                btnLecteurPrecedente.setOnAction(event -> {
+                    lecteurService.passerPrecedente();
+                });
+
+                btnLecteurSuivante.setOnAction(event -> {
+                    lecteurService.passerSuivante();
+                });
+
+                btnLecteurShuffle.setOnAction( event -> {
+                    lecteurService.toggleAleatoire();
+                    if (lecteurService.getEstEnAleatoire()) {
+                        regionShuffle.getStyleClass().add("icone-active");
+                    } else {
+                        regionShuffle.getStyleClass().remove("icone-active");
+                    }
+                });
+
+                btnLecteurJouer.setOnAction( event -> {
+                    lecteurService.togglePlayPause();
+                    if (lecteurService.estEnLecture()) {
+                        regionLecteurJouer.setId("icone-pause");
+                    } else {
+                        regionLecteurJouer.setId("icone-play");
+                    }
+                });
             }
 
             @Override
@@ -450,6 +483,10 @@ public class MainController {
         lecteurService.setOnTick(tempsMs -> {
             sliderTemps.setValue(tempsMs);
             labelTempsActuel.setText(TimeUtils.msToMinutes(tempsMs));
+        });
+
+        lecteurService.setOnEtatLectureChangee(estEnLecture -> {
+            regionLecteurJouer.setId(estEnLecture ? "icone-pause" : "icone-play");
         });
     }
 
