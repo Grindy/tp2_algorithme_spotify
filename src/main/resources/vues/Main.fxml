@@ -81,7 +81,7 @@
 
                         <Button fx:id="btnLecteurShuffle" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
                            <graphic>
-                              <Region id="icone-shuffle" />
+                              <Region id="icone-shuffle" fx:id="regionShuffle" />
                            </graphic>
                         </Button>
 
@@ -96,7 +96,7 @@
 
                         <Button id="btn-play" fx:id="btnLecteurJouer" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur" stylesheets="@style.css">
                            <graphic>
-                              <Region id="icone-play" />
+                              <Region id="icone-play" fx:id="regionLecteurJouer" />
                            </graphic>
                         </Button>
 
