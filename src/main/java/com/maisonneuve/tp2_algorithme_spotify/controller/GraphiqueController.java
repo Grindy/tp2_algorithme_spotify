@@ -4,58 +4,22 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 
 public class GraphiqueController {
-    @FXML
-    private Button btnAccueil;
-
-
 
     public void initialize(){
         definirEcouteursDEvenements();
     }
 
+    public Bibliotheque biblio;
 
-
-
-
-
-
-
-
-
-
-
+    public void setBibliotheque (Bibliotheque b) {
+        this.biblio = b;
+    }
 
     public void definirEcouteursDEvenements() {
 
-        btnAccueil.setOnAction(e -> {
-            try {
-                Parent newRoot = FXMLLoader.load(getClass().getResource("/vues/Main.fxml"));
-                btnAccueil.getScene().setRoot(newRoot);
-            } catch (Exception exception) {
-                System.out.println(exception.getMessage());
-            }
-        });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

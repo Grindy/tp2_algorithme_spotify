@@ -14,11 +14,13 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
@@ -32,6 +34,9 @@ import java.util.regex.Pattern;
 public class MainController {
 
     // Top
+    @FXML
+    private BorderPane rootPane;
+
     @FXML
     private Button btnAccueil;
     @FXML
@@ -130,6 +135,24 @@ public class MainController {
     private Label labelPages;
     @FXML
     private Button btnPageSuivante;
+    @FXML
+    private void afficherGraphique() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vues/Graphique.fxml"));
+            BorderPane graphique = (BorderPane) loader.load();
+
+            GraphiqueController gc = loader.getController();
+            gc.setBibliotheque(this.biblio);
+
+
+            rootPane.setLeft(graphique.getLeft());
+            rootPane.setCenter(graphique.getCenter());
+            rootPane.setRight(null);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     private Bibliotheque biblio;
     private Playlist toutesLesChansons;
@@ -150,9 +173,14 @@ public class MainController {
         }
     };
     private static final String IMAGE_PAR_DEFAUT = "https://i.pinimg.com/736x/ba/8e/4d/ba8e4de740a641feb1709ce713889ea5.jpg";
-
+    private Node accueilLeft;
+    private Node accueilRight;
+    private Node accueilCentre;
     @FXML
     public void initialize() {
+        accueilLeft = rootPane.getLeft();
+        accueilCentre = rootPane.getCenter();
+        accueilRight = rootPane.getRight();
         creerBibliothequeEtPlaylists();
         formaterFieldDureeMax();
         configurerColonnesTables();
@@ -166,6 +194,13 @@ public class MainController {
         // Au démarrage, la liste d'accueil est sélectionnée (Votre Bibliothèque)
         playListSelectionne = toutesLesChansons;
         rafraichirListeChansons(playListSelectionne, pageCourante);
+    }
+
+
+    private void afficherAccueil() {
+        rootPane.setLeft(accueilLeft);
+        rootPane.setCenter(accueilCentre);
+        rootPane.setRight(accueilRight);
     }
 
 
@@ -380,14 +415,9 @@ public class MainController {
 
     public void definirEcouteursDEvenements() {
 
-        btnGraph.setOnAction(e -> {
-            try {
-                Parent newRoot = FXMLLoader.load(getClass().getResource("/vues/Graphique.fxml"));
-                btnGraph.getScene().setRoot(newRoot);
-            } catch (Exception exception) {
-                System.out.println(exception.getMessage());
-            }
-        });
+        btnGraph.setOnAction(e -> afficherGraphique());
+        btnAccueil.setOnAction(e -> afficherAccueil());
+
 
         // Écouteur sur la sélection de la playlist
         tablePlaylists.getSelectionModel().selectedItemProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {

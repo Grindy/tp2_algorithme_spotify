@@ -1,9 +1,14 @@
 package com.maisonneuve.tp2_algorithme_spotify.Algorithme.tri;
 import com.maisonneuve.tp2_algorithme_spotify.Algorithme.Algorithme;
+import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
+
+import java.util.Comparator;
+import java.util.List;
 
 public class TriInsertion implements Algorithme {
 
-    private int[] tabChansons;
+    private List<Chanson> liste;
+    private Comparator<Chanson> comp;
 
     @Override
     public String nom() {return "Tri Insertion";}
@@ -11,26 +16,27 @@ public class TriInsertion implements Algorithme {
     @Override
     public String complexiteTheorique() {return "O(n^2)";}
 
-//    @Override
-//    public void preparer(int n){
-//        this.tabChansons = GenerateurDonnees.tableauMelanger(n);
-//    }
+    @Override
+    public void preparer(List<Chanson> liste, Comparator<Chanson> comp){
+        this.liste = liste;
+        this.comp = comp;
+    }
 
     @Override
     public void executer(){
-        int[] tab = tabChansons.clone();
-        int n = tab.length;
+
+        int n = liste.size();
 
         for (int i = 1; i < n; i++){
-            int cle = tab[i];
+            Chanson cle = liste.get(i);
             int j = i - 1;
 
-            while(j >= 0 && tab[j] > cle){
-                tab[j + 1] = tab[j];
+            while(j >= 0 && comp.compare(liste.get(j),  cle) > 0){
+                liste.set(j + 1, liste.get(j));
                 j--;
             }
 
-            tab[j+1] = cle;
+            liste.set(j+1, cle);
         }
     }
 }

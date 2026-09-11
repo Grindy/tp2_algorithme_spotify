@@ -3,9 +3,16 @@ import com.maisonneuve.tp2_algorithme_spotify.Algorithme.Algorithme;
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 
 
+import java.util.Comparator;
+import java.util.List;
+
+
+
+
 public class TriBulle implements Algorithme  {
 
-    private int[] tabChansons;
+    private List<Chanson> liste;
+    private Comparator<Chanson> comp;
 
     @Override
     public String nom(){
@@ -17,24 +24,25 @@ public class TriBulle implements Algorithme  {
         return "O(n^2)";
     }
 
-//    @Override
-//    public void preparer(int n){
-//        this.tabChansons = GenerateurDonnees.tableauMelanger(n);
-//    }
+    @Override
+    public void preparer(List<Chanson> liste, Comparator<Chanson> comp){
+        this.liste = liste;
+        this.comp = comp;
+    }
+
 
     @Override
     public void executer(){
-        int[] tab = tabChansons.clone();
-        int n = tab.length;
+
+        int n = liste.size();
 
         for(int i = 0; i < n - 1; i++){
             for(int j = 0; j < n - 1 - i; j++){
-                if(tab[j] > tab[j+1]){
-                    int temp = tab[j];
-                    tab[j] = tab[j+1];
-                    tab[j+1] = temp;
+                if (comp.compare(liste.get(j), liste.get(j+1)) > 0) {
+                    Chanson temp = liste.get(j);
+                    liste.set(j, liste.get(j+1));
+                    liste.set(j+1, temp);
                 }
-                //System.out.println("> "+ Arrays.toString(tab));
             }
         }
     }
