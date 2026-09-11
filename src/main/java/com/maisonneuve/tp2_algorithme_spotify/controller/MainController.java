@@ -7,12 +7,15 @@ import com.maisonneuve.tp2_algorithme_spotify.model.TriMap;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
+import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
+import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
@@ -122,6 +125,7 @@ public class MainController {
     private Playlist toutesLesChansons;
     private PlaylistManager playlistManager;
     private PlaylistService playlistService;
+    private LecteurService lecteurService;
     private int NB_CHANSONS_PAR_PAGE = 10;
     private int nbPagesTotales;
     private int pageCourante = 1;
@@ -135,6 +139,7 @@ public class MainController {
             put("critereTri", "");
         }
     };
+    private static final String IMAGE_PAR_DEFAUT = "https://i.pinimg.com/736x/ba/8e/4d/ba8e4de740a641feb1709ce713889ea5.jpg";
 
     @FXML
     public void initialize() {
@@ -144,6 +149,9 @@ public class MainController {
         rafraichirListePlaylist();
         definirEcouteursDEvenements();
         chargerChoixGenres();
+
+        imgLecteurAlbum.setImage(new Image(IMAGE_PAR_DEFAUT));
+        imgAlbum.setImage(new Image(IMAGE_PAR_DEFAUT));
 
         // Au démarrage, la liste d'accueil est sélectionnée (Votre Bibliothèque)
         playListSelectionne = toutesLesChansons;
@@ -241,7 +249,7 @@ public class MainController {
                 btnSupprimerPlaylist.setOnAction(event -> {
                     Playlist playlist = getTableRow().getItem();
                     if (playlist != null) {
-                        // Logique de lecture
+                        // Logique de suppression
                     }
                 });
             }
@@ -291,7 +299,12 @@ public class MainController {
                 btnLire.setOnAction(event -> {
                     Chanson chanson = getTableRow().getItem();
                     if (chanson != null) {
-                        // Logique de lecture
+                        Playlist contexte = tablePlaylists.getSelectionModel().getSelectedItem() != null
+                                ? tablePlaylists.getSelectionModel().getSelectedItem()
+                                : toutesLesChansons;
+                        lecteurService.demarrerLecture(chanson, contexte);
+
+                        // implementer la mise a jour des labels et slider
                     }
                 });
 
@@ -395,6 +408,29 @@ public class MainController {
 
         // Créer un playlist service pour les filtres et tris
         playlistService = new PlaylistService();
+
+        // Créer le service de lecture
+        lecteurService = new LecteurService();
+
+        lecteurService.setOnChansonChangee(chanson -> {
+            String imageUrl = (chanson.getImageUrl() != null && !chanson.getImageUrl().isBlank())
+                    ? chanson.getImageUrl()
+                    : IMAGE_PAR_DEFAUT;
+            labelLecteurTitre.setText(chanson.getTitre());
+            labelLecteurArtiste.setText(chanson.getArtiste());
+            imgLecteurAlbum.setImage(new Image(imageUrl));
+
+            //la fonctionnalité du slider utilise des ms, l'affichage les min:sec
+            labelTempsTotal.setText(TimeUtils.msToMinutes(chanson.getDuree()));
+            sliderTemps.setMax(chanson.getDuree());
+            sliderTemps.setValue(0);
+            labelTempsActuel.setText("0:00");
+        });
+
+        lecteurService.setOnTick(tempsMs -> {
+            sliderTemps.setValue(tempsMs);
+            labelTempsActuel.setText(TimeUtils.msToMinutes(tempsMs));
+        });
     }
 
     public void rafraichirListePlaylist() {
