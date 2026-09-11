@@ -158,6 +158,8 @@ public class MainController {
         rafraichirListeChansons(playListSelectionne, pageCourante);
     }
 
+
+
     // Fonction générée par Gemini
     private void formaterFieldDureeMax() {
         // Regex pour le format mm:ss
@@ -369,6 +371,12 @@ public class MainController {
             }
         });
 
+        tableChansons.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                afficherChansonSelectionnee(newVal);
+            }
+        });
+
         // Écouteur sur le dropdown de tri
         for (MenuItem i : dropTri.getItems()) {
             i.setOnAction(e -> {
@@ -464,6 +472,19 @@ public class MainController {
         }
 
         tableChansons.setItems(FXCollections.observableArrayList(chansons.subList(indexDebut, indexFin)));
+    }
+
+    public void afficherChansonSelectionnee(Chanson chanson){
+        labelTitre.setText(chanson.getTitre());
+        labelAlbum.setText(chanson.getAlbum());
+        labelArtiste.setText(chanson.getArtiste());
+        imgAlbum.setImage(new Image (chanson.getImageUrl()));
+        labelGenre.setText(chanson.getGenre());
+        labelAnnee.setText(Integer.toString(chanson.getAnneeSortie()));
+        labelMaisonDisques.setText(chanson.getLabel());
+        labelDuree.setText(TimeUtils.msToMinutes(chanson.getDuree()));
+        labelDansabilite.setText(Float.toString(chanson.getDansabilitee()));
+        labelNbEcoutes.setText(Integer.toString(chanson.getNbrEcoute()));
     }
 
     public boolean estPageValide(int page) {
