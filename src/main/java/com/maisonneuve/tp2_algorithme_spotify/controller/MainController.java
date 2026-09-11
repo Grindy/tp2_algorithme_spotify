@@ -12,12 +12,15 @@ import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -343,6 +346,15 @@ public class MainController {
 
 
     public void definirEcouteursDEvenements() {
+
+        btnGraph.setOnAction(e -> {
+            try {
+                Parent newRoot = FXMLLoader.load(getClass().getResource("/vues/Graphique.fxml"));
+                btnGraph.getScene().setRoot(newRoot);
+            } catch (Exception exception) {
+                System.out.println(exception.getMessage());
+            }
+        });
 
         // Écouteur sur la sélection de la playlist
         tablePlaylists.getSelectionModel().selectedItemProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
