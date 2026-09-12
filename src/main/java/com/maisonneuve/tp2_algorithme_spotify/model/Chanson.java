@@ -1,6 +1,7 @@
 package com.maisonneuve.tp2_algorithme_spotify.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 
 public class Chanson {
@@ -76,6 +77,12 @@ public class Chanson {
     public String getImageUrl() {
         return imageUrl;
     }
+
+    public static Comparator<Chanson> COMP_DUREE = Comparator.comparingInt(Chanson::getDuree);
+    public static Comparator<Chanson> COMP_TITRE = Comparator.comparing(Chanson::getTitre, String.CASE_INSENSITIVE_ORDER);
+    public static Comparator<Chanson> COMP_ARTISTE = Comparator.comparing(Chanson::getArtiste, String.CASE_INSENSITIVE_ORDER);
+    public static Comparator<Chanson> COMP_ANNEE = Comparator.comparingInt(Chanson::getAnneeSortie);
+    public static Comparator<Chanson> COMP_NB_ECOUTE = Comparator.comparingInt(Chanson::getNbrEcoute);
 
     @Override
     public String toString() {

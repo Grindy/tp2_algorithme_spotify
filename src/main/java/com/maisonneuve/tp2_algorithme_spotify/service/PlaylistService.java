@@ -1,5 +1,6 @@
 package com.maisonneuve.tp2_algorithme_spotify.service;
 
+import com.maisonneuve.tp2_algorithme_spotify.algorithme.tri.TriInsertion;
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.model.TriMap;
@@ -45,9 +46,9 @@ public class PlaylistService {
                     ).toLowerCase(Locale.ROOT);
                     return texte.contains(recherchePropre);
                 })
-                .filter(c -> genre == null || genre.trim().isEmpty() ||
+                .filter(c -> genre == null || genre.isBlank() ||
                         (c.getGenre() != null && c.getGenre().equalsIgnoreCase(genre.trim())))
-                .filter(c -> dureeMaxInt == 0 || c.getDuree() <= dureeMaxInt)
+                .filter(c -> dureeMaxInt <= 0 || c.getDuree() <= dureeMaxInt)
                 .filter(c -> nbEcoutesInt == null || c.getNbrEcoute() >= nbEcoutesInt)
                 .collect(Collectors.toList()));
     }
@@ -64,16 +65,18 @@ public class PlaylistService {
     }
 
     public Playlist trierSelon(String critereTri, Playlist playList) {
-        TriMap critereTriEnum = TriMap.fromTexte(critereTri);
+
+        Comparator<Chanson> comp = TriComparateurService.COMPARATEURS.get(critereTri);
+
         List<Chanson> chansonsTriees = new ArrayList<>(playList.getChansons());
-        switch (critereTriEnum) {
-            case TITRE -> chansonsTriees.sort(Comparator.comparing(Chanson::getTitre, String.CASE_INSENSITIVE_ORDER));
-            case ARTISTE ->
-                    chansonsTriees.sort(Comparator.comparing(Chanson::getArtiste, String.CASE_INSENSITIVE_ORDER));
-            case ANNEE -> chansonsTriees.sort(Comparator.comparingInt(Chanson::getAnneeSortie));
-            case NB_ECOUTES -> chansonsTriees.sort(Comparator.comparingInt(Chanson::getNbrEcoute).reversed());
-            case null -> {}
+
+        if (comp != null) {
+            TriInsertion tri = new TriInsertion();
+            tri.preparer(chansonsTriees, comp);
+            tri.executer();
         }
+
         return new Playlist(playList.getId(), playList.getNom(), chansonsTriees);
     }
+
 }

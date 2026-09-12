@@ -16,7 +16,7 @@ public enum TriMap {
         if (texte == null) return null;
 
         for (TriMap tri : TriMap.values()) {
-            if (tri.nomFormatte.equalsIgnoreCase(texte.trim())) {
+            if (tri.name().equalsIgnoreCase(texte.trim())) {
                 return tri;
             }
         }
