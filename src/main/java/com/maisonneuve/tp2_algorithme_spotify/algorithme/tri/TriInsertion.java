@@ -24,7 +24,6 @@ public class TriInsertion implements Algorithme {
 
     @Override
     public void executer(){
-
         int n = liste.size();
 
         for (int i = 1; i < n; i++){

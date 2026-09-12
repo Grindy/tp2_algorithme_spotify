@@ -410,28 +410,23 @@ public class MainController {
         btnGraph.setOnAction(e -> afficherGraphique());
         btnAccueil.setOnAction(e -> afficherAccueil());
 
-
-        // Écouteur sur la sélection de la playlist
         tablePlaylists.getSelectionModel().selectedItemProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
             if (nouvellePlaylist != null) {
                 rafraichirListeChansons(nouvellePlaylist, 1);
             }
         });
 
-        // Écouteur sur le bouton "Votre Bibliothèqeue"
         btnVotreBibliotheque.setOnAction(e -> {
             tablePlaylists.getSelectionModel().clearSelection();
             rafraichirListeChansons(toutesLesChansons, 1);
         });
 
-        // Écouteur sur le bouton page précédente
         btnPagePrecedente.setOnAction(e -> {
             if (estPageValide(pageCourante - 1)) {
                 rafraichirListeChansons(playListSelectionne, pageCourante - 1);
             }
         });
 
-        // Écouteur sur le bouton page suivante
         btnPageSuivante.setOnAction(e -> {
             if (estPageValide(pageCourante + 1)) {
                 rafraichirListeChansons(playListSelectionne, pageCourante + 1);
@@ -444,14 +439,31 @@ public class MainController {
             }
         });
 
-        // Écouteur sur le dropdown de tri
+
+        fieldRecherche.textProperty().addListener((obs, o, n) ->
+                rafraichirListeChansons(playListSelectionne, 1));
+
+
+        comboGenre.valueProperty().addListener((obs, o, n) ->
+                rafraichirListeChansons(playListSelectionne, 1));
+
+
+        fieldDureeMax.textProperty().addListener((obs, o, n) ->
+                rafraichirListeChansons(playListSelectionne, 1));
+
+
+        fieldNombreEcoutes.textProperty().addListener((obs, o, n) ->
+                rafraichirListeChansons(playListSelectionne, 1));
+
+
         for (MenuItem i : dropTri.getItems()) {
             i.setOnAction(e -> {
                 dropTri.setText(i.getText());
+                rafraichirListeChansons(playListSelectionne, 1);
             });
         }
-
     }
+
 
     public void creerBibliothequeEtPlaylists() {
         // Créer la bibliothèque et créer une playlist contenant toutes les chansons
@@ -552,11 +564,21 @@ public class MainController {
     }
 
     public void recupererFiltresEtTri() {
-        dataFiltreTri.put("filtreRecherche", fieldRecherche.getText());
-        dataFiltreTri.put("filtreGenre", comboGenre.getValue());
-        dataFiltreTri.put("filtreDureeMax", fieldDureeMax.getText());
-        dataFiltreTri.put("filtreNbEcoutes", fieldNombreEcoutes.getText());
-        dataFiltreTri.put("critereTri", dropTri.getText());
+
+        String recherche = fieldRecherche.getText();
+        dataFiltreTri.put("filtreRecherche", recherche != null ? recherche : "");
+
+        String genre = comboGenre.getValue();
+        dataFiltreTri.put("filtreGenre", genre != null ? genre : "");
+
+        String duree = fieldDureeMax.getText();
+        dataFiltreTri.put("filtreDureeMax",  duree != null ? duree : "");
+
+        String nb = fieldNombreEcoutes.getText();
+        dataFiltreTri.put("filtreNbEcoutes", nb != null ? nb : "");
+
+        String tri = dropTri.getText();
+        dataFiltreTri.put("critereTri", tri != null ? tri : "");
     }
 
     public void renitialiserFiltresEtTri() {

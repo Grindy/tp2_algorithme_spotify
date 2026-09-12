@@ -15,7 +15,11 @@ import com.maisonneuve.tp2_algorithme_spotify.benchmark.Chronometre;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+
 import com.maisonneuve.tp2_algorithme_spotify.algorithme.Algorithme;
+
+import static com.maisonneuve.tp2_algorithme_spotify.service.TriComparateurService.COMPARATEURS;
 
 
 public class GraphiqueController {
@@ -35,6 +39,12 @@ public class GraphiqueController {
     @FXML
     private LineChart<Number,Number> chartLine;
 
+    @FXML
+    private ComboBox<String> comboElement;
+
+
+
+
 
     private static final int[] TAILLES = {50,100,250,500,750,1000,1500};
 
@@ -43,7 +53,8 @@ public class GraphiqueController {
     public void initialize(){
         spinnerRepetitions.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100,10));
         chartLine.setAnimated(false);
-
+        comboElement.getItems().addAll(COMPARATEURS.keySet());
+        comboElement.getSelectionModel().select("Durée");
         btnGraphiqueLancer.setOnAction(e -> lancerBenchmark());
 
         btnGraphiqueReinitialiser.setOnAction(e -> reset());
@@ -82,7 +93,8 @@ public class GraphiqueController {
                 for(int n : TAILLES){
                     //Sinon ca modifie la liste elle meme
                     List<Chanson> listeChansons = new ArrayList<>(chansons.subList(0, n));
-                    Comparator<Chanson> comp = Chanson.COMP_DUREE;
+                    String choix = comboElement.getValue();
+                    Comparator<Chanson> comp = COMPARATEURS.get(choix);
 
                     long tempsNs = Chronometre.mesurer(algo, listeChansons, comp, repetitions);
                     double tempsMilli = tempsNs / 1_000_000.0;
