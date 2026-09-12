@@ -1,22 +1,16 @@
 package com.maisonneuve.tp2_algorithme_spotify.controller;
-
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.Genre;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
-import com.maisonneuve.tp2_algorithme_spotify.model.TriMap;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
 import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
 import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -105,10 +99,6 @@ public class MainController {
     private Label labelDansabilite;
     @FXML
     private Label labelNbEcoutes;
-    @FXML
-    private Button btnResetFiltres;
-    @FXML
-    private Button btnAppliquerFiltres;
 
     // Center (Filtres, Liste, Pagination)
     @FXML
@@ -460,17 +450,6 @@ public class MainController {
                 dropTri.setText(i.getText());
             });
         }
-
-        // Écouteur sur le bouton pour appliques les filtres/tri
-        btnAppliquerFiltres.setOnAction(e -> {
-            rafraichirListeChansons(playListSelectionne, 1);
-        });
-
-        // Écouteur sur le bouton pour rénitialiser les filtres/tri
-        btnResetFiltres.setOnAction(e -> {
-            renitialiserFiltresEtTri();
-            rafraichirListeChansons(playListSelectionne, 1);
-        });
 
     }
 
