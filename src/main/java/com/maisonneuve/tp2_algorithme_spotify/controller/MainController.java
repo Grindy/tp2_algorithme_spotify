@@ -1,21 +1,17 @@
 package com.maisonneuve.tp2_algorithme_spotify.controller;
-
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.Genre;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
-import com.maisonneuve.tp2_algorithme_spotify.model.TriMap;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
 import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
 import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;

@@ -1,6 +1,7 @@
 package com.maisonneuve.tp2_algorithme_spotify.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 
 public class Chanson {
@@ -76,6 +77,7 @@ public class Chanson {
     public String getImageUrl() {
         return imageUrl;
     }
+    public static Comparator<Chanson> COMP_DUREE = Comparator.comparingInt(Chanson::getDuree);
 
     @Override
     public String toString() {
