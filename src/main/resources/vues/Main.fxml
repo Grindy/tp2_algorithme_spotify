@@ -297,12 +297,7 @@
                         </MenuButton>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Button fx:id="btnResetFiltres" mnemonicParsing="false" prefHeight="46.0" prefWidth="34.0" text="Rénitialiser les filtres" />
-                        <Button fx:id="btnAppliquerFiltres" mnemonicParsing="false" prefHeight="46.0" prefWidth="34.0" text="Appliquer Filtres" />
-                     </children>
-                  </VBox>
+                  <Button fx:id="btnResetFiltres" mnemonicParsing="false" prefHeight="46.0" prefWidth="34.0" text="Rénitialiser les filtres" />
                </children>
                <padding>
                   <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
