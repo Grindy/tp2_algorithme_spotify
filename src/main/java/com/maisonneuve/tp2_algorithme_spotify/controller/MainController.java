@@ -370,6 +370,11 @@ public class MainController {
             tablePlaylists.getSelectionModel().clearSelection();
             rafraichirListeChansons(toutesLesChansons, 1);
         });
+        // Écouteur pour créer une playlist
+        btnAjouterPlaylist.setOnAction(e -> {
+            ouvrirFenetreCreerPlaylist();
+            rafraichirListePlaylist();
+        });
 
         // Écouteur sur la sélection de la playlist
         tablePlaylists.getSelectionModel().selectedItemProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
