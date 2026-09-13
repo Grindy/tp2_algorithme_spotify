@@ -395,6 +395,10 @@
     -fx-alignment: CENTER;
 }
 
+.col-chansons {
+    -fx-alignment: CENTER_LEFT;
+}
+
 .table-cell.col-playlist {
     -fx-text-fill: #008f16;
 }
