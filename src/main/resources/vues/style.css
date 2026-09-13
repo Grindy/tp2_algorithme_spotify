@@ -413,6 +413,15 @@
     -fx-text-fill: #00c31b;
 }
 
+.scroll-bar .thumb {
+    -fx-background-color: #008f16;
+}
+
+.scroll-bar .track-background {
+    -fx-background-color: #2f2f2f;
+
+}
+
 /* Sous cette ligne se trouvent les éléments uniques à la page des graphiques */
 
 .spinner {
