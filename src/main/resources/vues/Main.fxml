@@ -156,7 +156,7 @@
             </HBox>
             <TableView fx:id="tablePlaylists" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="colPlaylists" prefWidth="75.0" text="Vos Playlists" />
+                  <TableColumn fx:id="colPlaylists" prefWidth="75.0" text="Vos Playlists" styleClass="col-playlist" />
                   <TableColumn fx:id="colSupprimerPlaylist" prefWidth="75.0" />
                </columns>
                <columnResizePolicy>
