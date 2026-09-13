@@ -130,48 +130,7 @@
       </HBox>
    </bottom>
    <left>
-      <VBox prefHeight="620.0" prefWidth="337.0" style="-fx-border-width: 0 3px 0 0;" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <Button id="btn-biblio" fx:id="btnVotreBibliotheque" mnemonicParsing="false" styleClass="degrade-vert" text="Votre Bibliothèque">
-                     <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets right="12.0" />
-                     </HBox.margin></Button>
-                  <Button fx:id="btnAjouterPlaylist" mnemonicParsing="false" text="+">
-                     <padding>
-                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                     </padding>
-                     <styleClass>
-                        <String fx:value="btn-ajout-playlist" />
-                        <String fx:value="btn-round" />
-                     </styleClass>
-                     <graphic>
-                        <Region id="icone-ajout-playlist" translateX="-2.0" />
-                     </graphic></Button>
-               </children>
-            </HBox>
-            <TableView fx:id="tablePlaylists" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-               <columns>
-                  <TableColumn fx:id="colPlaylists" prefWidth="75.0" text="Vos Playlists" styleClass="col-playlist" />
-                  <TableColumn fx:id="colSupprimerPlaylist" prefWidth="75.0" />
-               </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <styleClass>
-            <String fx:value="bg-dark-grey" />
-            <String fx:value="degrade-vert" />
-         </styleClass>
-      </VBox>
+      <fx:include source="Playlists.fxml" fx:id="Playlists" BorderPane.alignment="CENTER"/>
    </left>
    <right>
       <fx:include source="Chanson.fxml" fx:id="chanson" BorderPane.alignment="CENTER"/>
