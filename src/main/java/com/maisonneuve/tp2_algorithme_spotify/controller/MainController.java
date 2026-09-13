@@ -3,7 +3,6 @@ package com.maisonneuve.tp2_algorithme_spotify.controller;
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.Genre;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
-import com.maisonneuve.tp2_algorithme_spotify.model.TriMap;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
@@ -29,7 +28,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.layout.Region;
 
 import java.util.*;
 import java.util.function.UnaryOperator;
@@ -47,32 +45,6 @@ public class MainController {
     private TextField fieldRecherche;
     @FXML
     private Button btnGraph;
-
-    // Bottom (Lecteur)
-    @FXML
-    private ImageView imgLecteurAlbum;
-    @FXML
-    private Label labelLecteurTitre;
-    @FXML
-    private Label labelLecteurArtiste;
-    @FXML
-    private Button btnLecteurShuffle;
-    @FXML
-    private Region regionShuffle;
-    @FXML
-    private Button btnLecteurPrecedente;
-    @FXML
-    private Button btnLecteurJouer;
-    @FXML
-    private Region regionLecteurJouer;
-    @FXML
-    private Button btnLecteurSuivante;
-    @FXML
-    private Label labelTempsActuel;
-    @FXML
-    private Slider sliderTemps;
-    @FXML
-    private Label labelTempsTotal;
 
     // Left
     @FXML
@@ -143,7 +115,6 @@ public class MainController {
     private Playlist toutesLesChansons;
     private PlaylistManager playlistManager;
     private PlaylistService playlistService;
-    private LecteurService lecteurService;
     private int NB_CHANSONS_PAR_PAGE = 10;
     private int nbPagesTotales;
     private int pageCourante = 1;
@@ -156,7 +127,7 @@ public class MainController {
         put("critereTri", "---");
     }};
     private final Map<String, String> dataFiltreTri = new HashMap<>(templateDataFiltreTri);
-    private static final String IMAGE_PAR_DEFAUT = "https://i.pinimg.com/736x/ba/8e/4d/ba8e4de740a641feb1709ce713889ea5.jpg";
+    public static final String IMAGE_PAR_DEFAUT = "https://i.pinimg.com/736x/ba/8e/4d/ba8e4de740a641feb1709ce713889ea5.jpg";
     private Node accueilLeft;
     private Node accueilRight;
     private Node accueilCentre;
@@ -177,10 +148,8 @@ public class MainController {
         definirEcouteursDEvenements();
         chargerChoixGenres();
         creerContextMenu();
+        afficherLecteur();
 
-
-
-        imgLecteurAlbum.setImage(new Image(IMAGE_PAR_DEFAUT));
         imgAlbum.setImage(new Image(IMAGE_PAR_DEFAUT));
 
         // Au démarrage, la liste d'accueil est sélectionnée (Votre Bibliothèque)
@@ -193,11 +162,8 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/vues/Graphique.fxml"));
             BorderPane graphique = (BorderPane) loader.load();
-
             GraphiqueController gc = loader.getController();
             gc.setBibliotheque(this.biblio);
-
-
             rootPane.setLeft(graphique.getLeft());
             rootPane.setCenter(graphique.getCenter());
             rootPane.setRight(null);
@@ -206,6 +172,15 @@ public class MainController {
         }
     }
 
+    private void afficherLecteur() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vues/Lecteur.fxml"));
+            BorderPane lecteur = (BorderPane) loader.load();
+            rootPane.setBottom(lecteur.getBottom());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        }
 
     private Stage getFenetrePrincipale() {
         return (Stage) fieldRecherche.getScene().getWindow();
@@ -363,7 +338,7 @@ public class MainController {
                         Playlist contexte = tablePlaylists.getSelectionModel().getSelectedItem() != null
                                 ? tablePlaylists.getSelectionModel().getSelectedItem()
                                 : toutesLesChansons;
-                        lecteurService.demarrerLecture(chanson, contexte);
+                        LecteurService.getInstance().demarrerLecture(chanson, contexte);
 
                         // implementer la mise a jour des labels et slider
                     }
@@ -507,55 +482,6 @@ public class MainController {
         // Créer un playlist service pour les filtres et tris
         playlistService = new PlaylistService();
 
-        // Créer le service de lecture
-        lecteurService = new LecteurService();
-
-        lecteurService.setOnChansonChangee(chanson -> {
-            String imageUrl = (chanson.getImageUrl() != null && !chanson.getImageUrl().isBlank())
-                    ? chanson.getImageUrl()
-                    : IMAGE_PAR_DEFAUT;
-            labelLecteurTitre.setText(chanson.getTitre());
-            labelLecteurArtiste.setText(chanson.getArtiste());
-            imgLecteurAlbum.setImage(new Image(imageUrl));
-
-            //la fonctionnalité du slider utilise des ms, l'affichage les min:sec
-            labelTempsTotal.setText(TimeUtils.msToMinutes(chanson.getDuree()));
-            sliderTemps.setMax(chanson.getDuree());
-            sliderTemps.setValue(0);
-            labelTempsActuel.setText("0:00");
-        });
-
-        lecteurService.setOnEtatLectureChangee(enLecture -> {
-            regionLecteurJouer.setId(enLecture ? "icone-pause" : "icone-play");
-        });
-
-        lecteurService.setOnTick(tempsMs -> {
-            btnLecteurPrecedente.setOnAction(e -> lecteurService.passerPrecedente());
-            btnLecteurSuivante.setOnAction(e -> lecteurService.passerSuivante());
-
-            btnLecteurJouer.setOnAction(e -> {
-                lecteurService.togglePlayPause();
-            });
-
-            btnLecteurShuffle.setOnAction( event -> {
-                lecteurService.toggleAleatoire();
-                if (lecteurService.getEstEnAleatoire()) {
-                    regionShuffle.getStyleClass().add("icone-active");
-                } else {
-                    regionShuffle.getStyleClass().remove("icone-active");
-                }
-            });
-
-
-            sliderTemps.setValue(tempsMs);
-            labelTempsActuel.setText(TimeUtils.msToMinutes(tempsMs));
-        });
-
-        // Écouteur pour créer une playlist
-        btnAjouterPlaylist.setOnAction(e -> {
-            ouvrirFenetreCreerPlaylist();
-            rafraichirListePlaylist();
-        });
     }
 
     public void rafraichirListePlaylist() {
