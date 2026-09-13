@@ -248,7 +248,6 @@
                   <TableColumn fx:id="colAlbum" resizable="false" text="Album" styleClass="col-chansons" />
                   <TableColumn fx:id="colAnnee" resizable="false" text="Année" styleClass="col-centree"  />
                   <TableColumn fx:id="colActions" resizable="false" styleClass="col-chansons" />
-                  <TableColumn fx:id="colActions" resizable="false"/>
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
