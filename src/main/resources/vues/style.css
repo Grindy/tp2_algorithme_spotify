@@ -55,15 +55,22 @@
 }
 
 .combo-box-popup .list-view {
-    -fx-background-color: #191919;
     -fx-border-color: #4f4f4f;
     -fx-border-width: 2px;
+    -fx-background-color: #2f2f2f;
 }
 
 .combo-box-popup .list-cell {
-    -fx-background-color: #2f2f2f;
+    -fx-background-color: #191919;
     -fx-text-fill: #dddddd;
     -fx-padding: 4px 6px;
+}
+
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #008f16;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
 }
 
 .menu-item {
@@ -339,6 +346,16 @@
 .spinner .text-field {
     -fx-background-color: transparent;
     -fx-text-fill: #dddddd;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #2f2f2f;
+}
+
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: #dddddd;
 }
 
 .check-box .box {
