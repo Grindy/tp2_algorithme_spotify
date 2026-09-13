@@ -217,7 +217,7 @@ Exemple :
 ![Écran principal](./screenshots/EcranPrincipal.png)
 
 ### Écran de benchmark
-![Écran principal](./screenshots/EcranBenchmark.png)
+![Écran benchmark](./screenshots/EcranBenchmark.png)
 ```
 
 ---
