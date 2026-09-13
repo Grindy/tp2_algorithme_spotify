@@ -7,7 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -46,6 +46,83 @@
    </top>
    <bottom>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" styleClass="bg-black" BorderPane.alignment="CENTER">
+         <children>
+            <StackPane styleClass="img-border">
+               <ImageView fx:id="imgLecteurAlbum" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+            </StackPane>
+
+            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="295.0" spacing="4.0">
+               <children>
+                  <Label fx:id="labelLecteurTitre" text="Titre">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="label-gris" />
+                        <String fx:value="bold" />
+                     </styleClass>
+                  </Label>
+                  <Label fx:id="labelLecteurArtiste" styleClass="label-gris" text="Artiste">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="551.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="200.0" prefWidth="504.0" spacing="24.0" translateX="-26.0">
+                     <children>
+
+
+                        <Button fx:id="btnLecteurShuffle" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
+                           <graphic>
+                              <Region id="icone-shuffle" fx:id="regionShuffle" />
+                           </graphic>
+                        </Button>
+
+
+
+                        <Button fx:id="btnLecteurPrecedente" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
+                           <graphic>
+                              <Region id="icone-previous" />
+                           </graphic>
+                        </Button>
+
+
+                        <Button id="btn-play" fx:id="btnLecteurJouer" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
+                           <graphic>
+                              <Region id="icone-play" fx:id="regionLecteurJouer" />
+                           </graphic>
+                        </Button>
+
+
+                        <Button fx:id="btnLecteurSuivante" maxHeight="40.0" maxWidth="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="btn-lecteur">
+                           <graphic>
+                              <Region id="icone-next" />
+                           </graphic>
+                        </Button>
+
+
+
+                     </children></HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="18.0">
+                     <children>
+                        <Label fx:id="labelTempsActuel" styleClass="label-gris" text="0:00" />
+                        <Slider fx:id="sliderTemps" prefWidth="350.0" />
+                        <Label fx:id="labelTempsTotal" styleClass="label-gris" text="3:33" />
+                     </children>
+                     <padding>
+                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+            <Region maxWidth="-Infinity" prefHeight="100.0" prefWidth="335.0" />
+         </children>
          <padding>
             <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
          </padding>
@@ -96,123 +173,7 @@
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" style="-fx-border-width: 0 0 0 3px;" BorderPane.alignment="CENTER">
-         <children>
-            <StackPane styleClass="img-border">
-               <ImageView fx:id="imgAlbum" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
-            </StackPane>
-            <Label fx:id="labelTitre" alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="label-gris" text="Titre" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Label fx:id="labelAlbum" text="Album">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="label-gris" />
-                  <String fx:value="bold" />
-               </styleClass>
-            </Label>
-            <Label fx:id="labelArtiste" text="Artiste">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="label-gris" />
-                  <String fx:value="bold" />
-               </styleClass>
-            </Label>
-            <Label fx:id="labelAnnee" text="Année">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="label-gris" />
-                  <String fx:value="bold" />
-               </styleClass>
-            </Label>
-            <Label fx:id="labelGenre" text="Genre">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="label-gris" />
-                  <String fx:value="bold" />
-               </styleClass>
-            </Label>
-            <Label fx:id="labelMaisonDisques" text="Maison de disques">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="label-gris" />
-                  <String fx:value="bold" />
-               </styleClass>
-            </Label>
-            <Separator opacity="0.3" prefWidth="200.0" />
-            <Region prefHeight="83.0" prefWidth="241.0" />
-            <HBox maxWidth="1.7976931348623157E308">
-               <children>
-                  <Label styleClass="label-gris" text="Durée: ">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Label fx:id="labelDuree" alignment="CENTER_RIGHT" styleClass="label-gris" text="-:--" textAlignment="RIGHT">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox maxWidth="1.7976931348623157E308">
-               <children>
-                  <Label styleClass="label-gris" text="Danceability:">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Label fx:id="labelDansabilite" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="-.---" textAlignment="RIGHT">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox maxWidth="1.7976931348623157E308">
-               <children>
-                  <Label styleClass="label-gris" text="Nombre d'écoutes:">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Label fx:id="labelNbEcoutes" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="--" textAlignment="RIGHT">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-         </children>
-         <padding>
-            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
-         </padding>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-         <styleClass>
-            <String fx:value="bg-dark-grey" />
-            <String fx:value="degrade-vert" />
-         </styleClass>
-      </VBox>
+      <fx:include source="Chanson.fxml" fx:id="chanson" BorderPane.alignment="CENTER"/>
    </right>
    <center>
       <VBox prefHeight="620.0" prefWidth="766.0" styleClass="bg-dark-grey" BorderPane.alignment="CENTER">
@@ -285,7 +246,7 @@
                   <TableColumn fx:id="colTitre" resizable="false" text="Titre" />
                   <TableColumn fx:id="colArtiste" resizable="false" text="Artiste" />
                   <TableColumn fx:id="colAlbum" resizable="false" text="Album" />
-                  <TableColumn fx:id="colAnnee" resizable="false" text="Année" styleClass="col-centree" />
+                  <TableColumn fx:id="colAnnee" resizable="false" styleClass="col-centree" text="Année" />
                   <TableColumn fx:id="colActions" resizable="false" />
                </columns>
                <columnResizePolicy>
