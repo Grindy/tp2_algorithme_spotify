@@ -9,7 +9,6 @@ import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
 import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -24,10 +23,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -46,21 +43,15 @@ public class MainController {
     private Button btnGraph;
 
     // Left
+
     @FXML
-    private Button btnVotreBibliotheque;
-    @FXML
-    private Button btnAjouterPlaylist;
-    @FXML
-    private TableView<Playlist> tablePlaylists;
-    @FXML
-    private TableColumn<Playlist, String> colPlaylists;
-    @FXML
-    private TableColumn<Playlist, Void> colSupprimerPlaylist;
-    @FXML
-    private Button btnResetFiltres;
+    private PlaylistsController PlaylistsController;
+
 
 
     // Center (Filtres, Liste, Pagination)
+    @FXML
+    private Button btnResetFiltres;
     @FXML
     private ComboBox<String> comboGenre;
     @FXML
@@ -125,9 +116,13 @@ public class MainController {
         accueilRight = rootPane.getRight();
         initComboPages();
         creerBibliothequeEtPlaylists();
+        PlaylistsController.setBibliotheque(biblio);
+        PlaylistsController.setPlaylistManager(playlistManager);
+        PlaylistsController.setToutesLesChansons(toutesLesChansons);
+        PlaylistsController.rafraichirListePlaylist();
         formaterFieldDureeMax();
         configurerColonnesTables();
-        rafraichirListePlaylist();
+
         definirEcouteursDEvenements();
         chargerChoixGenres();
         creerContextMenu();
@@ -149,7 +144,9 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/vues/Graphique.fxml"));
             BorderPane graphique = (BorderPane) loader.load();
             GraphiqueController gc = loader.getController();
+
             gc.setBibliotheque(this.biblio);
+
             rootPane.setLeft(graphique.getLeft());
             rootPane.setCenter(graphique.getCenter());
             rootPane.setRight(null);
@@ -252,44 +249,6 @@ public class MainController {
     }
 
     private void configurerColonnesTables() {
-
-        // Lier les colonnes de la liste des playlists
-        colPlaylists.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().toString()));
-        colSupprimerPlaylist.setCellFactory(col -> new TableCell<Playlist, Void>() {
-            // Ajouter un bouton "supprimerPlaylist" à chaque playlist
-            private final Button btnSupprimerPlaylist = new Button("X");
-
-            {
-                btnSupprimerPlaylist.getStyleClass().add("btn-table-view");
-
-                btnSupprimerPlaylist.setOnAction(event -> {
-                    Playlist playlist = getTableRow().getItem();
-                    if (playlist != null && demanderConfirmationSuppressionPlaylist()) {
-                        playlistManager.retirerPlaylist(playlist);
-                        rafraichirListePlaylist();
-                        rafraichirListeChansons(toutesLesChansons, 1);
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(btnSupprimerPlaylist);
-                }
-            }
-
-        });
-
-        // Définir les proportions des colonnes de la liste des chansons
-        colPlaylists.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.90));
-        colSupprimerPlaylist.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.1));
-
-
         // Lier les colonnes de la liste des chansons
         colTitre.setCellValueFactory(new PropertyValueFactory<>("titre"));
         colArtiste.setCellValueFactory(new PropertyValueFactory<>("artiste"));
@@ -302,8 +261,8 @@ public class MainController {
         colAlbum.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.25));
         colAnnee.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.075));
         colActions.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.175));
-        colActions.setCellFactory(col -> new TableCell<Chanson, Void>() {
 
+        colActions.setCellFactory(col -> new TableCell<Chanson, Void>() {
             // Ajout des boutons d'actions pour chaque chanson (play, ajouter, supprimer)
             private final Button btnLire = new Button("▶");
             private final Button btnAjouterAPlaylist = new Button("+");
@@ -312,7 +271,6 @@ public class MainController {
 
             {
                 conteneurBoutons.setAlignment(Pos.CENTER);
-
                 btnAjouterAPlaylist.getStyleClass().add("btn-table-view");
                 btnLire.getStyleClass().add("btn-table-view");
                 btnSupprimer.getStyleClass().add("btn-table-view");
@@ -321,38 +279,33 @@ public class MainController {
                 btnLire.setOnAction(event -> {
                     Chanson chanson = getTableRow().getItem();
                     if (chanson != null) {
-                        Playlist contexte = tablePlaylists.getSelectionModel().getSelectedItem() != null
-                                ? tablePlaylists.getSelectionModel().getSelectedItem()
-                                : toutesLesChansons;
+                        // On demande au PlaylistsController quelle est la playlist sélectionnée
+                        Playlist playlistSelectionnee = PlaylistsController.playlistSelectionneeProperty().get();
+                        Playlist contexte = playlistSelectionnee != null ? playlistSelectionnee : toutesLesChansons;
                         LecteurService.getInstance().demarrerLecture(chanson, contexte);
-
-                        // implementer la mise a jour des labels et slider
                     }
                 });
 
                 btnAjouterAPlaylist.setOnAction(event -> {
                     Chanson chanson = getTableRow().getItem();
                     if (chanson != null) {
-                        // Ouvrir page pour sélectionner playlist
                         ouvrirFenetreAjouterAPlaylist(chanson);
                     }
                 });
+
                 btnSupprimer.setOnAction(event -> {
                     Chanson chanson = getTableRow().getItem();
                     if (chanson != null && !toutesLesChansonsEstSelectionne.get()) {
                         playListSelectionne.retirerChanson(chanson);
-                        rafraichirListePlaylist();
+                        PlaylistsController.rafraichirListePlaylist();
                         rafraichirListeChansons(playListSelectionne, pageCourante);
                     }
                 });
-
-
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-
                 if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                     setGraphic(null);
                 } else {
@@ -366,38 +319,34 @@ public class MainController {
             col.setSortable(false);
             col.setReorderable(false);
         }
-        for (TableColumn<?, ?> col : tablePlaylists.getColumns()) {
-            col.setSortable(false);
-            col.setReorderable(false);
-        }
     }
-
 
     public void definirEcouteursDEvenements() {
         btnGraph.setOnAction(e -> afficherGraphique());
         btnAccueil.setOnAction(e -> {
             afficherAccueil();
-            tablePlaylists.getSelectionModel().clearSelection();
+            PlaylistsController.deselectionnerPlaylist();
             rafraichirListeChansons(toutesLesChansons, 1);
         });
-        // Écouteur pour créer une playlist
-        btnAjouterPlaylist.setOnAction(e -> {
-            ouvrirFenetreCreerPlaylist();
-            rafraichirListePlaylist();
+
+        PlaylistsController.getBtnAjouterPlaylist().setOnAction(e -> {
+            PlaylistsController.ouvrirFenetreCreerPlaylist();
+            PlaylistsController.rafraichirListePlaylist();
         });
 
-        // Écouteur sur la sélection de la playlist
-        tablePlaylists.getSelectionModel().selectedItemProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
+        PlaylistsController.playlistSelectionneeProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
             if (nouvellePlaylist != null) {
                 rafraichirListeChansons(nouvellePlaylist, 1);
+            } else {
+                // Si la playlist est supprimée et la sélection devient nulle
+                rafraichirListeChansons(toutesLesChansons, 1);
             }
         });
 
-        // Écouteur sur le bouton "Votre Bibliothèqeue"
-        btnVotreBibliotheque.setOnAction(e -> {
-            tablePlaylists.getSelectionModel().clearSelection();
+        PlaylistsController.getBtnVotreBibliotheque().setOnAction(e -> {
             rafraichirListeChansons(toutesLesChansons, 1);
         });
+
 
         // Écouteur sur le bouton page précédente
         btnPagePrecedente.setOnAction(e -> {
@@ -453,7 +402,6 @@ public class MainController {
             rafraichirListeChansons(playListSelectionne, 1);
         });
 
-
     };
     private void afficherAccueil() {
         rootPane.setLeft(accueilLeft);
@@ -481,12 +429,6 @@ public class MainController {
         // Créer un playlist service pour les filtres et tris
         playlistService = new PlaylistService();
 
-    }
-
-    public void rafraichirListePlaylist() {
-        // Afficher la liste des playlists dans la TableView à gauche
-        tablePlaylists.setItems(FXCollections.observableArrayList(biblio.getPlaylists()));
-        tablePlaylists.refresh();
     }
 
     public void rafraichirListeChansons(Playlist playlist, int page) {
@@ -523,8 +465,6 @@ public class MainController {
 
         tableChansons.setItems(FXCollections.observableArrayList(chansons.subList(indexDebut, indexFin)));
     }
-
-
 
     public boolean estPageValide(int page) {
         return page >= 1 && page <= nbPagesTotales;
@@ -580,16 +520,15 @@ public class MainController {
             MenuItem viderPlaylist = new MenuItem("Vider la playlist");
             viderPlaylist.setOnAction(e -> {
                 playListSelectionne.viderPlaylist();
-                rafraichirListePlaylist();
+                PlaylistsController.rafraichirListePlaylist();
                 rafraichirListeChansons(playListSelectionne, pageCourante);
             });
-
 
             MenuItem supprimerChanson = new MenuItem("Supprimer de la playlist");
             supprimerChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
                 playListSelectionne.retirerChanson(chanson);
-                rafraichirListePlaylist();
+                PlaylistsController.rafraichirListePlaylist();
                 rafraichirListeChansons(playListSelectionne, pageCourante);
             });
 
@@ -636,7 +575,7 @@ public class MainController {
 
             try {
                 playlistSelectionne.ajouterChanson(chanson);
-                rafraichirListePlaylist();
+                PlaylistsController.rafraichirListePlaylist();
                 popupStage.close();
             } catch (Error er) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -653,9 +592,6 @@ public class MainController {
             }
             });
 
-
-
-
         VBox layout = new VBox(15, message, hbox);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(8));
@@ -666,55 +602,5 @@ public class MainController {
         popupStage.setResizable(false);
 
         popupStage.showAndWait();
-    }
-
-    public void ouvrirFenetreCreerPlaylist() {
-        Stage popupStage = new Stage();
-
-        // Définir le propriétaire et bloquer la fenêtre principale
-        popupStage.initOwner(getFenetrePrincipale());
-        popupStage.initModality(Modality.WINDOW_MODAL);
-        popupStage.setTitle("Créer une nouvelle playlist");
-
-        // Construire le contenu
-        Label message = new Label("Entrez un nom pour votre playlist");
-        TextField nomPlaylist = new TextField();
-        Button btnAjouter = new Button("Créer");
-        nomPlaylist.setMaxWidth(Double.MAX_VALUE);
-        btnAjouter.setMaxWidth(Double.MAX_VALUE);
-        HBox hbox = new HBox(8,nomPlaylist, btnAjouter);
-        HBox.setHgrow(nomPlaylist, Priority.ALWAYS);
-
-        btnAjouter.setOnAction(e -> {
-            playlistManager.ajouterPlaylist(new Playlist(prochainIdPlaylist, nomPlaylist.getText(), new ArrayList<Chanson>()));
-            rafraichirListePlaylist();
-            popupStage.close();
-        });
-
-        VBox layout = new VBox(15, message, hbox);
-        layout.setAlignment(Pos.CENTER);
-        layout.setPadding(new Insets(8));
-
-        // Afficher la fenêtre avec des dimensions fixes
-        Scene scene = new Scene(layout, 300, 200);
-        popupStage.setScene(scene);
-        popupStage.setResizable(false);
-
-        popupStage.showAndWait();
-    }
-
-    public boolean demanderConfirmationSuppressionPlaylist() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation");
-        alert.setHeaderText("Supprimer la playlist ?");
-        alert.setContentText("Cette action est irréversible. Voulez-vous continuer ?");
-
-        // Attache la popup à la fenêtre principale
-        alert.initOwner(getFenetrePrincipale());
-
-        // showAndWait() bloque jusqu'au clic de l'utilisateur
-        Optional<ButtonType> resultat = alert.showAndWait();
-
-        return (resultat.isPresent() && resultat.get() == ButtonType.OK);
     }
 }
