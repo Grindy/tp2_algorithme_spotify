@@ -137,7 +137,7 @@ tp2_algorithme_spotify/
 - JDK 21
 - Maven 3.13
 - IntelliJ IDEA
-- 
+
 ### Étapes 
 
 ```bash
@@ -176,7 +176,7 @@ Tri par sélection - O(n²)
 Tri par insertion - O(n²)
 
 ### Bibliothèques externes utilisées
-[A COMPLETER : liste des dépendances Maven au-delà de JavaFX]
+Aucune
 
 ---
 
@@ -212,8 +212,6 @@ leur menu:
 
 ## Captures d'écran
 
-Exemple :
-
 ### Écran principal
 ![EcranPrincipal.png](./screenshots/EcranPrincipal.png)
 
@@ -227,26 +225,3 @@ Exemple :
 **Nombre total de commits** : 98+
 **Date du premier commit** : 2026-09-02
 **Date du dernier commit** : 2026-09-13
-
-Voir l'onglet **Insights > Contributors** de GitHub pour voir la contribution de chacun.
-
----
-
-====================================================================
-
-  CHECKLIST FINALE AVANT LA REMISE (a supprimer avant remise)
-
-====================================================================
-
-    ✅ Tous les [A COMPLETER] ont ete remplaces par de vrais contenus
-    ✅ Tous les commentaires HTML <!-- ... --> ont ete supprimes
-    ✅ Le lien GitHub est valide (teste dans un navigateur prive)
-    ✅ Le depot est PUBLIC (pas Prive)
-    ✅ Le README.md est bien present a la RACINE du depot
-    ✅ Le projet compile avec "mvn clean compile" sans erreur
-    ✅ Le projet lance avec "mvn javafx:run" sans erreur
-    ✅ Les donnees (CSV) sont dans src/main/resources/data/
-    ✅ Le .gitignore exclut target/, .idea/, out/
-    ✅ Chaque membre de l'equipe a des commits a son nom
-    [ ] Ce fichier README rempli a ete deposé sur Teams
-
