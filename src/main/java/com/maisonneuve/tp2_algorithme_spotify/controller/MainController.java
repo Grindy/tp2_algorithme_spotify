@@ -24,6 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -85,13 +86,15 @@ public class MainController {
     @FXML
     private Label labelPages;
     @FXML
+    private ComboBox<Integer> comboNbPages;
+    @FXML
     private Button btnPageSuivante;
 
     private Bibliotheque biblio;
     private Playlist toutesLesChansons;
     private PlaylistManager playlistManager;
     private PlaylistService playlistService;
-    private int NB_CHANSONS_PAR_PAGE = 10;
+    private int nbChansonsParPage = 25;
     private int nbPagesTotales;
     private int pageCourante = 1;
     private Playlist playListSelectionne;
@@ -120,6 +123,7 @@ public class MainController {
         accueilLeft = rootPane.getLeft();
         accueilCentre = rootPane.getCenter();
         accueilRight = rootPane.getRight();
+        initComboPages();
         creerBibliothequeEtPlaylists();
         formaterFieldDureeMax();
         configurerColonnesTables();
@@ -132,6 +136,11 @@ public class MainController {
         // Au démarrage, la liste d'accueil est sélectionnée (Votre Bibliothèque)
         playListSelectionne = toutesLesChansons;
         rafraichirListeChansons(playListSelectionne, pageCourante);
+    }
+
+    private void initComboPages() {
+        comboNbPages.getItems().addAll(10, 25, 50, 100);
+        comboNbPages.setValue(25);
     }
 
     @FXML
@@ -332,6 +341,7 @@ public class MainController {
                     Chanson chanson = getTableRow().getItem();
                     if (chanson != null && !toutesLesChansonsEstSelectionne.get()) {
                         playListSelectionne.retirerChanson(chanson);
+                        rafraichirListePlaylist();
                         rafraichirListeChansons(playListSelectionne, pageCourante);
                     }
                 });
@@ -430,6 +440,13 @@ public class MainController {
             renitialiserFiltresEtTri();
             rafraichirListeChansons(playListSelectionne, 1);
         });
+        
+        // Écouteur sur le combo nombre de pages 
+        comboNbPages.setOnAction(e -> {
+            nbChansonsParPage = comboNbPages.getValue();
+            configurerColonnesTables();
+            rafraichirListeChansons(playListSelectionne, 1);
+        });
 
 
     };
@@ -444,11 +461,11 @@ public class MainController {
         biblio = new Bibliotheque("src/main/resources/data/spotifyData.csv");
         toutesLesChansons = new Playlist("1", "Toutes les chansons", biblio.getChansons());
 
-        // Créer 3 playlist de 10 chansons (les 30 premières chansons du CSV)
+        // Créer 3 playlist de 25 chansons (les 75 premières chansons du CSV)
         List<Chanson> chansons = biblio.getChansons();
-        Playlist playlist1 = new Playlist("2", "Playlist 1", chansons.subList(0, 10));
-        Playlist playlist2 = new Playlist("3", "Playlist 2", chansons.subList(10, 20));
-        Playlist playlist3 = new Playlist("4", "Playlist 3", chansons.subList(20, 30));
+        Playlist playlist1 = new Playlist("2", "Playlist 1", chansons.subList(0, 25));
+        Playlist playlist2 = new Playlist("3", "Playlist 2", chansons.subList(25, 50));
+        Playlist playlist3 = new Playlist("4", "Playlist 3", chansons.subList(50, 75));
 
         // Ajouter les playlists à la bibliothèque
         playlistManager = new PlaylistManager(biblio);
@@ -464,6 +481,7 @@ public class MainController {
     public void rafraichirListePlaylist() {
         // Afficher la liste des playlists dans la TableView à gauche
         tablePlaylists.setItems(FXCollections.observableArrayList(biblio.getPlaylists()));
+        tablePlaylists.refresh();
     }
 
     public void rafraichirListeChansons(Playlist playlist, int page) {
@@ -487,12 +505,12 @@ public class MainController {
         List<Chanson> chansons = playlistTrieEtFiltre.getChansons();
 
         pageCourante = page;
-        nbPagesTotales = (int) Math.ceil((double) chansons.size() / NB_CHANSONS_PAR_PAGE);
+        nbPagesTotales = (int) Math.ceil((double) chansons.size() / nbChansonsParPage);
         if (nbPagesTotales == 0) nbPagesTotales = 1;
         labelPages.setText(pageCourante + " / " + nbPagesTotales);
 
-        int indexDebut = (page - 1) * NB_CHANSONS_PAR_PAGE;
-        int indexFin = Math.min(indexDebut + NB_CHANSONS_PAR_PAGE, chansons.size());
+        int indexDebut = (page - 1) * nbChansonsParPage;
+        int indexFin = Math.min(indexDebut + nbChansonsParPage, chansons.size());
 
         if (indexDebut > indexFin) {
             indexDebut = indexFin;
@@ -557,6 +575,7 @@ public class MainController {
             MenuItem viderPlaylist = new MenuItem("Vider la playlist");
             viderPlaylist.setOnAction(e -> {
                 playListSelectionne.viderPlaylist();
+                rafraichirListePlaylist();
                 rafraichirListeChansons(playListSelectionne, pageCourante);
             });
 
@@ -565,6 +584,7 @@ public class MainController {
             supprimerChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
                 playListSelectionne.retirerChanson(chanson);
+                rafraichirListePlaylist();
                 rafraichirListeChansons(playListSelectionne, pageCourante);
             });
 
@@ -611,6 +631,7 @@ public class MainController {
 
             try {
                 playlistSelectionne.ajouterChanson(chanson);
+                rafraichirListePlaylist();
                 popupStage.close();
             } catch (Error er) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -661,6 +682,7 @@ public class MainController {
 
         btnAjouter.setOnAction(e -> {
             playlistManager.ajouterPlaylist(new Playlist(prochainIdPlaylist, nomPlaylist.getText(), new ArrayList<Chanson>()));
+            rafraichirListePlaylist();
             popupStage.close();
         });
 

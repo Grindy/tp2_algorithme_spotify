@@ -284,7 +284,9 @@
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-min-width: 28px;
+    /*-fx-min-width: 28px;*/
+    -fx-min-width: 30px;
+
 }
 
 .btn-table-view:hover {
@@ -470,7 +472,5 @@
     -fx-font-weight: bold;
     -fx-text-fill: #dddddd;
 }
-
-
 
 
