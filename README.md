@@ -136,9 +136,9 @@ tp2_algorithme_spotify/
 
 - JDK 21
 - Maven 3.13
-- (optionnel) IntelliJ IDEA / Eclipse
-
-### Étapes
+- IntelliJ IDEA
+- 
+### Étapes 
 
 ```bash
 # 1. Cloner le dépôt
@@ -152,12 +152,13 @@ mvn clean compile
 mvn javafx:run
 ```
 
-### Alternative dans IntelliJ
+### Étapes avec IntelliJ
 
-1. Ouvrir le projet dans IntelliJ (File > Open > dossier du projet)
-2. Attendre que Maven télécharge les dépendances
-3. Ouvrir `MainFx.java`
-4. Cliquer sur le bouton Run
+1. Cloner le projet dans IntelliJ (File > New > Project from Version Control...)
+2. Donner l'URL du repo dans le champ URL ( https://github.com/Grindy/tp2_algorithme_spotify.git )
+3. Changer le dossier cible au besoin
+4. Ouvrir `MainFx.java`
+5. Cliquer sur le bouton Run
 
 ---
 
@@ -212,13 +213,12 @@ leur menu:
 ## Captures d'écran
 
 Exemple :
-```markdown
+
 ### Écran principal
-![Écran principal](./screenshots/EcranPrincipal.png)
+![EcranPrincipal.png](./screenshots/EcranPrincipal.png)
 
 ### Écran de benchmark
 ![Écran benchmark](./screenshots/EcranBenchmark.png)
-```
 
 ---
 
@@ -243,8 +243,8 @@ Voir l'onglet **Insights > Contributors** de GitHub pour voir la contribution de
     ✅ Le lien GitHub est valide (teste dans un navigateur prive)
     ✅ Le depot est PUBLIC (pas Prive)
     ✅ Le README.md est bien present a la RACINE du depot
-    [ ] Le projet compile avec "mvn clean compile" sans erreur
-    [ ] Le projet lance avec "mvn javafx:run" sans erreur
+    ✅ Le projet compile avec "mvn clean compile" sans erreur
+    ✅ Le projet lance avec "mvn javafx:run" sans erreur
     ✅ Les donnees (CSV) sont dans src/main/resources/data/
     ✅ Le .gitignore exclut target/, .idea/, out/
     ✅ Chaque membre de l'equipe a des commits a son nom
