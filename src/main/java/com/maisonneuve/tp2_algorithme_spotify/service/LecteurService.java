@@ -4,9 +4,12 @@ import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.Alert;
 import javafx.util.Duration;
 import java.util.List;
 import java.util.function.Consumer;
+import java.awt.Desktop;
+import java.net.URI;
 
 
 public class LecteurService {
@@ -60,6 +63,24 @@ public class LecteurService {
 
         // Incrémente le nombre d'écoutes de 1
         chanson.incrementerNbEcoutes();
+        String trackId = chanson.getId();
+        try {
+            if (trackId != null && !trackId.isEmpty()){
+                String urlSpotify = "spotify:track:" + trackId + ":play";
+
+                URI uri = new URI(urlSpotify);
+                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    Desktop.getDesktop().browse(uri);
+                }
+
+            }
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur lors du lancement de Spotify");
+                alert.setHeaderText("Erreur");
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+            }
     }
 
     public void togglePlayPause() {

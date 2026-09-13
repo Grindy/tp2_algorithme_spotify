@@ -16,11 +16,11 @@
 
 ## Équipe
 
-| Nom complet      | Adresse courriel            | Contribution principale                             |
-|------------------|-----------------------------|-----------------------------------------------------|
-| Francis Boisvert | e2595782@cmaisonneuve.qc.ca | [ex : Modèle, Service, Tris]                        |
-| Clément Laflamme | e2595952@cmaisonneuve.qc.ca | [ex : UI FXML, Controller, CSS]                     |
-| Mathieu Gosselin | e2596321@cmaisonneuve.qc.ca | Design, UI FXML, CSS, Lecteur, un peu de Controller |
+| Nom complet      | Adresse courriel            | Contribution principale                                      |
+|------------------|-----------------------------|--------------------------------------------------------------|
+| Francis Boisvert | e2595782@cmaisonneuve.qc.ca | Modèles, Service, Tris, Algo, Graphiques, Separation du main |
+| Clément Laflamme | e2595952@cmaisonneuve.qc.ca | [ex : UI FXML, Controller, CSS]                              |
+| Mathieu Gosselin | e2596321@cmaisonneuve.qc.ca | Design, UI FXML, CSS, Lecteur, un peu de Controller          |
 
 ---
 
@@ -61,6 +61,8 @@
 - ✅ Recherche par texte avec l'album
 - ✅ Mode shuffle
 - ✅ Formattage des durées au format 0:00
+- ✅ Lorsqu'une chanson joue, l'app dirrige spotify vers la chanson en cours 
+- (Pour des raisons de DRM, il est impossible de faire jouer une chanson streamée de Spotify dans notre app)
 
 ### ❌ Non implémenté
 
@@ -188,11 +190,11 @@ Aucune
 
 ## Répartition du travail (auto-évaluation)
 
-| Membre           | % contribution estimée | Ce sur quoi j'ai travaillé                          |
-|------------------|------------------------|-----------------------------------------------------|
-| Francis Boisvert | 37%                    |                                                     |
-| Clément Laflamme | 37%                    |                                                     |
-| Mathieu Gosselin | 26%                    | Design, UI FXML, CSS, Lecteur, un peu de Controller |
+| Membre           | % contribution estimée | Ce sur quoi j'ai travaillé                                                                    |
+|------------------|------------------------|-----------------------------------------------------------------------------------------------|
+| Francis Boisvert | 33%                    | Modeles, Algorithme, Tri, Graphique, Services, Utils, Separation du main en modules |
+| Clément Laflamme | 33%                    |                                                                                               |
+| Mathieu Gosselin | 33%                    | Design, UI FXML, CSS, Lecteur, un peu de Controller                                           |
 
 ---
 
