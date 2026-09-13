@@ -134,8 +134,24 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Button fx:id="btnVotreBibliotheque" mnemonicParsing="false" text="Votre Bibliothèque" />
-                  <Button fx:id="btnAjouterPlaylist" mnemonicParsing="false" text="+" />
+                  <Button id="btn-biblio" fx:id="btnVotreBibliotheque" mnemonicParsing="false" styleClass="degrade-vert" text="Votre Bibliothèque">
+                     <padding>
+                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets right="12.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="btnAjouterPlaylist" mnemonicParsing="false" text="+">
+                     <padding>
+                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                     </padding>
+                     <styleClass>
+                        <String fx:value="btn-ajout-playlist" />
+                        <String fx:value="btn-round" />
+                     </styleClass>
+                     <graphic>
+                        <Region id="icone-ajout-playlist" translateX="-2.0" />
+                     </graphic></Button>
                </children>
             </HBox>
             <TableView fx:id="tablePlaylists" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -297,7 +313,13 @@
                         </MenuButton>
                      </children>
                   </VBox>
-                  <Button fx:id="btnResetFiltres" mnemonicParsing="false" prefHeight="46.0" prefWidth="34.0" text="Rénitialiser les filtres" />
+                  <Button fx:id="btnResetFiltres" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" styleClass="btn-round">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <graphic>
+                        <Region id="icone-reinitialiser" />
+                     </graphic></Button>
                </children>
                <padding>
                   <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />

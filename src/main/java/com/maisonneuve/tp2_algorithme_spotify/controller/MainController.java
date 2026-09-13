@@ -29,6 +29,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.layout.Region;
 
 import java.util.*;
 import java.util.function.UnaryOperator;
@@ -55,9 +56,15 @@ public class MainController {
     @FXML
     private Label labelLecteurArtiste;
     @FXML
+    private Button btnLecteurShuffle;
+    @FXML
+    private Region regionShuffle;
+    @FXML
     private Button btnLecteurPrecedente;
     @FXML
     private Button btnLecteurJouer;
+    @FXML
+    private Region regionLecteurJouer;
     @FXML
     private Button btnLecteurSuivante;
     @FXML
@@ -66,8 +73,6 @@ public class MainController {
     private Slider sliderTemps;
     @FXML
     private Label labelTempsTotal;
-    @FXML
-    private Button btnLecteurShuffle;
 
     // Left
     @FXML
@@ -291,9 +296,11 @@ public class MainController {
         colPlaylists.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colSupprimerPlaylist.setCellFactory(col -> new TableCell<Playlist, Void>() {
             // Ajouter un bouton "supprimerPlaylist" à chaque playlist
-            private final Button btnSupprimerPlaylist = new Button("🗑");
+            private final Button btnSupprimerPlaylist = new Button("X");
 
             {
+                btnSupprimerPlaylist.getStyleClass().add("btn-table-view");
+
                 btnSupprimerPlaylist.setOnAction(event -> {
                     Playlist playlist = getTableRow().getItem();
                     if (playlist != null && demanderConfirmationSuppressionPlaylist()) {
@@ -344,6 +351,10 @@ public class MainController {
 
             {
                 conteneurBoutons.setAlignment(Pos.CENTER);
+
+                btnAjouterAPlaylist.getStyleClass().add("btn-table-view");
+                btnLire.getStyleClass().add("btn-table-view");
+                btnSupprimer.getStyleClass().add("btn-table-view");
 
                 // Actions des boutons
                 btnLire.setOnAction(event -> {
@@ -514,24 +525,24 @@ public class MainController {
             labelTempsActuel.setText("0:00");
         });
 
+        lecteurService.setOnEtatLectureChangee(enLecture -> {
+            regionLecteurJouer.setId(enLecture ? "icone-pause" : "icone-play");
+        });
+
         lecteurService.setOnTick(tempsMs -> {
             btnLecteurPrecedente.setOnAction(e -> lecteurService.passerPrecedente());
             btnLecteurSuivante.setOnAction(e -> lecteurService.passerSuivante());
 
             btnLecteurJouer.setOnAction(e -> {
                 lecteurService.togglePlayPause();
-                if (lecteurService.estEnLecture()) {
-                    btnLecteurJouer.setText("⏸");
-                } else {
-                    btnLecteurJouer.setText("▶");
-                }
             });
-            btnLecteurShuffle.setOnAction(e -> {
+
+            btnLecteurShuffle.setOnAction( event -> {
                 lecteurService.toggleAleatoire();
                 if (lecteurService.getEstEnAleatoire()) {
-                    btnLecteurShuffle.setStyle("-fx-background-color: #66ff66;");
+                    regionShuffle.getStyleClass().add("icone-active");
                 } else {
-                    btnLecteurShuffle.setStyle("");
+                    regionShuffle.getStyleClass().remove("icone-active");
                 }
             });
 
