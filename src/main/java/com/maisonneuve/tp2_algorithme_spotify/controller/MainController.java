@@ -3,14 +3,13 @@ package com.maisonneuve.tp2_algorithme_spotify.controller;
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.Genre;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
-import com.maisonneuve.tp2_algorithme_spotify.model.TriMap;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
 import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
-import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -21,15 +20,12 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.layout.Region;
 
 import java.util.*;
 import java.util.function.UnaryOperator;
@@ -48,32 +44,6 @@ public class MainController {
     @FXML
     private Button btnGraph;
 
-    // Bottom (Lecteur)
-    @FXML
-    private ImageView imgLecteurAlbum;
-    @FXML
-    private Label labelLecteurTitre;
-    @FXML
-    private Label labelLecteurArtiste;
-    @FXML
-    private Button btnLecteurShuffle;
-    @FXML
-    private Region regionShuffle;
-    @FXML
-    private Button btnLecteurPrecedente;
-    @FXML
-    private Button btnLecteurJouer;
-    @FXML
-    private Region regionLecteurJouer;
-    @FXML
-    private Button btnLecteurSuivante;
-    @FXML
-    private Label labelTempsActuel;
-    @FXML
-    private Slider sliderTemps;
-    @FXML
-    private Label labelTempsTotal;
-
     // Left
     @FXML
     private Button btnVotreBibliotheque;
@@ -85,28 +55,6 @@ public class MainController {
     private TableColumn<Playlist, String> colPlaylists;
     @FXML
     private TableColumn<Playlist, Void> colSupprimerPlaylist;
-
-    // Right (Détails)
-    @FXML
-    private ImageView imgAlbum;
-    @FXML
-    private Label labelTitre;
-    @FXML
-    private Label labelAlbum;
-    @FXML
-    private Label labelArtiste;
-    @FXML
-    private Label labelAnnee;
-    @FXML
-    private Label labelGenre;
-    @FXML
-    private Label labelMaisonDisques;
-    @FXML
-    private Label labelDuree;
-    @FXML
-    private Label labelDansabilite;
-    @FXML
-    private Label labelNbEcoutes;
     @FXML
     private Button btnResetFiltres;
 
@@ -143,7 +91,6 @@ public class MainController {
     private Playlist toutesLesChansons;
     private PlaylistManager playlistManager;
     private PlaylistService playlistService;
-    private LecteurService lecteurService;
     private int NB_CHANSONS_PAR_PAGE = 10;
     private int nbPagesTotales;
     private int pageCourante = 1;
@@ -156,13 +103,16 @@ public class MainController {
         put("critereTri", "---");
     }};
     private final Map<String, String> dataFiltreTri = new HashMap<>(templateDataFiltreTri);
-    private static final String IMAGE_PAR_DEFAUT = "https://i.pinimg.com/736x/ba/8e/4d/ba8e4de740a641feb1709ce713889ea5.jpg";
+    public static final String IMAGE_PAR_DEFAUT = "https://i.pinimg.com/736x/ba/8e/4d/ba8e4de740a641feb1709ce713889ea5.jpg";
     private Node accueilLeft;
     private Node accueilRight;
     private Node accueilCentre;
     private final BooleanProperty playlistEstFiltreOuTrie = new SimpleBooleanProperty(false);
     private final BooleanProperty toutesLesChansonsEstSelectionne = new SimpleBooleanProperty(true);
     private String prochainIdPlaylist = "5";
+
+    @FXML
+    private ChansonController chansonController;
 
 
     @FXML
@@ -177,11 +127,7 @@ public class MainController {
         definirEcouteursDEvenements();
         chargerChoixGenres();
         creerContextMenu();
-
-
-
-        imgLecteurAlbum.setImage(new Image(IMAGE_PAR_DEFAUT));
-        imgAlbum.setImage(new Image(IMAGE_PAR_DEFAUT));
+        afficherLecteur();
 
         // Au démarrage, la liste d'accueil est sélectionnée (Votre Bibliothèque)
         playListSelectionne = toutesLesChansons;
@@ -193,11 +139,8 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/vues/Graphique.fxml"));
             BorderPane graphique = (BorderPane) loader.load();
-
             GraphiqueController gc = loader.getController();
             gc.setBibliotheque(this.biblio);
-
-
             rootPane.setLeft(graphique.getLeft());
             rootPane.setCenter(graphique.getCenter());
             rootPane.setRight(null);
@@ -206,6 +149,15 @@ public class MainController {
         }
     }
 
+    private void afficherLecteur() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vues/Lecteur.fxml"));
+            BorderPane lecteur = (BorderPane) loader.load();
+            rootPane.setBottom(lecteur.getBottom());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        }
 
     private Stage getFenetrePrincipale() {
         return (Stage) fieldRecherche.getScene().getWindow();
@@ -293,7 +245,7 @@ public class MainController {
     private void configurerColonnesTables() {
 
         // Lier les colonnes de la liste des playlists
-        colPlaylists.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        colPlaylists.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().toString()));
         colSupprimerPlaylist.setCellFactory(col -> new TableCell<Playlist, Void>() {
             // Ajouter un bouton "supprimerPlaylist" à chaque playlist
             private final Button btnSupprimerPlaylist = new Button("X");
@@ -363,7 +315,7 @@ public class MainController {
                         Playlist contexte = tablePlaylists.getSelectionModel().getSelectedItem() != null
                                 ? tablePlaylists.getSelectionModel().getSelectedItem()
                                 : toutesLesChansons;
-                        lecteurService.demarrerLecture(chanson, contexte);
+                        LecteurService.getInstance().demarrerLecture(chanson, contexte);
 
                         // implementer la mise a jour des labels et slider
                     }
@@ -449,7 +401,7 @@ public class MainController {
         // Écouteur sur la table des chansons pour afficher la chanson dans la carte à droite
         tableChansons.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
-                afficherChansonSelectionnee(newVal);
+                chansonController.afficherChansonSelectionnee(newVal);
             }
         });
 
@@ -489,7 +441,7 @@ public class MainController {
 
     public void creerBibliothequeEtPlaylists() {
         // Créer la bibliothèque et créer une playlist contenant toutes les chansons
-        biblio = new Bibliotheque("src/main/resources/data/spotifyData-v2.csv");
+        biblio = new Bibliotheque("src/main/resources/data/spotifyData.csv");
         toutesLesChansons = new Playlist("1", "Toutes les chansons", biblio.getChansons());
 
         // Créer 3 playlist de 10 chansons (les 30 premières chansons du CSV)
@@ -507,55 +459,6 @@ public class MainController {
         // Créer un playlist service pour les filtres et tris
         playlistService = new PlaylistService();
 
-        // Créer le service de lecture
-        lecteurService = new LecteurService();
-
-        lecteurService.setOnChansonChangee(chanson -> {
-            String imageUrl = (chanson.getImageUrl() != null && !chanson.getImageUrl().isBlank())
-                    ? chanson.getImageUrl()
-                    : IMAGE_PAR_DEFAUT;
-            labelLecteurTitre.setText(chanson.getTitre());
-            labelLecteurArtiste.setText(chanson.getArtiste());
-            imgLecteurAlbum.setImage(new Image(imageUrl));
-
-            //la fonctionnalité du slider utilise des ms, l'affichage les min:sec
-            labelTempsTotal.setText(TimeUtils.msToMinutes(chanson.getDuree()));
-            sliderTemps.setMax(chanson.getDuree());
-            sliderTemps.setValue(0);
-            labelTempsActuel.setText("0:00");
-        });
-
-        lecteurService.setOnEtatLectureChangee(enLecture -> {
-            regionLecteurJouer.setId(enLecture ? "icone-pause" : "icone-play");
-        });
-
-        lecteurService.setOnTick(tempsMs -> {
-            btnLecteurPrecedente.setOnAction(e -> lecteurService.passerPrecedente());
-            btnLecteurSuivante.setOnAction(e -> lecteurService.passerSuivante());
-
-            btnLecteurJouer.setOnAction(e -> {
-                lecteurService.togglePlayPause();
-            });
-
-            btnLecteurShuffle.setOnAction( event -> {
-                lecteurService.toggleAleatoire();
-                if (lecteurService.getEstEnAleatoire()) {
-                    regionShuffle.getStyleClass().add("icone-active");
-                } else {
-                    regionShuffle.getStyleClass().remove("icone-active");
-                }
-            });
-
-
-            sliderTemps.setValue(tempsMs);
-            labelTempsActuel.setText(TimeUtils.msToMinutes(tempsMs));
-        });
-
-        // Écouteur pour créer une playlist
-        btnAjouterPlaylist.setOnAction(e -> {
-            ouvrirFenetreCreerPlaylist();
-            rafraichirListePlaylist();
-        });
     }
 
     public void rafraichirListePlaylist() {
@@ -598,18 +501,7 @@ public class MainController {
         tableChansons.setItems(FXCollections.observableArrayList(chansons.subList(indexDebut, indexFin)));
     }
 
-    public void afficherChansonSelectionnee(Chanson chanson){
-        labelTitre.setText(chanson.getTitre());
-        labelAlbum.setText(chanson.getAlbum());
-        labelArtiste.setText(chanson.getArtiste());
-        imgAlbum.setImage(new Image (chanson.getImageUrl()));
-        labelGenre.setText(chanson.getGenre());
-        labelAnnee.setText(Integer.toString(chanson.getAnneeSortie()));
-        labelMaisonDisques.setText(chanson.getLabel());
-        labelDuree.setText(TimeUtils.msToMinutes(chanson.getDuree()));
-        labelDansabilite.setText(Float.toString(chanson.getDansabilitee()));
-        labelNbEcoutes.setText(Integer.toString(chanson.getNbrEcoute()));
-    }
+
 
     public boolean estPageValide(int page) {
         return page >= 1 && page <= nbPagesTotales;
@@ -662,6 +554,12 @@ public class MainController {
             monterChanson.disableProperty().bind(playlistEstFiltreOuTrie);
             descendreChanson.disableProperty().bind(playlistEstFiltreOuTrie);
 
+            MenuItem viderPlaylist = new MenuItem("Vider la playlist");
+            viderPlaylist.setOnAction(e -> {
+                playListSelectionne.viderPlaylist();
+                rafraichirListeChansons(playListSelectionne, pageCourante);
+            });
+
 
             MenuItem supprimerChanson = new MenuItem("Supprimer de la playlist");
             supprimerChanson.setOnAction(e -> {
@@ -670,10 +568,11 @@ public class MainController {
                 rafraichirListeChansons(playListSelectionne, pageCourante);
             });
 
-            // Désactiver le bouton de supression si on est dans la bibliothèque
+            // Désactiver le bouton de supression et vider la playlist si on est dans la bibliothèque
             supprimerChanson.disableProperty().bind(toutesLesChansonsEstSelectionne);
+            viderPlaylist.disableProperty().bind(toutesLesChansonsEstSelectionne);
 
-            contextMenu.getItems().addAll(monterChanson, descendreChanson, supprimerChanson);
+            contextMenu.getItems().addAll(monterChanson, descendreChanson, viderPlaylist, supprimerChanson);
 
             // Ne s'affiche pas si la ligne est vide
             row.emptyProperty().addListener((obs, wasEmpty, isEmpty) -> {
@@ -709,9 +608,27 @@ public class MainController {
 
         btnAjouter.setOnAction(e -> {
             Playlist playlistSelectionne = playlists.getSelectionModel().getSelectedItem();
-            playlistSelectionne.ajouterChanson(chanson);
-            popupStage.close();
-        });
+
+            try {
+                playlistSelectionne.ajouterChanson(chanson);
+                popupStage.close();
+            } catch (Error er) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attention");
+                alert.setContentText(er.getMessage());
+
+                // Attache la popup à la fenêtre principale
+                alert.initOwner(popupStage);
+
+                // showAndWait() bloque jusqu'au clic de l'utilisateur
+                Optional<ButtonType> resultat = alert.showAndWait();
+
+                /*return (resultat.isPresent() && resultat.get() == ButtonType.OK);*/
+            }
+            });
+
+
+
 
         VBox layout = new VBox(15, message, hbox);
         layout.setAlignment(Pos.CENTER);

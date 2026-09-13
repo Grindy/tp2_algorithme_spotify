@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" style="-fx-border-width: 0 0 0 3px;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.ChansonController">
+   <children>
+      <StackPane styleClass="img-border">
+         <ImageView fx:id="imgAlbum" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
+      </StackPane>
+
+      <Label fx:id="labelTitre" alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;" styleClass="label-gris" text="Titre" textAlignment="CENTER">
+         <VBox.margin>
+            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+         </VBox.margin>
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+
+      <Label fx:id="labelAlbum" text="Album">
+         <font><Font size="14.0" /></font>
+         <styleClass>
+            <String fx:value="label-gris" />
+            <String fx:value="bold" />
+         </styleClass>
+      </Label>
+
+      <Label fx:id="labelArtiste" text="Artiste">
+         <font><Font size="14.0" /></font>
+         <styleClass>
+            <String fx:value="label-gris" />
+            <String fx:value="bold" />
+         </styleClass>
+      </Label>
+
+      <Label fx:id="labelAnnee" text="Année">
+         <font><Font size="14.0" /></font>
+         <styleClass>
+            <String fx:value="label-gris" />
+            <String fx:value="bold" />
+         </styleClass>
+      </Label>
+
+      <Label fx:id="labelGenre" text="Genre">
+         <font><Font size="14.0" /></font>
+         <styleClass>
+            <String fx:value="label-gris" />
+            <String fx:value="bold" />
+         </styleClass>
+      </Label>
+
+      <Label fx:id="labelMaisonDisques" text="Maison de disques">
+         <font><Font size="14.0" /></font>
+         <styleClass>
+            <String fx:value="label-gris" />
+            <String fx:value="bold" />
+         </styleClass>
+      </Label>
+
+      <Separator opacity="0.3" prefWidth="200.0" />
+
+      <!-- Cet espacement manquait pour pousser les stats en bas -->
+      <Region prefHeight="83.0" prefWidth="241.0" />
+
+      <HBox maxWidth="1.7976931348623157E308">
+         <children>
+            <Label styleClass="label-gris" text="Durée: ">
+               <font><Font size="14.0" /></font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="labelDuree" alignment="CENTER_RIGHT" styleClass="label-gris" text="-:--" textAlignment="RIGHT">
+               <font><Font size="14.0" /></font>
+            </Label>
+         </children>
+      </HBox>
+
+      <HBox maxWidth="1.7976931348623157E308">
+         <children>
+            <Label styleClass="label-gris" text="Danceability:">
+               <font><Font size="14.0" /></font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="labelDansabilite" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="-.---" textAlignment="RIGHT">
+               <font><Font size="14.0" /></font>
+            </Label>
+         </children>
+      </HBox>
+
+      <HBox maxWidth="1.7976931348623157E308">
+         <children>
+            <Label styleClass="label-gris" text="Nombre d'écoutes:">
+               <font><Font size="14.0" /></font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="labelNbEcoutes" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="--" textAlignment="RIGHT">
+               <font><Font size="14.0" /></font>
+            </Label>
+         </children>
+      </HBox>
+   </children>
+
+   <padding>
+      <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+   </padding>
+
+   <styleClass>
+      <String fx:value="bg-dark-grey" />
+      <String fx:value="degrade-vert" />
+   </styleClass>
+</VBox>

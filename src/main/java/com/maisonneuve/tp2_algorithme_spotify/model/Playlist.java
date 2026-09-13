@@ -1,5 +1,7 @@
 package com.maisonneuve.tp2_algorithme_spotify.model;
 
+import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -35,6 +37,7 @@ public class Playlist {
     }
 
     public void ajouterChanson(Chanson chanson) {
+        if (this.chansons.contains(chanson)) throw new Error("Cette chanson figure déjà dans la playlist " + nom);
         chansons.add(chanson);
     }
 
@@ -67,6 +70,6 @@ public class Playlist {
 
     @Override
     public String toString() {
-        return nom;
+        return nom + " - (" +  TimeUtils.msToMinutes(getDureeTotale()) + ")";
     }
 }
