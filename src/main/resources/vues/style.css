@@ -28,6 +28,8 @@
     -fx-font-weight: bold;
 }
 
+/* Cette section gère l'apparence des champs, combo box et menu items */
+
 .champ-texte {
     -fx-background-color: #757575;
     -fx-border-color: #2f2f2f;
@@ -55,15 +57,22 @@
 }
 
 .combo-box-popup .list-view {
-    -fx-background-color: #191919;
     -fx-border-color: #4f4f4f;
     -fx-border-width: 2px;
+    -fx-background-color: #2f2f2f;
 }
 
 .combo-box-popup .list-cell {
-    -fx-background-color: #2f2f2f;
+    -fx-background-color: #191919;
     -fx-text-fill: #dddddd;
     -fx-padding: 4px 6px;
+}
+
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #008f16;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
 }
 
 .menu-item {
@@ -100,6 +109,7 @@
     -fx-text-fill: #dddddd;
 }
 
+/* Cette section gère l'aspect des boutons et icones  */
 
 /* gère l'aspect transparent des boutons */
 .btn-lecteur {
@@ -326,6 +336,81 @@
     -fx-border-radius: 9999px;
 }
 
+/* La section suivante couvre les règles gérant les table views*/
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-table-cell-border-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-border-color: transparent;
+}
+
+/* Supprime les bordures intérieures/verticales lors de la sélection de la ligne pour éviter l'affichage par défaut (Merci Gemini je devenais fou à chercher la cause)*/
+.table-view:focused .table-row-cell:filled:focused:selected,
+.table-view:focused .table-row-cell:filled:selected,
+.table-row-cell:selected {
+    -fx-table-cell-border-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.table-row-cell {
+    -fx-background-color: rgba(255,255,255,0.05);
+}
+
+.column-header-background {
+    -fx-background-color: rgba(255,255,255,0.05);
+    -fx-border-color: transparent;
+}
+
+.column-header {
+    -fx-background-color: transparent;
+}
+
+.column-header .label {
+    -fx-text-fill: #757575;
+}
+
+.col-centree {
+    -fx-alignment: CENTER;
+}
+
+.col-playlist {
+    -fx-font-weight: bolder;
+    -fx-font-size: large;
+    -fx-padding: 0 0 0 12px;
+    -fx-alignment: CENTER;
+}
+
+.col-chansons {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-cell.col-playlist {
+    -fx-text-fill: #008f16;
+}
+
+.table-cell.col-playlist:hover {
+    -fx-text-fill: #00c31b;
+}
+
+.table-row-cell:selected .table-cell.col-playlist {
+    -fx-text-fill: #00c31b;
+}
+
 /* Sous cette ligne se trouvent les éléments uniques à la page des graphiques */
 
 .spinner {
@@ -339,6 +424,16 @@
 .spinner .text-field {
     -fx-background-color: transparent;
     -fx-text-fill: #dddddd;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #2f2f2f;
+}
+
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: #dddddd;
 }
 
 .check-box .box {
@@ -375,39 +470,6 @@
     -fx-font-weight: bold;
     -fx-text-fill: #dddddd;
 }
-
-.table-view {
-    -fx-background-color: transparent;
-    -fx-table-cell-border-color: transparent;
-    -fx-border-color: transparent;
-}
-
-.table-cell {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
-}
-
-.table-row-cell {
-    -fx-background-color: rgba(255,255,255,0.05);
-}
-
-.column-header-background {
-    -fx-background-color: rgba(255,255,255,0.05);
-    -fx-border-color: transparent;
-}
-
-.column-header {
-    -fx-background-color: transparent;
-}
-
-.column-header .label {
-    -fx-text-fill: #757575;
-}
-
-.col-centree {
-    -fx-alignment: CENTER;
-}
-
 
 
 
