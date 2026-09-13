@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -255,6 +256,7 @@
             </TableView>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="200.0" spacing="24.0">
                <children>
+                  <Region prefHeight="49.0" prefWidth="180.0" HBox.hgrow="ALWAYS" />
 
 
                   <Button fx:id="btnPagePrecedente" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
@@ -263,7 +265,7 @@
                      </graphic></Button>
 
 
-                  <Label fx:id="labelPages" text="Label">
+                  <Label fx:id="labelPages" text="Label" HBox.hgrow="ALWAYS">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -273,10 +275,17 @@
                      </styleClass></Label>
 
 
-                  <Button fx:id="btnPageSuivante" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
+                  <Button fx:id="btnPageSuivante" mnemonicParsing="false" prefHeight="40.0" prefWidth="0.0" styleClass="btn-lecteur">
                      <graphic>
-                        <Region id="icone-page-suivante" styleClass="btn-lecteur" />
+                        <Region id="icone-page-suivante" />
                      </graphic></Button>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <VBox prefHeight="45.0" prefWidth="178.0" spacing="4.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label contentDisplay="CENTER" styleClass="label-gris" text="   Chansons par page:" textFill="WHITE" />
+                        <ComboBox fx:id="comboNbPages" prefWidth="150.0" />
+                     </children>
+                  </VBox>
 
 
                </children>

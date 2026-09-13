@@ -1,19 +1,19 @@
 package com.maisonneuve.tp2_algorithme_spotify.service;
 
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
-import com.maisonneuve.tp2_algorithme_spotify.model.ChansonDAO;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
+import com.maisonneuve.tp2_algorithme_spotify.utils.LecteurCSV;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Bibliotheque {
-    private List<Chanson> chansons;
-    private List<Playlist> playlists;
+    private final List<Chanson> chansons;
+    private final List<Playlist> playlists;
 
     public Bibliotheque(String cheminCSV) {
-        ChansonDAO dao = new ChansonDAO();
-        this.chansons = dao.charger(cheminCSV);
+        LecteurCSV lecteur = new LecteurCSV();
+        this.chansons = lecteur.charger(cheminCSV);
         this.playlists = new ArrayList<>();
     }
 

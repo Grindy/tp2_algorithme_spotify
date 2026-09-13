@@ -88,4 +88,8 @@ public class Chanson {
     public String toString() {
         return titre + " - " + artiste + " - " + album + " - " + anneeSortie ;
     }
+
+    public void incrementerNbEcoutes() {
+        nbrEcoute++;
+    }
 }
