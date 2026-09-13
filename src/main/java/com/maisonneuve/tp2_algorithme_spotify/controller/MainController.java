@@ -7,7 +7,6 @@ import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
 import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
-import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,8 +20,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -58,28 +55,6 @@ public class MainController {
     private TableColumn<Playlist, String> colPlaylists;
     @FXML
     private TableColumn<Playlist, Void> colSupprimerPlaylist;
-
-    // Right (Détails)
-    @FXML
-    private ImageView imgAlbum;
-    @FXML
-    private Label labelTitre;
-    @FXML
-    private Label labelAlbum;
-    @FXML
-    private Label labelArtiste;
-    @FXML
-    private Label labelAnnee;
-    @FXML
-    private Label labelGenre;
-    @FXML
-    private Label labelMaisonDisques;
-    @FXML
-    private Label labelDuree;
-    @FXML
-    private Label labelDansabilite;
-    @FXML
-    private Label labelNbEcoutes;
     @FXML
     private Button btnResetFiltres;
 
@@ -136,6 +111,9 @@ public class MainController {
     private final BooleanProperty toutesLesChansonsEstSelectionne = new SimpleBooleanProperty(true);
     private String prochainIdPlaylist = "5";
 
+    @FXML
+    private ChansonController chansonController;
+
 
     @FXML
     public void initialize() {
@@ -150,8 +128,6 @@ public class MainController {
         chargerChoixGenres();
         creerContextMenu();
         afficherLecteur();
-
-        imgAlbum.setImage(new Image(IMAGE_PAR_DEFAUT));
 
         // Au démarrage, la liste d'accueil est sélectionnée (Votre Bibliothèque)
         playListSelectionne = toutesLesChansons;
@@ -425,7 +401,7 @@ public class MainController {
         // Écouteur sur la table des chansons pour afficher la chanson dans la carte à droite
         tableChansons.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
-                afficherChansonSelectionnee(newVal);
+                chansonController.afficherChansonSelectionnee(newVal);
             }
         });
 
@@ -525,18 +501,7 @@ public class MainController {
         tableChansons.setItems(FXCollections.observableArrayList(chansons.subList(indexDebut, indexFin)));
     }
 
-    public void afficherChansonSelectionnee(Chanson chanson){
-        labelTitre.setText(chanson.getTitre());
-        labelAlbum.setText(chanson.getAlbum());
-        labelArtiste.setText(chanson.getArtiste());
-        imgAlbum.setImage(new Image (chanson.getImageUrl()));
-        labelGenre.setText(chanson.getGenre());
-        labelAnnee.setText(Integer.toString(chanson.getAnneeSortie()));
-        labelMaisonDisques.setText(chanson.getLabel());
-        labelDuree.setText(TimeUtils.msToMinutes(chanson.getDuree()));
-        labelDansabilite.setText(Float.toString(chanson.getDansabilitee()));
-        labelNbEcoutes.setText(Integer.toString(chanson.getNbrEcoute()));
-    }
+
 
     public boolean estPageValide(int page) {
         return page >= 1 && page <= nbPagesTotales;
