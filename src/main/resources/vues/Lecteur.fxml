@@ -14,13 +14,6 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.LecteurController">
-   <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="36.0" styleClass="bg-black" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-         </padding>
-      </HBox>
-   </top>
    <bottom>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" styleClass="bg-black" BorderPane.alignment="CENTER">
          <children>
@@ -105,32 +98,4 @@
          </padding>
       </HBox>
    </bottom>
-   <left>
-      <VBox prefHeight="620.0" prefWidth="337.0" style="-fx-border-width: 0 3px 0 0;" BorderPane.alignment="CENTER">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <styleClass>
-            <String fx:value="bg-dark-grey" />
-            <String fx:value="degrade-vert" />
-         </styleClass>
-      </VBox>
-   </left>
-   <right>
-      <VBox prefHeight="620.0" prefWidth="289.0" spacing="6.0" style="-fx-border-width: 0 0 0 3px;" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
-         </padding>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-         <styleClass>
-            <String fx:value="bg-dark-grey" />
-            <String fx:value="degrade-vert" />
-         </styleClass>
-      </VBox>
-   </right>
-   <center>
-      <VBox prefHeight="620.0" prefWidth="766.0" styleClass="bg-dark-grey" BorderPane.alignment="CENTER" />
-   </center>
 </BorderPane>
