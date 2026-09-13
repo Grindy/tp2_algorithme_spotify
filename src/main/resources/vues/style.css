@@ -232,6 +232,16 @@
     -fx-max-height: 24px;
 }
 
+#icone-ajout-playlist {
+ -fx-shape: "M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM232 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z";
+ -fx-background-color: #757575;
+ -fx-pref-width: 24px;
+ -fx-pref-height: 24px;
+ -fx-max-width: 24px;
+ -fx-max-height: 24px;
+}
+
+
 #icone-reinitialiser {
     -fx-shape: "M65.9 228.5c13.3-93 93.4-164.5 190.1-164.5 53 0 101 21.5 135.8 56.2 .2 .2 .4 .4 .6 .6l7.6 7.2-47.9 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l128 0c17.7 0 32-14.3 32-32l0-128c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 53.4-11.3-10.7C390.5 28.6 326.5 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1zm443.5 64c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-53 0-101-21.5-135.8-56.2-.2-.2-.4-.4-.6-.6l-7.6-7.2 47.9 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 320c-8.5 0-16.7 3.4-22.7 9.5S-.1 343.7 0 352.3l1 127c.1 17.7 14.6 31.9 32.3 31.7S65.2 496.4 65 478.7l-.4-51.5 10.7 10.1c46.3 46.1 110.2 74.7 180.7 74.7 129 0 235.7-95.4 253.4-219.5z";
     -fx-background-color: #757575;
@@ -260,12 +270,41 @@
     -fx-border-radius: 9999px;
 }
 
+.btn-table-view {
+    -fx-background-color: #005c0a;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.btn-table-view:hover {
+    -fx-background-color: #008F16;
+    -fx-text-fill: black;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+#btn-biblio {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 100px;
+    -fx-background-radius: 100px;
+    -fx-border-width: 3px;
+    -fx-border-color: rgba(255,255,255,0.2);
+    -fx-background-color: linear-gradient(to bottom, #008f16 60%, #005c0a 100%);
+}
+
+#btn-biblio:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
 .btn-round:hover {
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
 }
 
-.btn-round:hover #icone-accueil, .btn-round:hover #icone-graph {
+.btn-round:hover #icone-accueil, .btn-round:hover #icone-graph, .btn-round:hover #icone-ajout-playlist {
     -fx-background-color: #008F16;
     -fx-border-color: rgba(255,255,255,0.2);
 }
@@ -323,6 +362,31 @@
     -fx-font-weight: bold;
     -fx-text-fill: #dddddd;
 }
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-header {
+    -fx-background-color: rgba(255,255,255,0.1);
+}
+
+.table-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.table-row-cell {
+    -fx-background-color: rgba(255,255,255,0.1);
+}
+
+.column-header-background {
+    -fx-background-color: rgba(255,255,255,0.05);
+    -fx-border-color: transparent;
+}
+
+
 
 
 
