@@ -312,17 +312,17 @@ public class MainController {
         colAnnee.setCellValueFactory(new PropertyValueFactory<>("anneeSortie"));
 
         // Définir les proportions des colonnes de la liste des chansons
-        colTitre.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.30));
+        colTitre.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.25));
         colArtiste.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.25));
         colAlbum.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.25));
-        colAnnee.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.1));
-        colActions.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.1));
+        colAnnee.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.075));
+        colActions.prefWidthProperty().bind(tableChansons.widthProperty().subtract(4).multiply(0.175));
         colActions.setCellFactory(col -> new TableCell<Chanson, Void>() {
 
             // Ajout des boutons d'actions pour chaque chanson (play, ajouter, supprimer)
             private final Button btnLire = new Button("▶");
             private final Button btnAjouterAPlaylist = new Button("+");
-            private final Button btnSupprimer = new Button("🗑");
+            private final Button btnSupprimer = new Button("X");
             private final HBox conteneurBoutons = new HBox(8, btnLire, btnAjouterAPlaylist, btnSupprimer);
 
             {

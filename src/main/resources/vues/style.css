@@ -157,7 +157,6 @@
     -fx-pref-height: 16px;
     -fx-max-width: 16px;
     -fx-max-height: 16px;
-
 }
 
 #icone-previous {
@@ -275,6 +274,7 @@
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
+    -fx-min-width: 28px;
 }
 
 .btn-table-view:hover {
@@ -328,6 +328,19 @@
 
 /* Sous cette ligne se trouvent les éléments uniques à la page des graphiques */
 
+.spinner {
+    -fx-background-color: #757575;
+    -fx-border-color: linear-gradient(to left, #005c0a 0%, #008f16 30%, #008f16 70%, #005c0a 100%);
+    -fx-border-width: 3px;
+    -fx-text-fill: #dddddd;
+    -fx-effect: dropshadow(gaussian, rgb(0,0,0,0.6), 8,0,0,0,5);
+}
+
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: #dddddd;
+}
+
 .check-box .box {
     -fx-background-color: linear-gradient(to bottom, #005c0a 60%, #013208 100%);
 }
@@ -366,10 +379,7 @@
 .table-view {
     -fx-background-color: transparent;
     -fx-table-cell-border-color: transparent;
-}
-
-.table-header {
-    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-border-color: transparent;
 }
 
 .table-cell {
@@ -378,12 +388,24 @@
 }
 
 .table-row-cell {
-    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-background-color: rgba(255,255,255,0.05);
 }
 
 .column-header-background {
     -fx-background-color: rgba(255,255,255,0.05);
     -fx-border-color: transparent;
+}
+
+.column-header {
+    -fx-background-color: transparent;
+}
+
+.column-header .label {
+    -fx-text-fill: #757575;
+}
+
+.col-centree {
+    -fx-alignment: CENTER;
 }
 
 
