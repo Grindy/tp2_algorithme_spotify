@@ -45,7 +45,7 @@ public class GraphiqueController {
 
     private Map<CheckBox, Algorithme> dataAlgo;
 
-    private static final int[] TAILLES = {50,100,250,500,750,1000,1500};
+    private static final int[] TAILLES = {50,100,250,500};
 
 
 
