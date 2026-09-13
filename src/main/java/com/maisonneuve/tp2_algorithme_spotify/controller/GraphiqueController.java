@@ -12,15 +12,12 @@ import com.maisonneuve.tp2_algorithme_spotify.algorithme.tri.*;
 import com.maisonneuve.tp2_algorithme_spotify.benchmark.Chronometre;
 
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.maisonneuve.tp2_algorithme_spotify.algorithme.Algorithme;
 
 import static com.maisonneuve.tp2_algorithme_spotify.service.TriComparateurService.COMPARATEURS;
-
+import static java.util.Map.entry;
 
 public class GraphiqueController {
 
@@ -42,11 +39,13 @@ public class GraphiqueController {
     @FXML
     private ComboBox<String> comboElement;
 
+    private final Algorithme triBulle = new TriBulle();
+    private final Algorithme triSelection = new TriSelection();
+    private final Algorithme triInsertion = new TriInsertion();
 
+    private Map<CheckBox, Algorithme> dataAlgo;
 
-
-
-    private static final int[] TAILLES = {50,100,250,500,750,1000,1500};
+    private static final int[] TAILLES = {50,100,250,500};
 
 
 
@@ -58,6 +57,7 @@ public class GraphiqueController {
         btnGraphiqueLancer.setOnAction(e -> lancerBenchmark());
 
         btnGraphiqueReinitialiser.setOnAction(e -> reset());
+        afficherComplexiteTheorique();
         definirEcouteursDEvenements();
     }
 
@@ -113,14 +113,31 @@ public class GraphiqueController {
     private List<Algorithme> collecterAlgorithmes(){
         List<Algorithme> algos = new ArrayList<>();
 
-        if(checkTriBulles.isSelected()) algos.add(new TriBulle());
-        if(checkTriSelection.isSelected()) algos.add(new TriSelection());
-        if(checkTriInsertion.isSelected()) algos.add(new TriInsertion());
+        if(checkTriBulles.isSelected()) algos.add(triBulle);
+        if(checkTriSelection.isSelected()) algos.add(triSelection);
+        if(checkTriInsertion.isSelected()) algos.add(triInsertion);
 
         return algos;
     }
 
     private void afficherAlert(String msg){
         new Alert(Alert.AlertType.WARNING, msg).showAndWait();
+    }
+
+    private void afficherComplexiteTheorique() {
+
+        dataAlgo = Map.ofEntries(
+                entry(checkTriBulles, triBulle),
+                entry(checkTriSelection, triSelection),
+                entry(checkTriInsertion, triInsertion)
+        );
+
+        CheckBox[] listeCheckbox = new CheckBox[]{checkTriBulles, checkTriSelection, checkTriInsertion};
+
+        for (CheckBox c : listeCheckbox) {
+            String text = c.getText() + " - " + dataAlgo.get(c).complexiteTheorique();
+            c.setText(text);
+        }
+
     }
 }

@@ -156,21 +156,51 @@
             </Label>
             <Separator opacity="0.3" prefWidth="200.0" />
             <Region prefHeight="83.0" prefWidth="241.0" />
-            <Label fx:id="labelDuree" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="Durée" textAlignment="RIGHT">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="labelDansabilite" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="Danceability" textAlignment="RIGHT">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="labelNbEcoutes" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="Nombre d'écoutes" textAlignment="RIGHT">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
+            <HBox maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label styleClass="label-gris" text="Durée: ">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="labelDuree" alignment="CENTER_RIGHT" styleClass="label-gris" text="-:--" textAlignment="RIGHT">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label styleClass="label-gris" text="Danceability:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="labelDansabilite" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="-.---" textAlignment="RIGHT">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label styleClass="label-gris" text="Nombre d'écoutes:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="labelNbEcoutes" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="label-gris" text="--" textAlignment="RIGHT">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
@@ -255,7 +285,7 @@
                   <TableColumn fx:id="colTitre" resizable="false" text="Titre" />
                   <TableColumn fx:id="colArtiste" resizable="false" text="Artiste" />
                   <TableColumn fx:id="colAlbum" resizable="false" text="Album" />
-                  <TableColumn fx:id="colAnnee" resizable="false" text="Année" />
+                  <TableColumn fx:id="colAnnee" resizable="false" text="Année" styleClass="col-centree" />
                   <TableColumn fx:id="colActions" resizable="false" />
                </columns>
                <columnResizePolicy>
