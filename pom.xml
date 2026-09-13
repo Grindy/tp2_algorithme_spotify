@@ -70,7 +70,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.maisonneuve.tp2_algorithme_spotify/com.maisonneuve.tp2_algorithme_spotify.HelloApplication
+                                com.maisonneuve.tp2_algorithme_spotify/com.maisonneuve.tp2_algorithme_spotify.MainFx
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
