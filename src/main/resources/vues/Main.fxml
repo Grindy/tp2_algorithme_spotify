@@ -8,7 +8,6 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -47,83 +46,6 @@
    </top>
    <bottom>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" styleClass="bg-black" BorderPane.alignment="CENTER">
-         <children>
-            <StackPane styleClass="img-border">
-               <ImageView fx:id="imgLecteurAlbum" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
-            </StackPane>
-
-            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="295.0" spacing="4.0">
-               <children>
-                  <Label fx:id="labelLecteurTitre" text="Titre">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <styleClass>
-                        <String fx:value="label-gris" />
-                        <String fx:value="bold" />
-                     </styleClass>
-                  </Label>
-                  <Label fx:id="labelLecteurArtiste" styleClass="label-gris" text="Artiste">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-               </padding>
-            </VBox>
-            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="551.0">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="200.0" prefWidth="504.0" spacing="24.0" translateX="-26.0">
-                     <children>
-
-
-                        <Button fx:id="btnLecteurShuffle" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
-                           <graphic>
-                              <Region id="icone-shuffle" fx:id="regionShuffle" />
-                           </graphic>
-                        </Button>
-
-
-
-                        <Button fx:id="btnLecteurPrecedente" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
-                           <graphic>
-                              <Region id="icone-previous" />
-                           </graphic>
-                        </Button>
-
-
-                        <Button id="btn-play" fx:id="btnLecteurJouer" mnemonicParsing="false" prefHeight="40.0" styleClass="btn-lecteur">
-                           <graphic>
-                              <Region id="icone-play" fx:id="regionLecteurJouer" />
-                           </graphic>
-                        </Button>
-
-
-                        <Button fx:id="btnLecteurSuivante" maxHeight="40.0" maxWidth="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="btn-lecteur">
-                           <graphic>
-                              <Region id="icone-next" />
-                           </graphic>
-                        </Button>
-
-
-
-                     </children></HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="18.0">
-                     <children>
-                        <Label fx:id="labelTempsActuel" styleClass="label-gris" text="0:00" />
-                        <Slider fx:id="sliderTemps" prefWidth="350.0" />
-                        <Label fx:id="labelTempsTotal" styleClass="label-gris" text="3:33" />
-                     </children>
-                     <padding>
-                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                     </padding>
-                  </HBox>
-               </children>
-            </VBox>
-            <Region maxWidth="-Infinity" prefHeight="100.0" prefWidth="335.0" />
-         </children>
          <padding>
             <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
          </padding>
