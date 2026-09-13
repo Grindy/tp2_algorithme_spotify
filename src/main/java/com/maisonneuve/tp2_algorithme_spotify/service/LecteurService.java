@@ -10,6 +10,9 @@ import java.util.function.Consumer;
 
 
 public class LecteurService {
+    private static final LecteurService INSTANCE = new LecteurService();
+    public static LecteurService getInstance() { return INSTANCE; }
+
 
     private Chanson chansonEnLecture;
     private Playlist contexteEnLecture;
@@ -23,7 +26,7 @@ public class LecteurService {
     private Consumer<Chanson> onChansonChangee;
     private Consumer<Boolean> onEtatLectureChangee;
 
-    public LecteurService() {
+    private LecteurService() {
         // on crée un timeline d'une seconde, qui après avoir joué crée une autre timeline
         // cette boucle continue jusqu'à ce qu'on l'arrete avec stop() ou pauyse()
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick()));
