@@ -10,6 +10,7 @@ import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
 import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -268,7 +269,7 @@ public class MainController {
     private void configurerColonnesTables() {
 
         // Lier les colonnes de la liste des playlists
-        colPlaylists.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        colPlaylists.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().toString()));
         colSupprimerPlaylist.setCellFactory(col -> new TableCell<Playlist, Void>() {
             // Ajouter un bouton "supprimerPlaylist" à chaque playlist
             private final Button btnSupprimerPlaylist = new Button("X");
@@ -464,7 +465,7 @@ public class MainController {
 
     public void creerBibliothequeEtPlaylists() {
         // Créer la bibliothèque et créer une playlist contenant toutes les chansons
-        biblio = new Bibliotheque("src/main/resources/data/spotifyData-v2.csv");
+        biblio = new Bibliotheque("src/main/resources/data/spotifyData.csv");
         toutesLesChansons = new Playlist("1", "Toutes les chansons", biblio.getChansons());
 
         // Créer 3 playlist de 10 chansons (les 30 premières chansons du CSV)
@@ -588,6 +589,12 @@ public class MainController {
             monterChanson.disableProperty().bind(playlistEstFiltreOuTrie);
             descendreChanson.disableProperty().bind(playlistEstFiltreOuTrie);
 
+            MenuItem viderPlaylist = new MenuItem("Vider la playlist");
+            viderPlaylist.setOnAction(e -> {
+                playListSelectionne.viderPlaylist();
+                rafraichirListeChansons(playListSelectionne, pageCourante);
+            });
+
 
             MenuItem supprimerChanson = new MenuItem("Supprimer de la playlist");
             supprimerChanson.setOnAction(e -> {
@@ -596,10 +603,11 @@ public class MainController {
                 rafraichirListeChansons(playListSelectionne, pageCourante);
             });
 
-            // Désactiver le bouton de supression si on est dans la bibliothèque
+            // Désactiver le bouton de supression et vider la playlist si on est dans la bibliothèque
             supprimerChanson.disableProperty().bind(toutesLesChansonsEstSelectionne);
+            viderPlaylist.disableProperty().bind(toutesLesChansonsEstSelectionne);
 
-            contextMenu.getItems().addAll(monterChanson, descendreChanson, supprimerChanson);
+            contextMenu.getItems().addAll(monterChanson, descendreChanson, viderPlaylist, supprimerChanson);
 
             // Ne s'affiche pas si la ligne est vide
             row.emptyProperty().addListener((obs, wasEmpty, isEmpty) -> {
@@ -635,9 +643,27 @@ public class MainController {
 
         btnAjouter.setOnAction(e -> {
             Playlist playlistSelectionne = playlists.getSelectionModel().getSelectedItem();
-            playlistSelectionne.ajouterChanson(chanson);
-            popupStage.close();
-        });
+
+            try {
+                playlistSelectionne.ajouterChanson(chanson);
+                popupStage.close();
+            } catch (Error er) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attention");
+                alert.setContentText(er.getMessage());
+
+                // Attache la popup à la fenêtre principale
+                alert.initOwner(popupStage);
+
+                // showAndWait() bloque jusqu'au clic de l'utilisateur
+                Optional<ButtonType> resultat = alert.showAndWait();
+
+                /*return (resultat.isPresent() && resultat.get() == ButtonType.OK);*/
+            }
+            });
+
+
+
 
         VBox layout = new VBox(15, message, hbox);
         layout.setAlignment(Pos.CENTER);
