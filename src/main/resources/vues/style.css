@@ -399,6 +399,24 @@
     -fx-border-color: transparent;
 }
 
+.table-row-cell:selected {
+    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-border-color: transparent;
+}
+
+/* Supprime les bordures intérieures/verticales lors de la sélection de la ligne pour éviter l'affichage par défaut (Merci Gemini je devenais fou à chercher la cause)*/
+.table-view:focused .table-row-cell:filled:focused:selected,
+.table-view:focused .table-row-cell:filled:selected,
+.table-row-cell:selected {
+    -fx-table-cell-border-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}
+
 .table-cell {
     -fx-background-color: transparent;
     -fx-text-fill: white;
@@ -424,6 +442,7 @@
 .col-centree {
     -fx-alignment: CENTER;
 }
+
 
 
 
