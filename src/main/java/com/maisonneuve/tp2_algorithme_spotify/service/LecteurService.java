@@ -57,6 +57,9 @@ public class LecteurService {
         // stop la timeline et la relance du départ quand on démarre la lecture d'une chanson
         timeline.stop();
         timeline.playFromStart();
+
+        // Incrémente le nombre d'écoutes de 1
+        chanson.incrementerNbEcoutes();
     }
 
     public void togglePlayPause() {
@@ -79,6 +82,8 @@ public class LecteurService {
         if (tempsEcouleMs >= chansonEnLecture.getDuree()) {
             passerSuivante();
         }
+
+
     }
 
 

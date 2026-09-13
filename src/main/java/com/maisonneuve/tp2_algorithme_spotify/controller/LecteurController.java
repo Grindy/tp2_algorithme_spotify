@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
+import javafx.scene.shape.Rectangle;
 
 public class LecteurController {
 
@@ -65,6 +66,19 @@ public class LecteurController {
             sliderTemps.setValue(ms);
             labelTempsActuel.setText(TimeUtils.msToMinutes(ms));
         });
+
+        clipperImageChanson();
+    }
+
+    private void clipperImageChanson() {
+        double width = imgLecteurAlbum.getFitWidth();
+        double height = imgLecteurAlbum.getFitHeight();
+
+        Rectangle clip = new Rectangle(width, height);
+        clip.setArcWidth(22);
+        clip.setArcHeight(22);
+
+        imgLecteurAlbum.setClip(clip);
     }
 }
 
