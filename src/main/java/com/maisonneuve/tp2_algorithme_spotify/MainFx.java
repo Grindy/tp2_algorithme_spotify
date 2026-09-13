@@ -20,8 +20,8 @@ public class MainFx extends Application {
 
         stage.setTitle("TP2 Algorithme Spotify");
         stage.setScene(scene);
-        stage.setMinWidth(600);
-        stage.setMinHeight(400);
+        stage.setMinWidth(1500);
+        stage.setMinHeight(820);
 
         stage.show();
     }
