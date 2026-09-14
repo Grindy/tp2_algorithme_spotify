@@ -26,8 +26,8 @@
 
 ## Sujet choisi
 
-**Numéro du sujet** : 3
-**Nom du sujet** : Spotify
+**Numéro du sujet** : 3  
+**Nom du sujet** : Spotify  
 
 ---
 
@@ -203,6 +203,6 @@ leur menu:
 
 ## Historique Git
 
-**Nombre total de commits** : 116+
-**Date du premier commit** : 2026-09-02
-**Date du dernier commit** : 2026-09-13
+**Nombre total de commits** : 116+  
+**Date du premier commit** : 2026-09-02  
+**Date du dernier commit** : 2026-09-13  
