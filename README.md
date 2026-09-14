@@ -16,11 +16,11 @@
 
 ## Équipe
 
-| Nom complet      | Adresse courriel            | Contribution principale                                      |
-|------------------|-----------------------------|--------------------------------------------------------------|
-| Francis Boisvert | e2595782@cmaisonneuve.qc.ca | Modèles, Service, Tris, Algo, Graphiques, Separation du main |
-| Clément Laflamme | e2595952@cmaisonneuve.qc.ca | [ex : UI FXML, Controller, CSS]                              |
-| Mathieu Gosselin | e2596321@cmaisonneuve.qc.ca | Design, UI FXML, CSS, Lecteur, un peu de Controller          |
+| Nom complet      | Adresse courriel            | Contribution principale                                                                                             |
+|------------------|-----------------------------|---------------------------------------------------------------------------------------------------------------------|
+| Francis Boisvert | e2595782@cmaisonneuve.qc.ca | Modèles, Service, Tris, Algo, Graphiques, Separation du main                                                        |
+| Clément Laflamme | e2595952@cmaisonneuve.qc.ca | Fonctions des tableaux, Affichage des playlists/chansons, Pagination, Tri/Filtres en temps réel, Separation du main |
+| Mathieu Gosselin | e2596321@cmaisonneuve.qc.ca | Design, UI FXML, CSS, Lecteur, un peu de Controller                                                                 |
 
 ---
 
@@ -87,37 +87,13 @@ tp2_algorithme_spotify/
         │   └── com/maisonneuve/tp2_algorithme_spotify/
         │       ├── algorithme/
         │       │   └── tri/
-        │       │       ├── Algorithme.java
-        │       │       ├── TriBulle.java
-        │       │       ├── TriInsertion.java
-        │       │       └── TriSelection.java
         │       ├── benchmark/
-        │       │   ├── Chronometre.java
-        │       │   └── ResultatMesure.java
         │       ├── controller/
-        │       │   ├── ChansonController.java
-        │       │   ├── GraphiqueController.java
-        │       │   ├── LecteurController.java
-        │       │   ├── MainController.java
-        │       │   └── NouvellePlaylistController.java
         │       ├── model/
-        │       │   ├── Chanson.java
-        │       │   ├── ChansonDAO.java
-        │       │   ├── Genre.java
-        │       │   ├── Playlist.java
-        │       │   └── TriMap.java
         │       ├── service/
-        │       │   ├── Bibliotheque.java
-        │       │   ├── BibliothequeService.java
-        │       │   ├── LecteurService.java
-        │       │   ├── PlaylistManager.java
-        │       │   ├── PlaylistService.java
-        │       │   └── TriComparateurService.java
         │       ├── utils/
-        │       │   └── TimeUtils.java
         │       ├── Launcher.java
-        │       ├── MainFx.java
-        │       └── module-info.java
+        │       └── MainFx.java 
         └── resources/
             ├── data/
             │   └── spotifyData.csv
@@ -184,7 +160,10 @@ Aucune
 
 ## Difficultés rencontrées
 
-[A COMPLETER : décrire les 2-3 principales difficultés rencontrées et comment vous les avez résolues. Cette section n'est pas notée, mais elle nous aide à améliorer les prochains labos.]
+- Nous avons eu des problèmes avec le MainController qui était devenu trop gros pour être bien géré par github. Des lignes de code ont été écrasées et nous avons du reprendre ou réintégrer celles-ci.
+- Ce problème nous a aussi poussé à splitter le MainController en plusieurs petits Controllers ce qui sera utile pour le maintien de l'app dans le futur. [Clément, Francis]
+- Figurer comment transposer ce qu'on connaissait du BigOLab pour fonctionner avec des chansons plutôt que de simple Int a été laborieux. [Francis]
+- Arriver dans la partie code du projet après avoir passé le début du projet sur le FXML et le CSS était intimidant. [Mathieu]
 
 ---
 
@@ -193,7 +172,7 @@ Aucune
 | Membre           | % contribution estimée | Ce sur quoi j'ai travaillé                                                                    |
 |------------------|------------------------|-----------------------------------------------------------------------------------------------|
 | Francis Boisvert | 33%                    | Modeles, Algorithme, Tri, Graphique, Services, Utils, Separation du main en modules |
-| Clément Laflamme | 33%                    |                                                                                               |
+| Clément Laflamme | 33%                    | Fonctions des tableaux, Affichage des playlists/chansons, Pagination, Tri/Filtres en temps réel, Separation du main                                                                                             |
 | Mathieu Gosselin | 33%                    | Design, UI FXML, CSS, Lecteur, un peu de Controller                                           |
 
 ---
@@ -224,6 +203,6 @@ leur menu:
 
 ## Historique Git
 
-**Nombre total de commits** : 98+
+**Nombre total de commits** : 116+
 **Date du premier commit** : 2026-09-02
 **Date du dernier commit** : 2026-09-13
