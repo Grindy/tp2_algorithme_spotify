@@ -7,9 +7,15 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LecteurCSV {
+public class LecteurCSV implements SourceDonnees {
 
-        public List<Chanson> charger(String chemin)  {
+    private final String chemin;
+
+    public LecteurCSV(String chemin) {
+        this.chemin = chemin;
+    }
+
+        public List<Chanson> charger()  {
             List<Chanson> chansons = new ArrayList<>();
 
             try (BufferedReader br = new BufferedReader(new FileReader(chemin))) {
