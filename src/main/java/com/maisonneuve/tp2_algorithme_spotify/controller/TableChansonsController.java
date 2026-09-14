@@ -76,13 +76,17 @@ public class TableChansonsController {
     private final Map<String, String> dataFiltreTri = new HashMap<>(templateDataFiltreTri);
     private int nbChansonsParPage = 25;
     private int nbPagesTotales;
-    private int pageCourante = 1;
+    private int pageCourante;
     private TextField fieldRecherche;
     private TableView<Playlist> tablePlaylists;
     private Playlist toutesLesChansons;
     private ChansonController chansonController;
     private PlaylistService playlistService;
     private Bibliotheque biblio;
+
+    public void setPageCourante(int pageCourante) {
+        this.pageCourante = pageCourante;
+    }
 
     public void setBiblio(Bibliotheque biblio) {
         this.biblio = biblio;
@@ -505,7 +509,7 @@ public class TableChansonsController {
                 alert.initOwner(popupStage);
 
                 // showAndWait() bloque jusqu'au clic de l'utilisateur
-                Optional<ButtonType> resultat = alert.showAndWait();
+                alert.showAndWait();
             }
         });
 
