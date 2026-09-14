@@ -9,8 +9,6 @@ import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
 import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -26,8 +24,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.util.*;
-import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 
 public class MainController {
 
@@ -45,9 +41,7 @@ public class MainController {
     // Left
 
     @FXML
-    private PlaylistsController PlaylistsController;
-
-
+    private PlaylistsController playlistsController;
 
     // Center (Filtres, Liste, Pagination)
     @FXML
@@ -108,29 +102,44 @@ public class MainController {
     @FXML
     private ChansonController chansonController;
 
+    @FXML
+    private TableChansonsController sectionTableChansonsController;
+
 
     @FXML
     public void initialize() {
         accueilLeft = rootPane.getLeft();
         accueilCentre = rootPane.getCenter();
         accueilRight = rootPane.getRight();
-        initComboPages();
         creerBibliothequeEtPlaylists();
-        PlaylistsController.setBibliotheque(biblio);
-        PlaylistsController.setPlaylistManager(playlistManager);
-        PlaylistsController.setToutesLesChansons(toutesLesChansons);
-        PlaylistsController.rafraichirListePlaylist();
-        formaterFieldDureeMax();
-        configurerColonnesTables();
+        afficherLecteur();
+        initplaylistsController();
+        initTableChansonController();
 
         definirEcouteursDEvenements();
-        chargerChoixGenres();
-        creerContextMenu();
-        afficherLecteur();
 
         // Au démarrage, la liste d'accueil est sélectionnée (Votre Bibliothèque)
         playListSelectionne = toutesLesChansons;
-        rafraichirListeChansons(playListSelectionne, pageCourante);
+        sectionTableChansonsController.rafraichirListeChansons(playListSelectionne, pageCourante);
+    }
+
+    private void initTableChansonController() {
+        sectionTableChansonsController.setChansonController(chansonController);
+        sectionTableChansonsController.setFieldRecherche(fieldRecherche);
+        sectionTableChansonsController.setplaylistsController(playlistsController);
+        sectionTableChansonsController.setPlayListSelectionne(playListSelectionne);
+        sectionTableChansonsController.setPlaylistService(playlistService);
+        sectionTableChansonsController.setTablePlaylists(playlistsController.getTablePlaylists());
+        sectionTableChansonsController.setToutesLesChansons(toutesLesChansons);
+        sectionTableChansonsController.setToutesLesChansonsEstSelectionne(toutesLesChansonsEstSelectionne);
+        sectionTableChansonsController.setBiblio(biblio);
+    }
+
+    private void initplaylistsController() {
+        playlistsController.setBibliotheque(biblio);
+        playlistsController.setPlaylistManager(playlistManager);
+        playlistsController.setToutesLesChansons(toutesLesChansons);
+        playlistsController.rafraichirListePlaylist();
     }
 
     private void initComboPages() {
@@ -142,7 +151,7 @@ public class MainController {
     private void afficherGraphique() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/vues/Graphique.fxml"));
-            BorderPane graphique = (BorderPane) loader.load();
+            BorderPane graphique = loader.load();
             GraphiqueController gc = loader.getController();
 
             gc.setBibliotheque(this.biblio);
@@ -165,90 +174,7 @@ public class MainController {
         }
         }
 
-    private Stage getFenetrePrincipale() {
-        return (Stage) fieldRecherche.getScene().getWindow();
-    }
-
-    // Fonction générée par Gemini
-    private void formaterFieldDureeMax() {
-        // Regex pour le format mm:ss
-        Pattern pattern = Pattern.compile("^$|^[0-9]{1,2}$|^[0-9]{1,2}:$|^[0-9]{1,2}:[0-5]$|^[0-9]{1,2}:[0-5][0-9]$");
-
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            // Autorise la réinitialisation directe via setText("00:00") ou toute valeur valide complète
-            if (change.getText().matches("^[0-9]{2}:[0-5][0-9]$")) {
-                return change;
-            }
-            // Récupère le texte actuel ou "00:00" s'il est vide/incomplet
-            String currentText = change.getControlText();
-            if (currentText.length() != 5) {
-                currentText = "00:00";
-            }
-
-            // 1. Touche Backspace / Delete
-            if (change.getText().isEmpty()) {
-                int start = change.getRangeStart();
-                int end = change.getRangeEnd();
-
-                if (start != end) {
-                    char[] chars = currentText.toCharArray();
-                    for (int i = start; i < end; i++) {
-                        if (i != 2) {
-                            chars[i] = '0';
-                        }
-                    }
-                    change.setRange(0, change.getControlText().length());
-                    change.setText(new String(chars));
-                    change.setCaretPosition(start);
-                    change.setAnchor(start);
-                    return change;
-                }
-                return change;
-            }
-
-            // 2. Frappe d'un chiffre
-            if (change.getText().matches("[0-9]")) {
-                int pos = change.getRangeStart();
-
-                // Si le curseur est sur le ':', on passe directement au chiffre des secondes
-                if (pos == 2) {
-                    pos = 3;
-                }
-
-                // Bloque si le curseur est au-delà du 5e caractère
-                if (pos >= 5) {
-                    return null;
-                }
-
-                char digit = change.getText().charAt(0);
-
-                // Validation des dizaines de secondes (index 3 : max 59 secondes)
-                if (pos == 3 && digit > '5') {
-                    return null;
-                }
-
-                char[] chars = currentText.toCharArray();
-                chars[pos] = digit;
-
-                int nextCaret = (pos + 1 == 2) ? 3 : pos + 1;
-
-                change.setRange(0, change.getControlText().length());
-                change.setText(new String(chars));
-                change.setCaretPosition(nextCaret);
-                change.setAnchor(nextCaret);
-                return change;
-            }
-
-            // Rejette toute autre touche non numérique
-            return null;
-        };
-
-// Initialise le TextFormatter avec "00:00" par défaut
-        fieldDureeMax.setTextFormatter(new TextFormatter<>(filter));
-        fieldDureeMax.setText("00:00");
-    }
-
-    private void configurerColonnesTables() {
+   /* private void configurerColonnesTables() {
         // Lier les colonnes de la liste des chansons
         colTitre.setCellValueFactory(new PropertyValueFactory<>("titre"));
         colArtiste.setCellValueFactory(new PropertyValueFactory<>("artiste"));
@@ -279,8 +205,8 @@ public class MainController {
                 btnLire.setOnAction(event -> {
                     Chanson chanson = getTableRow().getItem();
                     if (chanson != null) {
-                        // On demande au PlaylistsController quelle est la playlist sélectionnée
-                        Playlist playlistSelectionnee = PlaylistsController.playlistSelectionneeProperty().get();
+                        // On demande au playlistsController quelle est la playlist sélectionnée
+                        Playlist playlistSelectionnee = playlistsController.playlistSelectionneeProperty().get();
                         Playlist contexte = playlistSelectionnee != null ? playlistSelectionnee : toutesLesChansons;
                         LecteurService.getInstance().demarrerLecture(chanson, contexte);
                     }
@@ -297,8 +223,8 @@ public class MainController {
                     Chanson chanson = getTableRow().getItem();
                     if (chanson != null && !toutesLesChansonsEstSelectionne.get()) {
                         playListSelectionne.retirerChanson(chanson);
-                        PlaylistsController.rafraichirListePlaylist();
-                        rafraichirListeChansons(playListSelectionne, pageCourante);
+                        playlistsController.rafraichirListePlaylist();
+                        sectionTableChansonsController.rafraichirListeChansons(playListSelectionne, pageCourante);
                     }
                 });
             }
@@ -319,88 +245,88 @@ public class MainController {
             col.setSortable(false);
             col.setReorderable(false);
         }
-    }
+    }*/
 
     public void definirEcouteursDEvenements() {
         btnGraph.setOnAction(e -> afficherGraphique());
         btnAccueil.setOnAction(e -> {
             afficherAccueil();
-            PlaylistsController.deselectionnerPlaylist();
-            rafraichirListeChansons(toutesLesChansons, 1);
+            playlistsController.deselectionnerPlaylist();
+            sectionTableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
         });
 
-        PlaylistsController.getBtnAjouterPlaylist().setOnAction(e -> {
-            PlaylistsController.ouvrirFenetreCreerPlaylist();
-            PlaylistsController.rafraichirListePlaylist();
+        playlistsController.getBtnAjouterPlaylist().setOnAction(e -> {
+            playlistsController.ouvrirFenetreCreerPlaylist();
+            playlistsController.rafraichirListePlaylist();
         });
 
-        PlaylistsController.playlistSelectionneeProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
+        playlistsController.playlistSelectionneeProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
             if (nouvellePlaylist != null) {
-                rafraichirListeChansons(nouvellePlaylist, 1);
+                sectionTableChansonsController.rafraichirListeChansons(nouvellePlaylist, 1);
             } else {
                 // Si la playlist est supprimée et la sélection devient nulle
-                rafraichirListeChansons(toutesLesChansons, 1);
+                sectionTableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
             }
         });
 
-        PlaylistsController.getBtnVotreBibliotheque().setOnAction(e -> {
-            rafraichirListeChansons(toutesLesChansons, 1);
+        playlistsController.getBtnVotreBibliotheque().setOnAction(e -> {
+            sectionTableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
         });
 
-
-        // Écouteur sur le bouton page précédente
-        btnPagePrecedente.setOnAction(e -> {
-            if (estPageValide(pageCourante - 1)) {
-                rafraichirListeChansons(playListSelectionne, pageCourante - 1);
-            }
-        });
-
-        // Écouteur sur le bouton page suivante
-        btnPageSuivante.setOnAction(e -> {
-            if (estPageValide(pageCourante + 1)) {
-                rafraichirListeChansons(playListSelectionne, pageCourante + 1);
-            }
-        });
-
-        // Écouteur sur la table des chansons pour afficher la chanson dans la carte à droite
-        tableChansons.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) {
-                chansonController.afficherChansonSelectionnee(newVal);
-            }
-        });
-
-        // Écouteur sur les input de filtre pour rafraichir la liste des chansons en temps réel
-        List<ObservableValue<?>> inputsFiltre = List.of(
-                comboGenre.valueProperty(),
-                fieldDureeMax.textProperty(),
-                fieldNombreEcoutes.textProperty(),
-                fieldRecherche.textProperty()
-        );
-        for (ObservableValue<?> property : inputsFiltre) {
-            property.addListener((obs, oldValue, newValue) -> {
-                rafraichirListeChansons(playListSelectionne, 1);
-            });
-        }
-
-        for (MenuItem i : dropTri.getItems()) {
-            i.setOnAction(e -> {
-                dropTri.setText(i.getText());
-                rafraichirListeChansons(playListSelectionne, 1);
-            });
-        }
-
-        // Écouteur sur le bouton pour rénitialiser les filtres/tri
-        btnResetFiltres.setOnAction(e -> {
-            renitialiserFiltresEtTri();
-            rafraichirListeChansons(playListSelectionne, 1);
-        });
-        
-        // Écouteur sur le combo nombre de pages 
-        comboNbPages.setOnAction(e -> {
-            nbChansonsParPage = comboNbPages.getValue();
-            configurerColonnesTables();
-            rafraichirListeChansons(playListSelectionne, 1);
-        });
+//
+//        // Écouteur sur le bouton page précédente
+//        btnPagePrecedente.setOnAction(e -> {
+//            if (estPageValide(pageCourante - 1)) {
+//                rafraichirListeChansons(playListSelectionne, pageCourante - 1);
+//            }
+//        });
+//
+//        // Écouteur sur le bouton page suivante
+//        btnPageSuivante.setOnAction(e -> {
+//            if (estPageValide(pageCourante + 1)) {
+//                rafraichirListeChansons(playListSelectionne, pageCourante + 1);
+//            }
+//        });
+//
+//        // Écouteur sur la table des chansons pour afficher la chanson dans la carte à droite
+//        tableChansons.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+//            if (newVal != null) {
+//                chansonController.afficherChansonSelectionnee(newVal);
+//            }
+//        });
+//
+//        // Écouteur sur les input de filtre pour rafraichir la liste des chansons en temps réel
+//        List<ObservableValue<?>> inputsFiltre = List.of(
+//                comboGenre.valueProperty(),
+//                fieldDureeMax.textProperty(),
+//                fieldNombreEcoutes.textProperty(),
+//                fieldRecherche.textProperty()
+//        );
+//        for (ObservableValue<?> property : inputsFiltre) {
+//            property.addListener((obs, oldValue, newValue) -> {
+//                rafraichirListeChansons(playListSelectionne, 1);
+//            });
+//        }
+//
+//        for (MenuItem i : dropTri.getItems()) {
+//            i.setOnAction(e -> {
+//                dropTri.setText(i.getText());
+//                rafraichirListeChansons(playListSelectionne, 1);
+//            });
+//        }
+//
+//        // Écouteur sur le bouton pour rénitialiser les filtres/tri
+//        btnResetFiltres.setOnAction(e -> {
+//            renitialiserFiltresEtTri();
+//            rafraichirListeChansons(playListSelectionne, 1);
+//        });
+//
+//        // Écouteur sur le combo nombre de pages
+//        comboNbPages.setOnAction(e -> {
+//            nbChansonsParPage = comboNbPages.getValue();
+//            configurerColonnesTables();
+//            rafraichirListeChansons(playListSelectionne, 1);
+//        });
 
     };
     private void afficherAccueil() {
@@ -431,40 +357,40 @@ public class MainController {
 
     }
 
-    public void rafraichirListeChansons(Playlist playlist, int page) {
-        playListSelectionne = playlist;
-        recupererFiltresEtTri();
-
-        // Variable pour savoir si la playlist sélectionnée est filtrée/triée ou non
-        playlistEstFiltreOuTrie.set(!(dataFiltreTri.equals(templateDataFiltreTri)) );
-
-        // Si "toutes les chansons" sont sélectionné, on disable le bouton pour supprimer une chanson
-        toutesLesChansonsEstSelectionne.set(playListSelectionne == toutesLesChansons);
-
-        Playlist playlistTrie = playlistService.filtrer(playlist,
-                dataFiltreTri.get("filtreRecherche"),
-                dataFiltreTri.get("filtreGenre"),
-                dataFiltreTri.get("filtreDureeMax"),
-                dataFiltreTri.get("filtreNbEcoutes")
-        );
-
-        Playlist playlistTrieEtFiltre = playlistService.trierSelon(dataFiltreTri.get("critereTri"), playlistTrie);
-        List<Chanson> chansons = playlistTrieEtFiltre.getChansons();
-
-        pageCourante = page;
-        nbPagesTotales = (int) Math.ceil((double) chansons.size() / nbChansonsParPage);
-        if (nbPagesTotales == 0) nbPagesTotales = 1;
-        labelPages.setText(pageCourante + " / " + nbPagesTotales);
-
-        int indexDebut = (page - 1) * nbChansonsParPage;
-        int indexFin = Math.min(indexDebut + nbChansonsParPage, chansons.size());
-
-        if (indexDebut > indexFin) {
-            indexDebut = indexFin;
-        }
-
-        tableChansons.setItems(FXCollections.observableArrayList(chansons.subList(indexDebut, indexFin)));
-    }
+//    public void rafraichirListeChansons(Playlist playlist, int page) {
+//        playListSelectionne = playlist;
+//        recupererFiltresEtTri();
+//
+//        // Variable pour savoir si la playlist sélectionnée est filtrée/triée ou non
+//        playlistEstFiltreOuTrie.set(!(dataFiltreTri.equals(templateDataFiltreTri)) );
+//
+//        // Si "toutes les chansons" sont sélectionné, on disable le bouton pour supprimer une chanson
+//        toutesLesChansonsEstSelectionne.set(playListSelectionne == toutesLesChansons);
+//
+//        Playlist playlistTrie = playlistService.filtrer(playlist,
+//                dataFiltreTri.get("filtreRecherche"),
+//                dataFiltreTri.get("filtreGenre"),
+//                dataFiltreTri.get("filtreDureeMax"),
+//                dataFiltreTri.get("filtreNbEcoutes")
+//        );
+//
+//        Playlist playlistTrieEtFiltre = playlistService.trierSelon(dataFiltreTri.get("critereTri"), playlistTrie);
+//        List<Chanson> chansons = playlistTrieEtFiltre.getChansons();
+//
+//        pageCourante = page;
+//        nbPagesTotales = (int) Math.ceil((double) chansons.size() / nbChansonsParPage);
+//        if (nbPagesTotales == 0) nbPagesTotales = 1;
+//        labelPages.setText(pageCourante + " / " + nbPagesTotales);
+//
+//        int indexDebut = (page - 1) * nbChansonsParPage;
+//        int indexFin = Math.min(indexDebut + nbChansonsParPage, chansons.size());
+//
+//        if (indexDebut > indexFin) {
+//            indexDebut = indexFin;
+//        }
+//
+//        tableChansons.setItems(FXCollections.observableArrayList(chansons.subList(indexDebut, indexFin)));
+//    }
 
     public boolean estPageValide(int page) {
         return page >= 1 && page <= nbPagesTotales;
@@ -503,14 +429,14 @@ public class MainController {
             monterChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
                 playListSelectionne.deplacerChanson(chanson, "up");
-                rafraichirListeChansons(playListSelectionne, pageCourante);
+                sectionTableChansonsController.rafraichirListeChansons(playListSelectionne, pageCourante);
             });
 
             MenuItem descendreChanson = new MenuItem("Descendre d'une position");
             descendreChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
                 playListSelectionne.deplacerChanson(chanson, "down");
-                rafraichirListeChansons(playListSelectionne, pageCourante);
+                sectionTableChansonsController.rafraichirListeChansons(playListSelectionne, pageCourante);
             });
 
             // Désactiver les boutons de réordonnage si la liste est filtrée ou triée
@@ -520,16 +446,16 @@ public class MainController {
             MenuItem viderPlaylist = new MenuItem("Vider la playlist");
             viderPlaylist.setOnAction(e -> {
                 playListSelectionne.viderPlaylist();
-                PlaylistsController.rafraichirListePlaylist();
-                rafraichirListeChansons(playListSelectionne, pageCourante);
+                playlistsController.rafraichirListePlaylist();
+                sectionTableChansonsController.rafraichirListeChansons(playListSelectionne, pageCourante);
             });
 
             MenuItem supprimerChanson = new MenuItem("Supprimer de la playlist");
             supprimerChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
                 playListSelectionne.retirerChanson(chanson);
-                PlaylistsController.rafraichirListePlaylist();
-                rafraichirListeChansons(playListSelectionne, pageCourante);
+                playlistsController.rafraichirListePlaylist();
+                sectionTableChansonsController.rafraichirListeChansons(playListSelectionne, pageCourante);
             });
 
             // Désactiver le bouton de supression et vider la playlist si on est dans la bibliothèque
@@ -551,7 +477,7 @@ public class MainController {
         });
     }
 
-    public void ouvrirFenetreAjouterAPlaylist(Chanson chanson) {
+   /* public void ouvrirFenetreAjouterAPlaylist(Chanson chanson) {
         Stage popupStage = new Stage();
 
         // Définir le propriétaire et bloquer la fenêtre principale
@@ -575,7 +501,7 @@ public class MainController {
 
             try {
                 playlistSelectionne.ajouterChanson(chanson);
-                PlaylistsController.rafraichirListePlaylist();
+                playlistsController.rafraichirListePlaylist();
                 popupStage.close();
             } catch (Error er) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -588,7 +514,7 @@ public class MainController {
                 // showAndWait() bloque jusqu'au clic de l'utilisateur
                 Optional<ButtonType> resultat = alert.showAndWait();
 
-                /*return (resultat.isPresent() && resultat.get() == ButtonType.OK);*/
+                *//*return (resultat.isPresent() && resultat.get() == ButtonType.OK);*//*
             }
             });
 
@@ -602,5 +528,5 @@ public class MainController {
         popupStage.setResizable(false);
 
         popupStage.showAndWait();
-    }
+    }*/
 }
