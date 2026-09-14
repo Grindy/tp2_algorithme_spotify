@@ -45,7 +45,9 @@ public class PlaylistsController {
     public void setPlaylistManager(PlaylistManager manager) {this.manager = manager;}
     public void setToutesLesChansons(Playlist toutesLesChansons) {this.toutesLesChansons = toutesLesChansons;}
 
-
+    public TableView<Playlist> getTablePlaylists() {
+        return tablePlaylists;
+    }
 
     @FXML
     public void initialize() {
