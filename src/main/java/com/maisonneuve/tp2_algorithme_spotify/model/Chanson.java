@@ -34,6 +34,50 @@ public class Chanson {
         this.imageUrl = imageUrl;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public void setArtiste(String artiste) {
+        this.artiste = artiste;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setAnneeSortie(int anneeSortie) {
+        this.anneeSortie = anneeSortie;
+    }
+
+    public void setDuree(int duree) {
+        this.duree = duree;
+    }
+
+    public void setNbrEcoute(int nbrEcoute) {
+        this.nbrEcoute = nbrEcoute;
+    }
+
+    public void setDansabilitee(float dansabilitee) {
+        this.dansabilitee = dansabilitee;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public String getLabel(){
         return label;
     }
