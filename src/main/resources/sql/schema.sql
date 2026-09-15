@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS public.bibliotheque;
+DROP TABLE IF EXISTS public.playlist_chanson;
 DROP TABLE IF EXISTS public.chanson;
 DROP TABLE IF EXISTS public.playlist;
 DROP TABLE IF EXISTS public.audit_journalier;
@@ -35,20 +35,19 @@ CREATE TABLE public.chanson (
 CREATE TABLE public.playlist (
                                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                                 nom VARCHAR(50) NOT NULL DEFAULT '',
-                                dateCreation Date DEFAULT CURRENT_DATE,
-                                CONSTRAINT playlist_pkey PRIMARY KEY (id)
-
+                                dateCreation Date DEFAULT CURRENT_DATE
 );
 
-CREATE TABLE public.bibliotheque (
+CREATE TABLE public.playlist_chanson (
                                  id_chanson VARCHAR(50) REFERENCES public.chanson(id),
                                  id_playlist UUID REFERENCES public.playlist(id) ON DELETE CASCADE,
                                  position INTEGER NOT NULL,
-                                 PRIMARY KEY  (id_playlist, id_chanson)
+                                 PRIMARY KEY  (id_playlist, id_chanson),
+                                 UNIQUE (id_playlist, position)
 );
 
 CREATE TABLE audit_journalier (
                                   id SERIAL PRIMARY KEY,
                                   id_chanson VARCHAR(50) REFERENCES chanson(id),
-                                  date_lecture DATE NOT NULL DEFAULT CURRENT_DATE,
+                                  date_lecture DATE NOT NULL DEFAULT CURRENT_DATE
 );
