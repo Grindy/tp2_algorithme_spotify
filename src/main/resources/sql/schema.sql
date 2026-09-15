@@ -51,5 +51,4 @@ CREATE TABLE audit_journalier (
                                   id SERIAL PRIMARY KEY,
                                   id_chanson VARCHAR(50) REFERENCES chanson(id),
                                   date_lecture DATE NOT NULL DEFAULT CURRENT_DATE,
-                                  nbr_ecoute INTEGER NOT NULL DEFAULT 0
 );
