@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 public class PlaylistsController {
 
@@ -33,17 +35,21 @@ public class PlaylistsController {
     private TableColumn<Playlist, Void> colSupprimerPlaylist;
 
 
-
-
-
     private Bibliotheque biblio;
     private PlaylistManager manager;
     private Playlist toutesLesChansons;
-    public void setBibliotheque (Bibliotheque b) {
+
+    public void setBibliotheque(Bibliotheque b) {
         this.biblio = b;
     }
-    public void setPlaylistManager(PlaylistManager manager) {this.manager = manager;}
-    public void setToutesLesChansons(Playlist toutesLesChansons) {this.toutesLesChansons = toutesLesChansons;}
+
+    public void setPlaylistManager(PlaylistManager manager) {
+        this.manager = manager;
+    }
+
+    public void setToutesLesChansons(Playlist toutesLesChansons) {
+        this.toutesLesChansons = toutesLesChansons;
+    }
 
     public TableView<Playlist> getTablePlaylists() {
         return tablePlaylists;
@@ -51,11 +57,14 @@ public class PlaylistsController {
 
     @FXML
     public void initialize() {
+        creerContextMenu();
+
         // Lier les colonnes de la liste des playlists
         colPlaylists.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().toString()));
 
         colSupprimerPlaylist.setCellFactory(col -> new TableCell<Playlist, Void>() {
             private final Button btnSupprimerPlaylist = new Button("X");
+
             {
                 btnSupprimerPlaylist.getStyleClass().add("btn-table-view");
                 btnSupprimerPlaylist.setOnAction(event -> {
@@ -68,6 +77,7 @@ public class PlaylistsController {
                     }
                 });
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -90,27 +100,34 @@ public class PlaylistsController {
         }
     }
 
-    public void ouvrirFenetreCreerPlaylist() {
+    public void ouvrirFenetreActionPlaylist(
+            String titre,
+            String messageLabel,
+            String valeurInitiale,
+            String texteBtn,
+            Consumer<String> fonctionBtn) {
         Stage popupStage = new Stage();
 
-
-        popupStage.initOwner((Stage) btnAjouterPlaylist.getScene().getWindow());
+        popupStage.initOwner(btnAjouterPlaylist.getScene().getWindow());
         popupStage.initModality(Modality.WINDOW_MODAL);
-        popupStage.setTitle("Créer une nouvelle playlist");
+        popupStage.setTitle(titre);
 
 
-        Label message = new Label("Entrez un nom pour votre playlist");
-        TextField nomPlaylist = new TextField();
-        Button btnAjouter = new Button("Créer");
+        Label message = new Label(messageLabel);
+        TextField nomPlaylist = new TextField(valeurInitiale);
+        Button btnAction = new Button(texteBtn);
         nomPlaylist.setMaxWidth(Double.MAX_VALUE);
-        btnAjouter.setMaxWidth(Double.MAX_VALUE);
-        HBox hbox = new HBox(8,nomPlaylist, btnAjouter);
+        btnAction.setMaxWidth(Double.MAX_VALUE);
+        HBox hbox = new HBox(8, nomPlaylist, btnAction);
         HBox.setHgrow(nomPlaylist, Priority.ALWAYS);
 
-        btnAjouter.setOnAction(e -> {
-            manager.ajouterPlaylist(new Playlist(java.util.UUID.randomUUID().toString(), nomPlaylist.getText(), new ArrayList<Chanson>()));
-            rafraichirListePlaylist();
-            popupStage.close();
+        btnAction.setOnAction(e -> {
+            String saisie = nomPlaylist.getText().trim();
+            if (!saisie.isEmpty()) {
+                fonctionBtn.accept(saisie);
+                rafraichirListePlaylist();
+                popupStage.close();
+            }
         });
 
         VBox layout = new VBox(15, message, hbox);
@@ -131,7 +148,7 @@ public class PlaylistsController {
         alert.setHeaderText("Supprimer la playlist ?");
         alert.setContentText("Cette action est irréversible. Voulez-vous continuer ?");
 
-        alert.initOwner((Stage) btnAjouterPlaylist.getScene().getWindow());
+        alert.initOwner(btnAjouterPlaylist.getScene().getWindow());
 
         Optional<ButtonType> resultat = alert.showAndWait();
 
@@ -158,6 +175,47 @@ public class PlaylistsController {
 
     public void deselectionnerPlaylist() {
         tablePlaylists.getSelectionModel().clearSelection();
+    }
+
+    public void creerEtAjouterPlaylist(String nom) {
+        manager.ajouterPlaylist(new Playlist(
+                UUID.randomUUID().toString(),
+                nom,
+                new ArrayList<>()
+        ));
+    }
+
+    public void creerContextMenu() {
+        tablePlaylists.setRowFactory(tv -> {
+            TableRow<Playlist> row = new TableRow<>();
+
+            ContextMenu contextMenu = new ContextMenu();
+
+            MenuItem modifierNomChanson = new MenuItem("Modifier le nom de la playlist");
+            modifierNomChanson.setOnAction(e -> {
+                Playlist playlist = row.getItem();
+                ouvrirFenetreActionPlaylist(
+                        "Modifier le nom de la playlist",
+                        "Entrez le nouveau nom de votre playlist",
+                        playlist.getNom(),
+                        "Modifier",
+                        playlist::setNom
+                        );
+            });
+
+            contextMenu.getItems().add(modifierNomChanson);
+
+            // Ne s'affiche pas si la ligne est vide
+            row.emptyProperty().addListener((obs, wasEmpty, isEmpty) -> {
+                if (isEmpty) {
+                    row.setContextMenu(null);
+                } else {
+                    row.setContextMenu(contextMenu);
+                }
+            });
+
+            return row;
+        });
     }
 
 }

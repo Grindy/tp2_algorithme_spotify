@@ -130,8 +130,13 @@ public class MainController {
         });
 
         playlistsController.getBtnAjouterPlaylist().setOnAction(e -> {
-            playlistsController.ouvrirFenetreCreerPlaylist();
-            playlistsController.rafraichirListePlaylist();
+            playlistsController.ouvrirFenetreActionPlaylist(
+                    "Créer une nouvelle playlist",
+                    "Entrez un nom pour votre playlist",
+                    "",
+                    "Créer",
+                    playlistsController::creerEtAjouterPlaylist
+                    );
         });
 
         playlistsController.playlistSelectionneeProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
