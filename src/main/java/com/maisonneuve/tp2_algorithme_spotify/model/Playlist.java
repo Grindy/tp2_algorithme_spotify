@@ -28,6 +28,14 @@ public class Playlist {
         return nom;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
     public void setNom(String nom) {
         this.nom = nom;
     }
