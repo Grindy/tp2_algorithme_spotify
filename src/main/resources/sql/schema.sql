@@ -35,7 +35,7 @@ CREATE TABLE public.chanson (
 CREATE TABLE public.playlist (
                                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                                 nom VARCHAR(50) NOT NULL DEFAULT '',
-                                dateCreation VARCHAR(100) NOT NULL DEFAULT '',
+                                dateCreation Date DEFAULT CURRENT_DATE,
                                 CONSTRAINT playlist_pkey PRIMARY KEY (id)
 
 );
