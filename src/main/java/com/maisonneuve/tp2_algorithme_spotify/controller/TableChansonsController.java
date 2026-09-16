@@ -83,6 +83,11 @@ public class TableChansonsController {
     private ChansonController chansonController;
     private PlaylistService playlistService;
     private Bibliotheque biblio;
+    private MainController mainController;
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
 
     public void setPageCourante(int pageCourante) {
         this.pageCourante = pageCourante;
@@ -226,8 +231,13 @@ public class TableChansonsController {
                 btnLire.setOnAction(event -> {
                     Chanson chanson = recupererChansonCourante();
                     if (chanson != null) {
-                        Playlist contexte = (tablePlaylists != null && tablePlaylists.getSelectionModel().getSelectedItem() != null) ? tablePlaylists.getSelectionModel().getSelectedItem() : toutesLesChansons;
-                        LecteurService.getInstance().demarrerLecture(chanson, contexte);
+                        try {
+                            Playlist contexte = (tablePlaylists != null && tablePlaylists.getSelectionModel().getSelectedItem() != null) ? tablePlaylists.getSelectionModel().getSelectedItem() : toutesLesChansons;
+                            LecteurService.getInstance().demarrerLecture(chanson, contexte);
+                        } catch (Exception e) {
+                            mainController.afficherAlertErreur("Erreur lors du lancement de Spotify", e);
+                        }
+
                     }
                 });
 

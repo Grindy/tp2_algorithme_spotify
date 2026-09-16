@@ -1,5 +1,6 @@
 package com.maisonneuve.tp2_algorithme_spotify.service;
 
+import com.maisonneuve.tp2_algorithme_spotify.controller.MainController;
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import javafx.animation.KeyFrame;
@@ -16,7 +17,7 @@ public class LecteurService {
     private static final LecteurService INSTANCE = new LecteurService();
     public static LecteurService getInstance() { return INSTANCE; }
 
-
+    private MainController mainController;
     private Chanson chansonEnLecture;
     private Playlist contexteEnLecture;
     private int indexEnLecture;
@@ -45,6 +46,10 @@ public class LecteurService {
     }
 
     public void setOnEtatLectureChangee(Consumer<Boolean> callback) { this.onEtatLectureChangee = callback; }
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
 
     public void demarrerLecture(Chanson chanson, Playlist contexte) {
         this.contexteEnLecture = contexte;
@@ -75,11 +80,7 @@ public class LecteurService {
 
             }
             } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur lors du lancement de Spotify");
-                alert.setHeaderText("Erreur");
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
+                throw new RuntimeException("Erreur lors de la lecture de la chanson");
             }
     }
 
