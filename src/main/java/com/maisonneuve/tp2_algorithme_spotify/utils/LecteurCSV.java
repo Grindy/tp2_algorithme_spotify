@@ -42,7 +42,7 @@ public class LecteurCSV implements SourceDonnees {
                 chansons.add(c);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           throw new RuntimeException("Erreur lors de la lecture du CSV !", e);
         }
         return chansons;
     }
