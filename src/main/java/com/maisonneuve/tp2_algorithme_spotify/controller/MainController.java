@@ -1,11 +1,12 @@
 package com.maisonneuve.tp2_algorithme_spotify.controller;
 
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
+import com.maisonneuve.tp2_algorithme_spotify.model.ChansonDAO;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
+import com.maisonneuve.tp2_algorithme_spotify.model.PlaylistDAO;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
-import com.sun.tools.javac.Main;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -15,7 +16,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Formatter;
 
 public class MainController {
 
@@ -41,14 +43,16 @@ public class MainController {
     private Bibliotheque biblio;
     private Playlist toutesLesChansons;
     private PlaylistManager playlistManager;
-    private PlaylistService playlistService;
-    private int pageCourante = 1;
+    private PlaylistService playlistService = new PlaylistService();
+    private final int pageCourante = 1;
     private Playlist playListSelectionne;
     public static final String IMAGE_PAR_DEFAUT = "https://i.pinimg.com/736x/ba/8e/4d/ba8e4de740a641feb1709ce713889ea5.jpg";
     private Node accueilLeft;
     private Node accueilRight;
     private Node accueilCentre;
     private final BooleanProperty toutesLesChansonsEstSelectionne = new SimpleBooleanProperty(true);
+    private final PlaylistDAO playlistDao = new PlaylistDAO();
+    private final ChansonDAO chansonDAO = new ChansonDAO();
 
     @FXML
     private ChansonController chansonController;
@@ -60,7 +64,9 @@ public class MainController {
         accueilLeft = rootPane.getLeft();
         accueilCentre = rootPane.getCenter();
         accueilRight = rootPane.getRight();
-        creerBibliothequeEtPlaylists();
+        creerBibliotheque();
+        creerPlaylistBilio();
+        creerChansonPlaylistBiblio();
         afficherLecteur();
         initplaylistsController();
         initTableChansonController();
@@ -118,7 +124,7 @@ public class MainController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        }
+    }
 
     public void definirEcouteursDEvenements() {
         btnGraph.setOnAction(e -> afficherGraphique());
@@ -135,7 +141,7 @@ public class MainController {
                     "",
                     "Créer",
                     playlistsController::creerEtAjouterPlaylist
-                    );
+            );
         });
 
         playlistsController.playlistSelectionneeProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
@@ -151,43 +157,49 @@ public class MainController {
             sectionTableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
         });
 
-    };
+    }
+
     private void afficherAccueil() {
         rootPane.setLeft(accueilLeft);
         rootPane.setCenter(accueilCentre);
         rootPane.setRight(accueilRight);
     }
 
-    public void creerBibliothequeEtPlaylists() {
-        // Créer la bibliothèque et créer une playlist contenant toutes les chansons
+    public void creerBibliotheque() {
+        // Créer la bibliothèque
         try {
             biblio = new Bibliotheque("src/main/resources/data/spotifyData.csv");
         } catch (SQLException e) {
-            // Afficher une alerte
+            afficherAlertErreur("Erreur lors de la création de la Bibliothèque !", e);
         }
+    }
 
-        toutesLesChansons = new Playlist("1", "Toutes les chansons", biblio.getChansons());
-
-        // Créer 3 playlist de 25 chansons (les 75 premières chansons du CSV)
-        List<Chanson> chansons = biblio.getChansons();
-        Playlist playlist1 = new Playlist("2", "Playlist 1", chansons.subList(0, 25));
-        Playlist playlist2 = new Playlist("3", "Playlist 2", chansons.subList(25, 50));
-        Playlist playlist3 = new Playlist("4", "Playlist 3", chansons.subList(50, 75));
-
-        // Ajouter les playlists à la bibliothèque
-        playlistManager = new PlaylistManager(biblio);
-        for (Playlist p : List.of(playlist1, playlist2, playlist3)) {
-            playlistManager.ajouterPlaylist(p);
+    public void creerPlaylistBilio() {
+        try {
+            // Créer une playlist qui contiendra toutes les chansons
+            toutesLesChansons = new Playlist("11111111-1111-1111-1111-111111111111", "Toutes les chansons", new ArrayList<>());
+            playlistDao.ajouter(toutesLesChansons);
+        } catch (SQLException e) {
+            afficherAlertErreur("Erreur lors de la création de la playlist bibliothèque !", e);
         }
+    }
 
-        // Créer un playlist service pour les filtres et tris
-        playlistService = new PlaylistService();
-
+    public void creerChansonPlaylistBiblio() {
+        try {
+            // Ajouter toutes les chansons de la biblio à la playlist "Toutes les chansons"
+            for (Chanson c : biblio.getChansons()) {
+                playlistDao.ajouterChanson(toutesLesChansons, c);
+            }
+            System.out.println(toutesLesChansons.getChansons());
+        } catch (SQLException e) {
+            afficherAlertErreur("Erreur lors de l'ajout des chansons dans la playlist bibliothèque !", e);
+            e.printStackTrace();
+        }
     }
 
     public void afficherAlertErreur(String titre, Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur lors du lancement de Spotify");
+        alert.setTitle(titre);
         alert.setHeaderText("Erreur !");
         alert.setContentText(e.getMessage());
         alert.showAndWait();
