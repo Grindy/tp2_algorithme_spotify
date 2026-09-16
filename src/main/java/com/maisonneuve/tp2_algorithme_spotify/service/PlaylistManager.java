@@ -17,24 +17,14 @@ public class PlaylistManager {
         this.bibliotheque = bibliotheque;
     }
 
-    public void ajouterPlaylist(Playlist playlist) {
-        try {
+    public void ajouterPlaylist(Playlist playlist) throws SQLException {
             playlistDAO.ajouter(playlist);
             bibliotheque.getPlaylists().add(playlist);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 
-    public void retirerPlaylist(Playlist playlist) {
-        try {
+    public void retirerPlaylist(Playlist playlist) throws SQLException {
             playlistDAO.retirerPlaylist(playlist);
             bibliotheque.getPlaylists().remove(playlist);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public List<Playlist> getPlaylists() {
@@ -51,7 +41,6 @@ public class PlaylistManager {
     public void ajouterChanson(Playlist p, Chanson c) {
         try {
             playlistDAO.ajouterChanson(p, c);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
