@@ -61,7 +61,8 @@ public class AuditJournalierDAO {
     // get l'historique complet
     public List<AuditJournalier> listerHistorique() throws SQLException {
         String sql =
-                "SELECT * FROM audit_journalier";
+                "SELECT aj.id, aj.id_chanson, aj.date_lecture, c.titre FROM audit_journalier aj "
+                + "JOIN chanson c ON aj.id_chanson = c.id ";
 
         List<AuditJournalier> toutHistorique = new ArrayList<>();
 
@@ -70,9 +71,10 @@ public class AuditJournalierDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    String idChanson = rs.getString("idChanson");
+                    String idChanson = rs.getString("id_chanson");
                     AuditJournalier historique = new AuditJournalier(idChanson);
-                    historique.setDateLecture(rs.getTimestamp("dateLecture"));
+                    historique.setDateLecture(rs.getTimestamp("date_lecture"));
+                    historique.setTitre(rs.getString("titre"));
 
                     toutHistorique.add(historique);
                 }

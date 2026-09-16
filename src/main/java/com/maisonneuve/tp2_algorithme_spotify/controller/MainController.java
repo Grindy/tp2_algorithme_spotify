@@ -31,6 +31,8 @@ public class MainController {
     private TextField fieldRecherche;
     @FXML
     private Button btnGraph;
+    @FXML
+    private Button btnAuditJournalier;
 
     // Left
 
@@ -53,6 +55,7 @@ public class MainController {
     private final BooleanProperty toutesLesChansonsEstSelectionne = new SimpleBooleanProperty(true);
     private final PlaylistDAO playlistDao = new PlaylistDAO();
     private final ChansonDAO chansonDAO = new ChansonDAO();
+    private AuditJournalierController auditJournalierController = new AuditJournalierController();
 
     @FXML
     private ChansonController chansonController;
@@ -143,6 +146,9 @@ public class MainController {
                     playlistsController::creerEtAjouterPlaylist
             );
         });
+
+        btnAuditJournalier.setOnAction( e -> auditJournalierController.afficherAuditJournalier(btnAuditJournalier.getScene().getWindow()));
+
 
         playlistsController.playlistSelectionneeProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
             if (nouvellePlaylist != null) {
