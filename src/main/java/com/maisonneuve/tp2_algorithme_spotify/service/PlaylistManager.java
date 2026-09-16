@@ -48,17 +48,16 @@ public class PlaylistManager {
                 .orElse(null);
     }
 
-    // Dans PlaylistManager :
-    public void ajouterChansonAPlaylist(Playlist p, Chanson c) {
+    public void ajouterChanson(Playlist p, Chanson c) {
         try {
             playlistDAO.ajouterChanson(p, c);
-            // p.getChansons().add(c); est déjà fait dans ton DAO
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void retirerChansonDePlaylist(Playlist p, Chanson c) {
+    public void retirerChanson(Playlist p, Chanson c) {
         try {
             playlistDAO.retirerChanson(p, c);
         } catch (SQLException e) {
