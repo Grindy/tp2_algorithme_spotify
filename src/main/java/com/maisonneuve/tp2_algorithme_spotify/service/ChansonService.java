@@ -14,9 +14,9 @@ public class ChansonService {
         SourceDonnees csv = new LecteurCSV(cheminCSV);
         List<Chanson> toutesLesChanson = csv.charger();
 
-        /*for (Chanson c : toutesLesChanson) {
+        for (Chanson c : toutesLesChanson) {
             chansonDao.ajouter(c);
-        }*/
+        }
         return toutesLesChanson;
     }
 }
