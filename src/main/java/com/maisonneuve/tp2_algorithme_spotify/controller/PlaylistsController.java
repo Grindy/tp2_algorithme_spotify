@@ -1,6 +1,6 @@
 package com.maisonneuve.tp2_algorithme_spotify.controller;
 
-import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
+import com.maisonneuve.tp2_algorithme_spotify.controller.MainController;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,6 +39,7 @@ public class PlaylistsController {
     private Bibliotheque biblio;
     private PlaylistManager manager;
     private Playlist toutesLesChansons;
+    private MainController mainController;
 
     public void setBibliotheque(Bibliotheque b) {
         this.biblio = b;
@@ -70,10 +72,15 @@ public class PlaylistsController {
                 btnSupprimerPlaylist.setOnAction(event -> {
                     Playlist playlist = getTableRow().getItem();
                     if (playlist != null && demanderConfirmationSuppressionPlaylist()) {
-                        manager.retirerPlaylist(playlist);
-                        rafraichirListePlaylist();
-                        // On vide la sélection, le MainController s'occupera d'afficher "Toutes les chansons"
-                        tablePlaylists.getSelectionModel().clearSelection();
+                        try {
+                            manager.retirerPlaylist(playlist);
+                            rafraichirListePlaylist();
+                            // On vide la sélection, le MainController s'occupera d'afficher "Toutes les chansons"
+                            tablePlaylists.getSelectionModel().clearSelection();
+                        } catch (Exception e) {
+                            mainController.afficherAlertErreur("Erreur lors de la suppression de la playlist", e);
+                        }
+
                     }
                 });
             }
@@ -178,11 +185,16 @@ public class PlaylistsController {
     }
 
     public void creerEtAjouterPlaylist(String nom) {
-        manager.ajouterPlaylist(new Playlist(
-                UUID.randomUUID().toString(),
-                nom,
-                new ArrayList<>()
-        ));
+        try {
+            manager.ajouterPlaylist(new Playlist(
+                    UUID.randomUUID().toString(),
+                    nom,
+                    new ArrayList<>()
+            ));
+            rafraichirListePlaylist();
+        } catch (Exception e) {
+            mainController.afficherAlertErreur("Erreur lors de la création de la playlist", e);
+        }
     }
 
     public void creerContextMenu() {
