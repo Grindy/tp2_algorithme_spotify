@@ -12,22 +12,23 @@ public class ChansonDAO {
     public void ajouter(Chanson c) throws SQLException {
         String sql =
                 "INSERT INTO chanson"
-                        + "(titre, artiste, album, genre, label, anneeSortie, duree, nbrEcoute, dansabilitee, imageUrl) "
+                        + "(id, titre, artiste, album, genre, label, anneeSortie, duree, nbrEcoute, dansabilitee, imageUrl) "
                         + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection co = Connexion.getConnexion();
              PreparedStatement ps = co.prepareStatement(sql)) {
 
-            ps.setString(1, c.getTitre());
-            ps.setString(2, c.getArtiste());
-            ps.setString(3, c.getAlbum());
-            ps.setString(4, c.getGenre());
-            ps.setString(5, c.getAlbum());
-            ps.setInt(6, c.getAnneeSortie());
-            ps.setInt(7, c.getDuree());
-            ps.setInt(8, c.getNbrEcoute());
-            ps.setFloat(9, c.getDansabilitee());
-            ps.setString(10, c.getImageUrl());
+            ps.setString(1, c.getId());
+            ps.setString(2, c.getTitre());
+            ps.setString(3, c.getArtiste());
+            ps.setString(4, c.getAlbum());
+            ps.setString(5, c.getGenre());
+            ps.setString(6, c.getLabel());
+            ps.setInt(7, c.getAnneeSortie());
+            ps.setInt(8, c.getDuree());
+            ps.setInt(9, c.getNbrEcoute());
+            ps.setFloat(10, c.getDansabilitee());
+            ps.setString(11, c.getImageUrl());
 
             ps.executeUpdate();
 
