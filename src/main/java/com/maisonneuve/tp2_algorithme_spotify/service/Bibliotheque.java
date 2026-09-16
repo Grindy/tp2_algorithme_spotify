@@ -3,6 +3,7 @@ package com.maisonneuve.tp2_algorithme_spotify.service;
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.ChansonDAO;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
+import com.maisonneuve.tp2_algorithme_spotify.model.PlaylistDAO;
 import com.maisonneuve.tp2_algorithme_spotify.utils.LecteurCSV;
 import com.maisonneuve.tp2_algorithme_spotify.utils.SourceDonnees;
 
@@ -14,11 +15,13 @@ public class Bibliotheque {
     private final List<Chanson> chansons;
     private final List<Playlist> playlists;
     private final ChansonDAO chansonDAO;
+    private final PlaylistDAO playlistDAO;
 
     public Bibliotheque(String cheminCSV) throws SQLException {
         this.chansonDAO = new ChansonDAO();
+        this.playlistDAO = new PlaylistDAO();
         this.chansons = ChansonService.chargerPuisAjouterToutesLesChansons(cheminCSV, chansonDAO);
-        this.playlists = new ArrayList<>();
+        this.playlists = playlistDAO.getToutesLesPlaylists();
     }
 
     public ChansonDAO getChansonDAO() {
