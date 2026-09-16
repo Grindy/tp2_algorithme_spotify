@@ -72,7 +72,7 @@ public class AuditJournalierDAO {
                 while (rs.next()) {
                     String idChanson = rs.getString("idChanson");
                     AuditJournalier historique = new AuditJournalier(idChanson);
-                    historique.setDateLecture(rs.getDate("dateLecture"));
+                    historique.setDateLecture(rs.getTimestamp("dateLecture"));
 
                     toutHistorique.add(historique);
                 }

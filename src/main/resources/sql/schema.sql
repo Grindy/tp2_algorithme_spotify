@@ -50,5 +50,5 @@ CREATE TABLE public.playlist_chanson (
 CREATE TABLE audit_journalier (
                                   id SERIAL PRIMARY KEY,
                                   id_chanson VARCHAR(50) REFERENCES chanson(id),
-                                  date_lecture DATE NOT NULL DEFAULT CURRENT_DATE
+                                  date_lecture TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

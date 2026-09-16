@@ -1,5 +1,6 @@
 package com.maisonneuve.tp2_algorithme_spotify.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class AuditJournalier {
@@ -32,7 +33,7 @@ public class AuditJournalier {
         return dateLecture;
     }
 
-    public void setDateLecture(Date dateJouee) {
-        this.dateLecture = dateJouee;
+    public void setDateLecture(Timestamp dateLecture) {
+        this.dateLecture = dateLecture;
     }
 }
