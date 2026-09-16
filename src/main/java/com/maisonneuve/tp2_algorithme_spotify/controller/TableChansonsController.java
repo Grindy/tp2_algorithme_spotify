@@ -5,6 +5,7 @@ import com.maisonneuve.tp2_algorithme_spotify.model.Genre;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
+import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -23,12 +24,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 
 public class TableChansonsController {
     @FXML
@@ -81,9 +81,14 @@ public class TableChansonsController {
     private TableView<Playlist> tablePlaylists;
     private Playlist toutesLesChansons;
     private ChansonController chansonController;
+    private MainController mainController;
     private PlaylistService playlistService;
     private Bibliotheque biblio;
-    private MainController mainController;
+    private PlaylistManager playlistManager;
+
+    public void setPlaylistManager(PlaylistManager playlistManager) {
+        this.playlistManager = playlistManager;
+    }
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -249,14 +254,20 @@ public class TableChansonsController {
                 });
 
                 btnSupprimer.setOnAction(event -> {
-                    Chanson chanson = recupererChansonCourante();
-                    if (chanson != null && toutesLesChansonsEstSelectionne != null && !toutesLesChansonsEstSelectionne.get()) {
-                        playListSelectionne.retirerChanson(chanson);
-                        if (playlistsController != null) {
-                            playlistsController.rafraichirListePlaylist();
+                    try {
+                        Chanson chanson = recupererChansonCourante();
+                        if (chanson != null && toutesLesChansonsEstSelectionne != null && !toutesLesChansonsEstSelectionne.get()) {
+                            playlistManager.retirerChanson(playListSelectionne, chanson);
+                            if (playlistsController != null) {
+                                playlistsController.rafraichirListePlaylist();
+                            }
+                            rafraichirListeChansons(playListSelectionne, pageCourante);
                         }
-                        rafraichirListeChansons(playListSelectionne, pageCourante);
+                    } catch (Exception e) {
+                        mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson !", e);
+                        throw new RuntimeException(e);
                     }
+
                 });
             }
 
@@ -396,6 +407,7 @@ public class TableChansonsController {
         }
 
         tableChansons.setItems(FXCollections.observableArrayList(chansons.subList(indexDebut, indexFin)));
+        configurerColonnesTable();
     }
 
     public void recupererFiltresEtTri() {
@@ -507,19 +519,13 @@ public class TableChansonsController {
             Playlist playlistSelectionne = playlists.getSelectionModel().getSelectedItem();
 
             try {
-                playlistSelectionne.ajouterChanson(chanson);
+                if (playlistSelectionne.getChansons().contains(chanson)) throw new Exception("Cette chanson figure déjà dans cette playlist !");
+                playlistManager.ajouterChanson(playlistSelectionne, chanson);
                 playlistsController.rafraichirListePlaylist();
                 popupStage.close();
-            } catch (Error er) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Attention");
-                alert.setContentText(er.getMessage());
-
-                // Attache la popup à la fenêtre principale
-                alert.initOwner(popupStage);
-
-                // showAndWait() bloque jusqu'au clic de l'utilisateur
-                alert.showAndWait();
+            } catch (Exception ex) {
+               mainController.afficherAlertErreur("Erreur lors de l'ajout de la chanson à la playlist !", ex);
+               ex.printStackTrace();
             }
         });
 

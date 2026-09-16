@@ -4,6 +4,7 @@ import com.maisonneuve.tp2_algorithme_spotify.controller.MainController;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
+import com.sun.tools.javac.Main;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -40,6 +41,15 @@ public class PlaylistsController {
     private PlaylistManager manager;
     private Playlist toutesLesChansons;
     private MainController mainController;
+    private TableChansonsController tableChansonsController;
+
+    public void setTableChansonsController(TableChansonsController tableChansonsController) {
+        this.tableChansonsController = tableChansonsController;
+    }
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
 
     public void setBibliotheque(Bibliotheque b) {
         this.biblio = b;
@@ -59,8 +69,38 @@ public class PlaylistsController {
 
     @FXML
     public void initialize() {
+        configurerColonnesTable();
         creerContextMenu();
+        definirEcouteursDEvenements();
+    }
 
+    public void definirEcouteursDEvenements() {
+        btnAjouterPlaylist.setOnAction(e -> {
+            ouvrirFenetreActionPlaylist(
+                    "Créer une nouvelle playlist",
+                    "Entrez un nom pour votre playlist",
+                    "",
+                    "Créer",
+                    this::creerEtAjouterPlaylist
+            );
+        });
+
+        playlistSelectionneeProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
+            if (nouvellePlaylist != null) {
+                tableChansonsController.rafraichirListeChansons(nouvellePlaylist, 1);
+            } else {
+                // Si la playlist est supprimée et la sélection devient nulle
+                tableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
+            }
+        });
+
+        btnVotreBibliotheque.setOnAction(e -> {
+            tableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
+            tablePlaylists.getSelectionModel().clearSelection();
+        });
+    }
+
+    public void configurerColonnesTable(){
         // Lier les colonnes de la liste des playlists
         colPlaylists.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().toString()));
 
@@ -194,6 +234,7 @@ public class PlaylistsController {
             rafraichirListePlaylist();
         } catch (Exception e) {
             mainController.afficherAlertErreur("Erreur lors de la création de la playlist", e);
+            e.printStackTrace();
         }
     }
 

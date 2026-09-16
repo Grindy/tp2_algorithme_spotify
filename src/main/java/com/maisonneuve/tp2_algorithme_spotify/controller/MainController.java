@@ -90,6 +90,7 @@ public class MainController {
         sectionTableChansonsController.setBiblio(biblio);
         sectionTableChansonsController.setPageCourante(pageCourante);
         sectionTableChansonsController.setMainController(this);
+        sectionTableChansonsController.setPlaylistManager(playlistManager);
     }
 
     private void initplaylistsController() {
@@ -97,6 +98,9 @@ public class MainController {
         playlistsController.setPlaylistManager(playlistManager);
         playlistsController.setToutesLesChansons(toutesLesChansons);
         playlistsController.rafraichirListePlaylist();
+        playlistsController.setPlaylistManager(playlistManager);
+        playlistsController.setMainController(this);
+        playlistsController.setTableChansonsController(sectionTableChansonsController);
     }
 
     @FXML
@@ -133,30 +137,6 @@ public class MainController {
             playlistsController.deselectionnerPlaylist();
             sectionTableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
         });
-
-        playlistsController.getBtnAjouterPlaylist().setOnAction(e -> {
-            playlistsController.ouvrirFenetreActionPlaylist(
-                    "Créer une nouvelle playlist",
-                    "Entrez un nom pour votre playlist",
-                    "",
-                    "Créer",
-                    playlistsController::creerEtAjouterPlaylist
-            );
-        });
-
-        playlistsController.playlistSelectionneeProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
-            if (nouvellePlaylist != null) {
-                sectionTableChansonsController.rafraichirListeChansons(nouvellePlaylist, 1);
-            } else {
-                // Si la playlist est supprimée et la sélection devient nulle
-                sectionTableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
-            }
-        });
-
-        playlistsController.getBtnVotreBibliotheque().setOnAction(e -> {
-            sectionTableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
-        });
-
     }
 
     private void afficherAccueil() {
@@ -166,9 +146,10 @@ public class MainController {
     }
 
     public void creerBibliotheque() {
-        // Créer la bibliothèque
         try {
+            // Créer la bibliothèque et le manager
             biblio = new Bibliotheque("src/main/resources/data/spotifyData.csv");
+            playlistManager = new PlaylistManager(biblio);
         } catch (SQLException e) {
             afficherAlertErreur("Erreur lors de la création de la Bibliothèque !", e);
         }
