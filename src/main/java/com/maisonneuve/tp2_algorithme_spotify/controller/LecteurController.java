@@ -1,6 +1,7 @@
 package com.maisonneuve.tp2_algorithme_spotify.controller;
 
 import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
+import com.maisonneuve.tp2_algorithme_spotify.model.AuditJournalierDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,6 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
 import javafx.scene.shape.Rectangle;
+
+import java.sql.SQLException;
 
 public class LecteurController {
 
@@ -27,6 +30,7 @@ public class LecteurController {
     @FXML private Label labelLecteurArtiste;
 
     private final LecteurService lecteurService = LecteurService.getInstance();
+    private AuditJournalierDAO auditJournalierDAO = new AuditJournalierDAO();
 
     @FXML
     public void initialize() {
@@ -56,6 +60,14 @@ public class LecteurController {
             sliderTemps.setMax(chanson.getDuree());
             sliderTemps.setValue(0);
             labelTempsActuel.setText("0:00");
+
+            try {
+                auditJournalierDAO.ajouter(chanson.getId());
+            } catch (SQLException e) {
+                System.err.println("Erreur lors de l'ajout à l'historique: " + e.getMessage());
+            }
+
+
         });
 
         lecteurService.setOnEtatLectureChangee(enLecture -> {
