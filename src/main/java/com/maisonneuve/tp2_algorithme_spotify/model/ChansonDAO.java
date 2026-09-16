@@ -27,7 +27,7 @@ public class ChansonDAO {
             ps.setInt(7, c.getDuree());
             ps.setInt(8, c.getNbrEcoute());
             ps.setFloat(9, c.getDansabilitee());
-            ps.setString(9, c.getImageUrl());
+            ps.setString(10, c.getImageUrl());
 
             ps.executeUpdate();
 
@@ -94,17 +94,18 @@ public class ChansonDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    chansonTrouvee.id = rs.getString("id");
-                    chansonTrouvee.titre = rs.getString("titre");
-                    chansonTrouvee.artiste = rs.getString("artiste");
-                    chansonTrouvee.album = rs.getString("album");
-                    chansonTrouvee.genre = rs.getString("genre");
-                    chansonTrouvee.label = rs.getString("label");
-                    chansonTrouvee.anneeSortie = rs.getInt("anneeSortie");
-                    chansonTrouvee.duree = rs.getInt("duree");
-                    chansonTrouvee.nbrEcoute = rs.getInt("nbrEcoute");
-                    chansonTrouvee.dansabilitee = rs.getFloat("dansabilitee");
-                    chansonTrouvee.imageUrl = rs.getString("imageUrl");
+                    id = rs.getString("id");
+                    String titre = rs.getString("titre");
+                    String artiste = rs.getString("artiste");
+                    String album = rs.getString("album");
+                    String genre = rs.getString("genre");
+                    String label = rs.getString("label");
+                    int anneeSortie = rs.getInt("anneeSortie");
+                    int duree = rs.getInt("duree");
+                    int nbrEcoute = rs.getInt("nbrEcoute");
+                    float dansabilitee = rs.getFloat("dansabilitee");
+                    String imageUrl = rs.getString("imageUrl");
+                    chansonTrouvee = new Chanson( id,  titre,  artiste,  album,  genre,  label,  anneeSortie,  duree,  nbrEcoute,  dansabilitee,  imageUrl);
                 }
             }
         }
