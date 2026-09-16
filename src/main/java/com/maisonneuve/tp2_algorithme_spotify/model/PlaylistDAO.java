@@ -168,7 +168,6 @@ public class PlaylistDAO {
         try (Connection co = Connexion.getConnexion();
              PreparedStatement ps = co.prepareStatement(sql)) {
 
-            // Si id_playlist est un UUID en base PostgreSQL :
             ps.setObject(1, UUID.fromString(p.getId()));
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -190,8 +189,6 @@ public class PlaylistDAO {
                 }
             }
         }
-
-        // Met à jour la liste dans l'instance reçue pour que tout concorde en mémoire
         if (p.getChansons() != null) {
             p.getChansons().clear();
             p.getChansons().addAll(liste);
@@ -199,4 +196,28 @@ public class PlaylistDAO {
 
         return liste;
     }
+
+    public List<Playlist> getToutesLesPlaylists() throws SQLException {
+        List<Playlist> liste = new ArrayList<>();
+        String sql = "SELECT id, nom, datecreation FROM playlist ORDER BY nom ASC";
+
+        try (Connection co = Connexion.getConnexion();
+             PreparedStatement ps = co.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Playlist p = new Playlist(
+                        rs.getString("id"),
+                        rs.getString("nom"),
+                        new ArrayList<>()
+                );
+
+                getChansons(p);
+
+                liste.add(p);
+            }
+        }
+        return liste;
+    }
+
 }
