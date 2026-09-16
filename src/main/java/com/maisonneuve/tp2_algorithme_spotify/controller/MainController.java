@@ -203,5 +203,6 @@ public class MainController {
         alert.setHeaderText("Erreur !");
         alert.setContentText(e.getMessage());
         alert.showAndWait();
+        e.printStackTrace();
     }
 }
