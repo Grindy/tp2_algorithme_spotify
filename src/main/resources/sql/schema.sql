@@ -1,7 +1,8 @@
+DROP TABLE IF EXISTS public.audit_journalier;
 DROP TABLE IF EXISTS public.playlist_chanson;
 DROP TABLE IF EXISTS public.chanson;
 DROP TABLE IF EXISTS public.playlist;
-DROP TABLE IF EXISTS public.audit_journalier;
+DROP TYPE IF EXISTS public.genre;
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
@@ -20,7 +21,7 @@ CREATE TYPE GENRE as ENUM (
 
 CREATE TABLE public.chanson (
                                 id VARCHAR(50) PRIMARY KEY ,
-                                titre VARCHAR(50) NOT NULL DEFAULT '',
+                                titre VARCHAR(100) NOT NULL DEFAULT '',
                                 artiste VARCHAR(100) NOT NULL DEFAULT '',
                                 album VARCHAR(100) NOT NULL DEFAULT '',
                                 genre GENRE,

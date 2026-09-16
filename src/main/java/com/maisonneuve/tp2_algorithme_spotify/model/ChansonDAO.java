@@ -13,7 +13,8 @@ public class ChansonDAO {
         String sql =
                 "INSERT INTO chanson"
                         + "(id, titre, artiste, album, genre, label, anneeSortie, duree, nbrEcoute, dansabilitee, imageUrl) "
-                        + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "
+                        + "ON CONFLICT (id) DO NOTHING";
 
         try (Connection co = Connexion.getConnexion();
              PreparedStatement ps = co.prepareStatement(sql)) {
@@ -22,7 +23,7 @@ public class ChansonDAO {
             ps.setString(2, c.getTitre());
             ps.setString(3, c.getArtiste());
             ps.setString(4, c.getAlbum());
-            ps.setString(5, c.getGenre());
+            ps.setObject(5, Genre.fromNomBrut(c.getGenre()).name(), Types.OTHER);
             ps.setString(6, c.getLabel());
             ps.setInt(7, c.getAnneeSortie());
             ps.setInt(8, c.getDuree());

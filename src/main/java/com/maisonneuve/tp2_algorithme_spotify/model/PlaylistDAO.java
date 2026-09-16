@@ -1,4 +1,5 @@
 package com.maisonneuve.tp2_algorithme_spotify.model;
+
 import java.util.UUID;
 
 import com.maisonneuve.tp2_algorithme_spotify.utils.Connexion;
@@ -14,11 +15,13 @@ public class PlaylistDAO {
     public void ajouter(Playlist p) throws SQLException {
         String sql =
                 "INSERT INTO playlist"
-                    + "(nom) "
-                    + "VALUES(?)";
+                        + "(id, nom) "
+                        + "VALUES(?, ?) "
+                        + "ON CONFLICT (id) DO NOTHING";
         try (Connection co = Connexion.getConnexion();
              PreparedStatement ps = co.prepareStatement(sql)) {
-            ps.setString(1, p.getNom());
+            ps.setObject(1, UUID.fromString(p.getId()));
+            ps.setString(2, p.getNom());
             ps.executeUpdate();
             System.out.println("Playlist " + p.getNom() + " a été créée!");
         }
@@ -41,7 +44,7 @@ public class PlaylistDAO {
     public void ajouterChanson(Playlist p, Chanson c) throws SQLException {
         int nouvellePosition = p.getChansons().size() + 1;
 
-        String sql = "INSERT INTO playlist_chanson (id_playlist, id_chanson, position) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO playlist_chanson (id_playlist, id_chanson, position) VALUES (?, ?, ?) ON CONFLICT (id_playlist,id_chanson) DO NOTHING ";
 
         try (Connection co = Connexion.getConnexion();
              PreparedStatement ps = co.prepareStatement(sql)) {
@@ -52,12 +55,13 @@ public class PlaylistDAO {
 
             ps.executeUpdate();
 
-            p.getChansons().add(c);
+            if (!p.getChansons().contains(c)) {
+                p.getChansons().add(c);
+            }
             System.out.println("Chanson " + c.getTitre() + " ajoutée à la playlist " + p.getNom() + " en position " + nouvellePosition);
+
         }
     }
-
-
 
     //Je comprend parfaitement cette fonction mais, de la a la pondre moi meme, on repassera
     //J'ai utilisé gemini car mes pistes de solution s'en allaient un peu n'importe ou
@@ -139,7 +143,7 @@ public class PlaylistDAO {
                 //on cherche dans quelle playlist et dans les 2 position donnees
                 "WHERE id_playlist = ? AND position IN (?,?)";
         try (Connection co = Connexion.getConnexion();
-        PreparedStatement ps = co.prepareStatement(sql)) {
+             PreparedStatement ps = co.prepareStatement(sql)) {
             ps.setInt(1, posX);
             ps.setInt(2, posY);
             ps.setInt(3, posY);
@@ -199,7 +203,7 @@ public class PlaylistDAO {
 
     public List<Playlist> getToutesLesPlaylists() throws SQLException {
         List<Playlist> liste = new ArrayList<>();
-        String sql = "SELECT id, nom, datecreation FROM playlist ORDER BY nom ASC";
+        String sql = "SELECT id, nom, datecreation FROM playlist WHERE id!='11111111-1111-1111-1111-111111111111' ORDER BY nom ASC";
 
         try (Connection co = Connexion.getConnexion();
              PreparedStatement ps = co.prepareStatement(sql);
