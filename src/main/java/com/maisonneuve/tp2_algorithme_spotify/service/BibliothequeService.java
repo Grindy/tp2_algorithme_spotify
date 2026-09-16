@@ -16,8 +16,7 @@ public class BibliothequeService {
     public List<Chanson> filtrer(
             String genre,
             Integer dureeMax,
-            Integer nbrEcoute,
-            Playlist playlist
+            Integer nbrEcoute
     ) {
         return bibliotheque.getChansons()
                 .stream()

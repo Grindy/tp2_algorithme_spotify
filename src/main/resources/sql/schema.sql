@@ -43,7 +43,7 @@ CREATE TABLE public.playlist_chanson (
                                  id_playlist UUID REFERENCES public.playlist(id) ON DELETE CASCADE,
                                  position INTEGER NOT NULL,
                                  PRIMARY KEY  (id_playlist, id_chanson),
-                                 UNIQUE (id_playlist, position)
+                                 UNIQUE (id_playlist, position) DEFERRABLE INITIALLY IMMEDIATE
 );
 
 CREATE TABLE audit_journalier (
