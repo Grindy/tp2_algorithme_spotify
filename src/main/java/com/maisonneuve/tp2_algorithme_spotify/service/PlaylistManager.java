@@ -38,28 +38,17 @@ public class PlaylistManager {
                 .orElse(null);
     }
 
-    public void ajouterChanson(Playlist p, Chanson c) {
-        try {
+    public void ajouterChanson(Playlist p, Chanson c) throws SQLException {
             playlistDAO.ajouterChanson(p, c);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    public void retirerChanson(Playlist p, Chanson c) {
-        try {
+    public void retirerChanson(Playlist p, Chanson c) throws SQLException {
             playlistDAO.retirerChanson(p, c);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    public void deplacerChanson(Playlist p, Chanson c, String direction) {
-        try {
+    public void deplacerChanson(Playlist p, Chanson c, String direction) throws SQLException {
             playlistDAO.deplacerChanson(p, c, direction);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
 }
