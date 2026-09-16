@@ -5,6 +5,7 @@ import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
+import com.sun.tools.javac.Main;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -12,6 +13,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+
+import java.sql.SQLException;
 import java.util.*;
 
 public class MainController {
@@ -39,23 +42,18 @@ public class MainController {
     private Playlist toutesLesChansons;
     private PlaylistManager playlistManager;
     private PlaylistService playlistService;
-    private int nbChansonsParPage = 25;
-    private int nbPagesTotales;
     private int pageCourante = 1;
     private Playlist playListSelectionne;
     public static final String IMAGE_PAR_DEFAUT = "https://i.pinimg.com/736x/ba/8e/4d/ba8e4de740a641feb1709ce713889ea5.jpg";
     private Node accueilLeft;
     private Node accueilRight;
     private Node accueilCentre;
-    private final BooleanProperty playlistEstFiltreOuTrie = new SimpleBooleanProperty(false);
     private final BooleanProperty toutesLesChansonsEstSelectionne = new SimpleBooleanProperty(true);
 
     @FXML
     private ChansonController chansonController;
-
     @FXML
     private TableChansonsController sectionTableChansonsController;
-
 
     @FXML
     public void initialize() {
@@ -85,6 +83,7 @@ public class MainController {
         sectionTableChansonsController.setToutesLesChansonsEstSelectionne(toutesLesChansonsEstSelectionne);
         sectionTableChansonsController.setBiblio(biblio);
         sectionTableChansonsController.setPageCourante(pageCourante);
+        sectionTableChansonsController.setMainController(this);
     }
 
     private void initplaylistsController() {
@@ -161,7 +160,12 @@ public class MainController {
 
     public void creerBibliothequeEtPlaylists() {
         // Créer la bibliothèque et créer une playlist contenant toutes les chansons
-        biblio = new Bibliotheque("src/main/resources/data/spotifyData.csv");
+        try {
+            biblio = new Bibliotheque("src/main/resources/data/spotifyData.csv");
+        } catch (SQLException e) {
+            // Afficher une alerte
+        }
+
         toutesLesChansons = new Playlist("1", "Toutes les chansons", biblio.getChansons());
 
         // Créer 3 playlist de 25 chansons (les 75 premières chansons du CSV)
@@ -179,5 +183,13 @@ public class MainController {
         // Créer un playlist service pour les filtres et tris
         playlistService = new PlaylistService();
 
+    }
+
+    public void afficherAlertErreur(String titre, Exception e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur lors du lancement de Spotify");
+        alert.setHeaderText("Erreur !");
+        alert.setContentText(e.getMessage());
+        alert.showAndWait();
     }
 }

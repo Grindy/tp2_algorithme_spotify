@@ -26,5 +26,4 @@ public class BibliothequeService {
                 .filter(c -> nbrEcoute == null || c.getNbrEcoute() <= nbrEcoute)
                 .collect(Collectors.toList());
     }
-
 }
