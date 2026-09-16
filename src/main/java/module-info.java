@@ -15,4 +15,6 @@ module com.maisonneuve.tp2_algorithme_spotify {
 
     opens com.maisonneuve.tp2_algorithme_spotify.model to javafx.fxml;
     exports com.maisonneuve.tp2_algorithme_spotify.model;
+    exports com.maisonneuve.tp2_algorithme_spotify.DAO;
+    opens com.maisonneuve.tp2_algorithme_spotify.DAO to javafx.fxml;
 }

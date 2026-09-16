@@ -1,7 +1,7 @@
 package com.maisonneuve.tp2_algorithme_spotify.controller;
 
 import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
-import com.maisonneuve.tp2_algorithme_spotify.model.AuditJournalierDAO;
+import com.maisonneuve.tp2_algorithme_spotify.DAO.AuditJournalierDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
