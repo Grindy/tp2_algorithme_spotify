@@ -14,8 +14,8 @@ public class AuditJournalierDAO {
     // ajouter une entrée lors de la lecture
     public void ajouter(String idChanson) throws SQLException {
         String sqlInsert =
-                "INSERT INTO auditjournalier"
-                        + "(idChanson)"
+                "INSERT INTO audit_journalier"
+                        + "(id_chanson)"
                         + "VALUES(?)";
 
         String sqlTitre = "SELECT titre FROM chanson WHERE id = ?";
@@ -47,7 +47,7 @@ public class AuditJournalierDAO {
     // supprimer l'historique
     public void vider() throws SQLException {
         String sql =
-                "DELETE FROM auditjournalier";
+                "DELETE FROM audit_journalier";
 
         try (Connection co = Connexion.getConnexion();
              PreparedStatement ps = co.prepareStatement(sql)) {
@@ -61,7 +61,7 @@ public class AuditJournalierDAO {
     // get l'historique complet
     public List<AuditJournalier> listerHistorique() throws SQLException {
         String sql =
-                "SELECT * FROM auditjournalier";
+                "SELECT * FROM audit_journalier";
 
         List<AuditJournalier> toutHistorique = new ArrayList<>();
 
@@ -72,7 +72,7 @@ public class AuditJournalierDAO {
                 while (rs.next()) {
                     String idChanson = rs.getString("idChanson");
                     AuditJournalier historique = new AuditJournalier(idChanson);
-                    historique.setDateJouee(rs.getDate("dateJouee"));
+                    historique.setDateLecture(rs.getDate("dateLecture"));
 
                     toutHistorique.add(historique);
                 }

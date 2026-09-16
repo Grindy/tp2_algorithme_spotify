@@ -4,19 +4,19 @@ import java.util.Date;
 
 public class AuditJournalier {
 
-    private String id;
+    private int id;
     private String idChanson;
-    private Date dateJouee;
+    private Date dateLecture;
 
     public AuditJournalier(String idChanson) {
         this.idChanson = idChanson;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -28,11 +28,11 @@ public class AuditJournalier {
         this.idChanson = idChanson;
     }
 
-    public Date getDateJouee() {
-        return dateJouee;
+    public Date getDateLecture() {
+        return dateLecture;
     }
 
-    public void setDateJouee(Date dateJouee) {
-        this.dateJouee = dateJouee;
+    public void setDateLecture(Date dateJouee) {
+        this.dateLecture = dateJouee;
     }
 }
