@@ -1,31 +1,29 @@
 package com.maisonneuve.tp2_algorithme_spotify.service;
 
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
-import com.maisonneuve.tp2_algorithme_spotify.model.ChansonDAO;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
-import com.maisonneuve.tp2_algorithme_spotify.model.PlaylistDAO;
-import com.maisonneuve.tp2_algorithme_spotify.utils.LecteurCSV;
+import com.maisonneuve.tp2_algorithme_spotify.DAO.PlaylistDAO;
 import com.maisonneuve.tp2_algorithme_spotify.utils.SourceDonnees;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Bibliotheque {
     private final List<Chanson> chansons;
     private final List<Playlist> playlists;
-    private final ChansonDAO chansonDAO;
+    private final SourceDonnees sourceDonnees;
     private final PlaylistDAO playlistDAO;
 
-    public Bibliotheque(String cheminCSV) throws SQLException {
-        this.chansonDAO = new ChansonDAO();
+    public Bibliotheque(SourceDonnees sourceDonnees) throws Exception {
+        this.sourceDonnees = sourceDonnees;
         this.playlistDAO = new PlaylistDAO();
-        this.chansons = ChansonService.chargerPuisAjouterToutesLesChansons(cheminCSV, chansonDAO);
+
+        // On charge via l'interface : pas d'addition, juste la source sélectionnée !
+        this.chansons = sourceDonnees.charger();
         this.playlists = playlistDAO.getToutesLesPlaylists();
     }
 
-    public ChansonDAO getChansonDAO() {
-        return chansonDAO;
+    public SourceDonnees getSourceDonnees() {
+        return sourceDonnees;
     }
 
     public List<Chanson> getChansons() {
@@ -35,5 +33,4 @@ public class Bibliotheque {
     public List<Playlist> getPlaylists() {
         return playlists;
     }
-
 }

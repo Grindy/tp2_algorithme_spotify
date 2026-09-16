@@ -136,4 +136,18 @@ public class Chanson {
     public void incrementerNbEcoutes() {
         nbrEcoute++;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Chanson chanson = (Chanson) o;
+        return id != null && id.equals(chanson.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

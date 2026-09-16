@@ -442,15 +442,27 @@ public class TableChansonsController {
             MenuItem monterChanson = new MenuItem("Monter d'une position");
             monterChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
-                playListSelectionne.deplacerChanson(chanson, "up");
-                rafraichirListeChansons(playListSelectionne, pageCourante);
+                if (chanson != null) {
+                    try {
+                        playlistManager.deplacerChanson(playListSelectionne, chanson, "up");
+                        rafraichirListeChansons(playListSelectionne, pageCourante);
+                    } catch (SQLException ex) {
+                        mainController.afficherAlertErreur("Erreur lors du déplacement", ex);
+                    }
+                }
             });
 
             MenuItem descendreChanson = new MenuItem("Descendre d'une position");
             descendreChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
-                playListSelectionne.deplacerChanson(chanson, "down");
-                rafraichirListeChansons(playListSelectionne, pageCourante);
+                if (chanson != null) {
+                    try {
+                        playlistManager.deplacerChanson(playListSelectionne, chanson, "down");
+                        rafraichirListeChansons(playListSelectionne, pageCourante);
+                    } catch (SQLException ex) {
+                        mainController.afficherAlertErreur("Erreur lors du déplacement", ex);
+                    }
+                }
             });
 
             // Désactiver les boutons de réordonnage si la liste est filtrée ou triée
@@ -464,13 +476,20 @@ public class TableChansonsController {
                 rafraichirListeChansons(playListSelectionne, pageCourante);
             });
 
-
             MenuItem supprimerChanson = new MenuItem("Supprimer de la playlist");
             supprimerChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
-                playListSelectionne.retirerChanson(chanson);
-                playlistsController.rafraichirListePlaylist();
-                rafraichirListeChansons(playListSelectionne, pageCourante);
+                if (chanson != null) {
+                    try {
+                        playlistManager.retirerChanson(playListSelectionne, chanson);
+                        if (playlistsController != null) {
+                            playlistsController.rafraichirListePlaylist();
+                        }
+                        rafraichirListeChansons(playListSelectionne, pageCourante);
+                    } catch (SQLException ex) {
+                        mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson", ex);
+                    }
+                }
             });
 
             // Désactiver le bouton de supression et vider la playlist si on est dans la bibliothèque
@@ -507,7 +526,7 @@ public class TableChansonsController {
         // Construire le contenu
         Label message = new Label("À quelle playlist voulez-vous ajouter cette chanson ?");
         ComboBox<Playlist> playlists = new ComboBox<>();
-        playlists.getItems().addAll(biblio.getPlaylists());
+        playlists.getItems().addAll(playlistManager.getPlaylists());
         playlists.setPromptText("Sélectionnez une playlist");
         Button btnAjouter = new Button("Ajouter");
         playlists.setMaxWidth(Double.MAX_VALUE);
@@ -518,14 +537,21 @@ public class TableChansonsController {
         btnAjouter.setOnAction(e -> {
             Playlist playlistSelectionne = playlists.getSelectionModel().getSelectedItem();
 
+            if (playlistSelectionne == null) {
+                mainController.afficherAlertErreur("Sélection requise", new Exception("Veuillez sélectionner une playlist."));
+                return;
+            }
+
             try {
-                if (playlistSelectionne.getChansons().contains(chanson)) throw new Exception("Cette chanson figure déjà dans cette playlist !");
+                if (playlistSelectionne.getChansons().contains(chanson)) {
+                    throw new Exception("Cette chanson figure déjà dans cette playlist !");
+                }
                 playlistManager.ajouterChanson(playlistSelectionne, chanson);
                 playlistsController.rafraichirListePlaylist();
                 popupStage.close();
             } catch (Exception ex) {
-               mainController.afficherAlertErreur("Erreur lors de l'ajout de la chanson à la playlist !", ex);
-               ex.printStackTrace();
+                mainController.afficherAlertErreur("Erreur lors de l'ajout de la chanson à la playlist !", ex);
+                ex.printStackTrace();
             }
         });
 
