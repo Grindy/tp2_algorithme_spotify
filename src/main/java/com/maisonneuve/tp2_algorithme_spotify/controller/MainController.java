@@ -61,6 +61,8 @@ public class MainController {
     private ChansonController chansonController;
     @FXML
     private TableChansonsController sectionTableChansonsController;
+    @FXML
+    private LecteurController lecteurController = new LecteurController();
 
     @FXML
     public void initialize() {
@@ -81,6 +83,8 @@ public class MainController {
         afficherLecteur();
         initplaylistsController();
         initTableChansonController();
+        auditJournalierController.setMainController(this);
+        lecteurController.setMainController(this);
 
         definirEcouteursDEvenements();
 
@@ -182,8 +186,6 @@ public class MainController {
             afficherAlertErreur("Erreur lors de la création de la playlist bibliothèque !", e);
         }
     }
-
-
 
     public void afficherAlertErreur(String titre, Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

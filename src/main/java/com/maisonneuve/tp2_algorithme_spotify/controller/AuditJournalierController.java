@@ -1,6 +1,7 @@
 package com.maisonneuve.tp2_algorithme_spotify.controller;
 
 import com.maisonneuve.tp2_algorithme_spotify.model.AuditJournalier;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +29,11 @@ public class AuditJournalierController {
     private TableColumn<AuditJournalier, Timestamp> colTimestamp;
 
     private AuditJournalierDAO auditJournalierDAO = new AuditJournalierDAO();
+    private MainController mainController;
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
 
     @FXML
     public void initialize() {
@@ -39,31 +45,36 @@ public class AuditJournalierController {
     }
 
     public void afficherAuditJournalier(Window ownerWindow) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vues/AuditJournalier.fxml"));
-            Parent root = loader.load();
-            AuditJournalierController controller = loader.getController();
+        new Thread(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/vues/AuditJournalier.fxml"));
+                Parent root = loader.load();
+                AuditJournalierController controller = loader.getController();
 
-            List<AuditJournalier> listeHistorique = auditJournalierDAO.listerHistorique();
-            controller.tableView.setItems(FXCollections.observableArrayList(listeHistorique));
+                List<AuditJournalier> listeHistorique = auditJournalierDAO.listerHistorique();
 
-            String titre = "Historique";
-            Stage popupStage = new Stage();
-            popupStage.initOwner(ownerWindow);
-            popupStage.initModality(Modality.WINDOW_MODAL);
-            popupStage.setTitle(titre);
+                Platform.runLater(() -> {
 
-            Scene scene = new Scene(root, 488, 600);
+                    controller.tableView.setItems(FXCollections.observableArrayList(listeHistorique));
 
-            popupStage.setScene(scene);
-            popupStage.setResizable(false);
+                    String titre = "Historique";
+                    Stage popupStage = new Stage();
+                    popupStage.initOwner(ownerWindow);
+                    popupStage.initModality(Modality.WINDOW_MODAL);
+                    popupStage.setTitle(titre);
 
-            popupStage.showAndWait();
+                    Scene scene = new Scene(root, 488, 600);
 
+                    popupStage.setScene(scene);
+                    popupStage.setResizable(false);
 
-        } catch (IOException | SQLException e) {
-            System.err.println("Erreur lors de l'affichage de l'historique: " + e.getMessage());
-            e.printStackTrace();
-        }
+                    popupStage.showAndWait();
+                });
+            } catch (IOException | SQLException e) {
+                Platform.runLater(() -> {
+                    mainController.afficherAlertErreur("Erreur lors de l'affichage de l'historique !", e);
+                });
+            }
+        }).start();
     }
 }
