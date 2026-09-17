@@ -54,7 +54,6 @@ public class AuditJournalierController {
             popupStage.setTitle(titre);
 
             Scene scene = new Scene(root, 488, 600);
-            scene.getStylesheets().add(getClass().getResource("/vues/style.css").toExternalForm());
 
             popupStage.setScene(scene);
             popupStage.setResizable(false);

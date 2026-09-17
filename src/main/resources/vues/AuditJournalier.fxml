@@ -11,7 +11,7 @@
         <Insets bottom="8" left="8" right="8" top="8" />
     </padding>
 
-    <TableView fx:id="tableView" maxWidth="1.7976931348623157E308" styleClass="bg-black" stylesheets="style.css" VBox.vgrow="ALWAYS">
+    <TableView fx:id="tableView" maxWidth="1.7976931348623157E308" styleClass="bg-black" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="colTitre" maxWidth="1.7976931348623157E308" resizable="false" text="Titre" />
             <TableColumn fx:id="colTimestamp" resizable="false" text="Date jouée" styleClass="col-centree"/>
