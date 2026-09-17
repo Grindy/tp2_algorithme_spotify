@@ -7,7 +7,8 @@ public class AuditJournalier {
 
     private int id;
     private String idChanson;
-    private Date dateLecture;
+    private Timestamp dateLecture;
+    private String titre;
 
     public AuditJournalier(String idChanson) {
         this.idChanson = idChanson;
@@ -29,11 +30,19 @@ public class AuditJournalier {
         this.idChanson = idChanson;
     }
 
-    public Date getDateLecture() {
+    public Timestamp getDateLecture() {
         return dateLecture;
     }
 
     public void setDateLecture(Timestamp dateLecture) {
         this.dateLecture = dateLecture;
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
 }

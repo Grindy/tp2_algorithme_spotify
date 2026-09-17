@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,8 @@ public class AuditJournalierDAO {
     // get l'historique complet
     public List<AuditJournalier> listerHistorique() throws SQLException {
         String sql =
-                "SELECT * FROM audit_journalier";
+                "SELECT aj.id, aj.id_chanson, aj.date_lecture, c.titre FROM audit_journalier aj "
+                + "JOIN chanson c ON aj.id_chanson = c.id ";
 
         List<AuditJournalier> toutHistorique = new ArrayList<>();
 
@@ -71,9 +73,14 @@ public class AuditJournalierDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    String idChanson = rs.getString("idChanson");
+                    // traitement du timestamp pour éliminer les nanosecondes
+                    Timestamp ts = rs.getTimestamp("date_lecture");
+                    ts.setNanos(0);
+
+                    String idChanson = rs.getString("id_chanson");
                     AuditJournalier historique = new AuditJournalier(idChanson);
-                    historique.setDateLecture(rs.getTimestamp("dateLecture"));
+                    historique.setDateLecture(ts);
+                    historique.setTitre(rs.getString("titre"));
 
                     toutHistorique.add(historique);
                 }
