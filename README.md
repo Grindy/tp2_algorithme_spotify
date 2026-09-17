@@ -5,21 +5,27 @@
 
 # TP3 Algorithme Spotify - Migration PostgreSQL & Pattern DAO
 
-Cours : 420-930-MA - Algorithmes et modeles de programmation  
-Session : Ete 2026, groupe 25604  
-Laboratoire : 3 (Base de donnees PostgreSQL et pattern DAO)  
-Date de remise : Dimanche 20 septembre 2026, 23h59  
-Journee de presentation choisie : Lundi 21 septembre 2026  
+![Java 21](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![JavaFX](https://img.shields.io/badge/JavaFX-17+-FF6F00?style=for-the-badge&logo=java&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-3.9+-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
+![Architecture DAO](https://img.shields.io/badge/Architecture-DAO%20Pattern-2EA44F?style=for-the-badge)
+
+<u>**Cours</u>:** 420-930-MA - Algorithmes et modeles de programmation  
+<u>**Session</u>:** Ete 2026, groupe 25604  
+<u>**Laboratoire</u>:** 3 (Base de donnees PostgreSQL et pattern DAO)  
+<u>**Date de remise</u>:** Dimanche 20 septembre 2026, 23h59  
+<u>**Journee de presentation choisie</u>:** Lundi 21 septembre 2026  
 
 ---
 
 ## Identification de l'equipe et sujet
 
 
-Numero du sujet : 3  
-Nom du sujet : Spotify  
+<u>Numero du sujet</u> : 3  
+<u>Nom du sujet</u> : Spotify  
 
-Equipe et repartition du travail :
+<u>Equipe et repartition du travail</u> :
 
 Nom complet      | Adresse courriel            | Contribution principale                                                           | % estime
 -----------------|-----------------------------|-----------------------------------------------------------------------------------|---------
@@ -29,7 +35,7 @@ Mathieu Gosselin | e2596321@cmaisonneuve.qc.ca | Vues FXML (Audit, CRUD), gestio
 
 ---
 
-## Lien du depot GitHub PUBLIC
+## 🔗 Lien du depot GitHub PUBLIC
 
 
 URL : https://github.com/Grindy/tp2_algorithme_spotify
@@ -93,9 +99,9 @@ Depuis IntelliJ IDEA :
 
 --- 
 
-## Fonctionnalites implementees : Separation Lab 2 vs Lab 3
+## Fonctionnalites implementees
 
-LABORATOIRE 2 (Conserve & Actif)
+✅ <u>LABORATOIRE 2</u> (Conserve & Actif)
 
 - Algorithmes de tri personnalises (sans Collections.sort) :
     * Tri par selection (Selection Sort).
@@ -113,7 +119,7 @@ LABORATOIRE 2 (Conserve & Actif)
     * Lecture initiale des morceaux basee sur fichier CSV (LecteurCSV).
 
 
-LABORATOIRE 3
+✅ <u>LABORATOIRE 3</u>
 
 - Migration et persistance PostgreSQL :
     * Schema relationnel normalise (3NF) : chanson, playlist, playlist_chanson, audit_journalier.
@@ -135,7 +141,7 @@ LABORATOIRE 3
     * Interception des erreurs de connexion/base sans plantage, traduites en boites de dialogue utilisateur (Alert).
 
 
-BONUS IMPLEMENTES (Lab 3)
+🎁 <u>BONUS IMPLEMENTES</u> (Lab 3)
 
 1. Transactions SQL & Contrainte differee (+3%) :
     - Encadrement transactionnel (setAutoCommit(false), commit(), rollback()) des operations multi-etapes dans PlaylistDAO.
