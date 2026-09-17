@@ -26,17 +26,17 @@ CREATE TABLE public.chanson (
                                 album VARCHAR(100) NOT NULL DEFAULT '',
                                 genre GENRE,
                                 label VARCHAR(100) NOT NULL DEFAULT '' ,
-                                anneeSortie INTEGER NOT NULL DEFAULT 0,
+                                annee_sortie INTEGER NOT NULL DEFAULT 0,
                                 duree INTEGER NOT NULL,
-                                nbrEcoute INTEGER NOT NULL DEFAULT 0,
+                                nbr_ecoute INTEGER NOT NULL DEFAULT 0,
                                 dansabilitee REAL NOT NULL DEFAULT 0,
-                                imageurl TEXT DEFAULT ''
+                                image_url TEXT DEFAULT ''
 );
 
 CREATE TABLE public.playlist (
                                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                                 nom VARCHAR(50) NOT NULL DEFAULT '',
-                                dateCreation Date DEFAULT CURRENT_DATE
+                                date_creation Date DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE public.playlist_chanson (
@@ -44,7 +44,7 @@ CREATE TABLE public.playlist_chanson (
                                  id_playlist UUID REFERENCES public.playlist(id) ON DELETE CASCADE,
                                  position INTEGER NOT NULL,
                                  PRIMARY KEY  (id_playlist, id_chanson),
-                                 UNIQUE (id_playlist, position) DEFERRABLE INITIALLY IMMEDIATE
+                                 UNIQUE (id_playlist, position) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE audit_journalier (

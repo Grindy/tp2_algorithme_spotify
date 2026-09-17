@@ -15,7 +15,7 @@ public class ChansonDAO implements SourceDonnees {
     public void ajouter(Chanson c) throws SQLException {
         String sql =
                 "INSERT INTO chanson"
-                        + "(id, titre, artiste, album, genre, label, anneeSortie, duree, nbrEcoute, dansabilitee, imageUrl) "
+                        + "(id, titre, artiste, album, genre, label, annee_sortie, duree, nbr_ecoute, dansabilitee, image_url) "
                         + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "
                         + "ON CONFLICT (id) DO NOTHING";
 
@@ -26,7 +26,11 @@ public class ChansonDAO implements SourceDonnees {
             ps.setString(2, c.getTitre());
             ps.setString(3, c.getArtiste());
             ps.setString(4, c.getAlbum());
-            ps.setObject(5, c.getGenre().name(), Types.OTHER);
+            if (c.getGenre() != null) {
+                ps.setObject(5, c.getGenre().name(), Types.OTHER);
+            } else {
+                ps.setNull(5, Types.OTHER);
+            }
             ps.setString(6, c.getLabel());
             ps.setInt(7, c.getAnneeSortie());
             ps.setInt(8, c.getDuree());
@@ -74,13 +78,14 @@ public class ChansonDAO implements SourceDonnees {
                 c.setTitre(rs.getString("titre"));
                 c.setArtiste(rs.getString("artiste"));
                 c.setAlbum(rs.getString("album"));
-                c.setGenre(Genre.valueOf((rs.getString("genre"))));
+                String genreStr = rs.getString("genre");
+                c.setGenre(genreStr != null ? Genre.valueOf(genreStr) : null);
                 c.setLabel(rs.getString("label"));
-                c.setAnneeSortie(rs.getInt("anneeSortie"));
+                c.setAnneeSortie(rs.getInt("annee_sortie"));
                 c.setDuree(rs.getInt("duree"));
-                c.setNbrEcoute(rs.getInt("nbrEcoute"));
+                c.setNbrEcoute(rs.getInt("nbr_ecoute"));
                 c.setDansabilitee(rs.getFloat("dansabilitee"));
-                c.setImageUrl(rs.getString("imageUrl"));
+                c.setImageUrl(rs.getString("image_url"));
                 toutesChansons.add(c);
             }
         }
@@ -104,13 +109,13 @@ public class ChansonDAO implements SourceDonnees {
                     String titre = rs.getString("titre");
                     String artiste = rs.getString("artiste");
                     String album = rs.getString("album");
-                    Genre genre = (Genre) rs.getObject("genre");
+                    Genre genre = rs.getString("genre") != null ? Genre.valueOf(rs.getString("genre")) : null;
                     String label = rs.getString("label");
-                    int anneeSortie = rs.getInt("anneeSortie");
+                    int anneeSortie = rs.getInt("annee_sortie");
                     int duree = rs.getInt("duree");
-                    int nbrEcoute = rs.getInt("nbrEcoute");
+                    int nbrEcoute = rs.getInt("nbr_ecoute");
                     float dansabilitee = rs.getFloat("dansabilitee");
-                    String imageUrl = rs.getString("imageUrl");
+                    String imageUrl = rs.getString("image_url");
                     chansonTrouvee = new Chanson( id,  titre,  artiste,  album,  genre,  label,  anneeSortie,  duree,  nbrEcoute,  dansabilitee,  imageUrl);
                 }
             }
