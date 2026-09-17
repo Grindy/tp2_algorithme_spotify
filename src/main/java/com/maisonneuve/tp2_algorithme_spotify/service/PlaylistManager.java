@@ -59,7 +59,11 @@ public class PlaylistManager {
 
     public void deplacerChanson(Playlist p, Chanson c, String direction) throws SQLException {
             playlistDAO.deplacerChanson(p, c, direction);
+    }
 
+    public void viderPlaylist(Playlist p) throws SQLException {
+        playlistDAO.viderPlaylist(p);
+        p.viderPlaylist();
     }
 
 }

@@ -250,4 +250,13 @@ public class PlaylistDAO {
         return false;
     }
 
+    public void viderPlaylist(Playlist p) throws SQLException {
+        String sql = "DELETE FROM playlist_chanson WHERE id_playlist = ?";
+        try (Connection c = Connexion.getConnexion();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setObject(1, UUID.fromString(p.getId()));
+            ps.executeUpdate();
+                System.out.println("Playlist " + p.getNom() + " a été vidé");
+            }
+        }
 }

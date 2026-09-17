@@ -224,9 +224,11 @@ public class TableChansonsController {
             private final Button btnLire = new Button("▶");
             private final Button btnAjouterAPlaylist = new Button("+");
             private final Button btnSupprimer = new Button("X");
-            private final HBox conteneurBoutons = new HBox(8, btnLire, btnAjouterAPlaylist, btnSupprimer);
+            private final HBox conteneurBoutons = new HBox(8, btnLire, btnAjouterAPlaylist);
 
             {
+                if (!toutesLesChansonsEstSelectionne.getValue()) conteneurBoutons.getChildren().add(btnSupprimer);
+
                 conteneurBoutons.setAlignment(Pos.CENTER);
 
                 btnAjouterAPlaylist.getStyleClass().add("btn-table-view");
@@ -242,7 +244,6 @@ public class TableChansonsController {
                         } catch (Exception e) {
                             mainController.afficherAlertErreur("Erreur lors du lancement de Spotify", e);
                         }
-
                     }
                 });
 
@@ -254,20 +255,22 @@ public class TableChansonsController {
                 });
 
                 btnSupprimer.setOnAction(event -> {
-                    try {
-                        Chanson chanson = recupererChansonCourante();
-                        if (chanson != null && toutesLesChansonsEstSelectionne != null && !toutesLesChansonsEstSelectionne.get()) {
-                            playlistManager.retirerChanson(playListSelectionne, chanson);
-                            if (playlistsController != null) {
-                                playlistsController.rafraichirListePlaylist();
+                    Chanson chanson = recupererChansonCourante();
+                    if (chanson != null && toutesLesChansonsEstSelectionne != null && !toutesLesChansonsEstSelectionne.get()) {
+                        new Thread(() -> {
+                            try {
+                                playlistManager.retirerChanson(playListSelectionne, chanson);
+                                Platform.runLater(() -> {
+                                    if (playlistsController != null) {
+                                        playlistsController.rafraichirListePlaylist();
+                                    }
+                                    rafraichirListeChansons(playListSelectionne, pageCourante);
+                                });
+                            } catch (Exception e) {
+                                Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson !", e));
                             }
-                            rafraichirListeChansons(playListSelectionne, pageCourante);
-                        }
-                    } catch (Exception e) {
-                        mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson !", e);
-                        throw new RuntimeException(e);
+                        }).start();
                     }
-
                 });
             }
 
@@ -443,12 +446,14 @@ public class TableChansonsController {
             monterChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
                 if (chanson != null) {
-                    try {
-                        playlistManager.deplacerChanson(playListSelectionne, chanson, "up");
-                        rafraichirListeChansons(playListSelectionne, pageCourante);
-                    } catch (SQLException ex) {
-                        mainController.afficherAlertErreur("Erreur lors du déplacement", ex);
-                    }
+                    new Thread(() -> {
+                        try {
+                            playlistManager.deplacerChanson(playListSelectionne, chanson, "up");
+                            Platform.runLater(() -> rafraichirListeChansons(playListSelectionne, pageCourante));
+                        } catch (SQLException ex) {
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors du déplacement", ex));
+                        }
+                    }).start();
                 }
             });
 
@@ -456,12 +461,14 @@ public class TableChansonsController {
             descendreChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
                 if (chanson != null) {
-                    try {
-                        playlistManager.deplacerChanson(playListSelectionne, chanson, "down");
-                        rafraichirListeChansons(playListSelectionne, pageCourante);
-                    } catch (SQLException ex) {
-                        mainController.afficherAlertErreur("Erreur lors du déplacement", ex);
-                    }
+                    new Thread(() -> {
+                        try {
+                            playlistManager.deplacerChanson(playListSelectionne, chanson, "down");
+                            Platform.runLater(() -> rafraichirListeChansons(playListSelectionne, pageCourante));
+                        } catch (SQLException ex) {
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors du déplacement", ex));
+                        }
+                    }).start();
                 }
             });
 
@@ -471,24 +478,36 @@ public class TableChansonsController {
 
             MenuItem viderPlaylist = new MenuItem("Vider la playlist");
             viderPlaylist.setOnAction(e -> {
-                playListSelectionne.viderPlaylist();
-                playlistsController.rafraichirListePlaylist();
-                rafraichirListeChansons(playListSelectionne, pageCourante);
+                new Thread(() -> {
+                    try {
+                        playlistManager.viderPlaylist(playListSelectionne);
+                        Platform.runLater(() -> {
+                            playlistsController.rafraichirListePlaylist();
+                            rafraichirListeChansons(playListSelectionne, pageCourante);
+                        });
+                    } catch (SQLException ex) {
+                        Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors du videment de la playlist !", ex));
+                    }
+                }).start();
             });
 
             MenuItem supprimerChanson = new MenuItem("Supprimer de la playlist");
             supprimerChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
                 if (chanson != null) {
-                    try {
-                        playlistManager.retirerChanson(playListSelectionne, chanson);
-                        if (playlistsController != null) {
-                            playlistsController.rafraichirListePlaylist();
+                    new Thread(() -> {
+                        try {
+                            playlistManager.retirerChanson(playListSelectionne, chanson);
+                            Platform.runLater(() -> {
+                                if (playlistsController != null) {
+                                    playlistsController.rafraichirListePlaylist();
+                                }
+                                rafraichirListeChansons(playListSelectionne, pageCourante);
+                            });
+                        } catch (SQLException ex) {
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson", ex));
                         }
-                        rafraichirListeChansons(playListSelectionne, pageCourante);
-                    } catch (SQLException ex) {
-                        mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson", ex);
-                    }
+                    }).start();
                 }
             });
 
@@ -531,7 +550,7 @@ public class TableChansonsController {
         Button btnAjouter = new Button("Ajouter");
         playlists.setMaxWidth(Double.MAX_VALUE);
         btnAjouter.setMaxWidth(Double.MAX_VALUE);
-        HBox hbox = new HBox(8,playlists, btnAjouter);
+        HBox hbox = new HBox(8, playlists, btnAjouter);
         HBox.setHgrow(playlists, Priority.ALWAYS);
 
         btnAjouter.setOnAction(e -> {
@@ -541,18 +560,22 @@ public class TableChansonsController {
                 mainController.afficherAlertErreur("Sélection requise", new Exception("Veuillez sélectionner une playlist."));
                 return;
             }
-
-            try {
-                if (playlistSelectionne.getChansons().contains(chanson)) {
-                    throw new Exception("Cette chanson figure déjà dans cette playlist !");
-                }
-                playlistManager.ajouterChanson(playlistSelectionne, chanson);
-                playlistsController.rafraichirListePlaylist();
-                popupStage.close();
-            } catch (Exception ex) {
-                mainController.afficherAlertErreur("Erreur lors de l'ajout de la chanson à la playlist !", ex);
-                ex.printStackTrace();
+            if (playlistSelectionne.getChansons().contains(chanson)) {
+                mainController.afficherAlertErreur("Cette chanson figure déjà dans cette playlist !", new Exception("Une chanson ne peut pas figurer plusieurs fois dans la même playlist."));
+                return;
             }
+
+            new Thread(() -> {
+                try {
+                    playlistManager.ajouterChanson(playlistSelectionne, chanson);
+                    Platform.runLater(() -> {
+                        playlistsController.rafraichirListePlaylist();
+                        popupStage.close();
+                    });
+                } catch (Exception ex) {
+                    Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors de l'ajout de la chanson à la playlist !", ex));
+                }
+            }).start();
         });
 
         VBox layout = new VBox(15, message, hbox);
