@@ -49,6 +49,6 @@ CREATE TABLE public.playlist_chanson (
 
 CREATE TABLE audit_journalier (
                                   id SERIAL PRIMARY KEY,
-                                  id_chanson VARCHAR(50) REFERENCES chanson(id),
+                                  id_chanson VARCHAR(50) REFERENCES chanson(id) ON DELETE CASCADE,
                                   date_lecture TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
