@@ -185,7 +185,7 @@ public class PlaylistDAO {
                     c.setTitre(rs.getString("titre"));
                     c.setArtiste(rs.getString("artiste"));
                     c.setAlbum(rs.getString("album"));
-                    c.setGenre((Genre) rs.getObject("genre"));
+                    c.setGenre(Genre.valueOf(rs.getString("genre")));
                     c.setLabel(rs.getString("label"));
                     c.setAnneeSortie(rs.getInt("anneeSortie"));
                     c.setDuree(rs.getInt("duree"));
