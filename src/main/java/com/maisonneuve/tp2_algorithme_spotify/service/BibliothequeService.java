@@ -20,7 +20,7 @@ public class BibliothequeService {
     ) {
         return bibliotheque.getChansons()
                 .stream()
-                .filter(c -> genre == null || c.getGenre().equalsIgnoreCase(genre))
+                .filter(c -> genre == null || c.getGenre().getNomBrut().equalsIgnoreCase(genre))
                 .filter(c -> dureeMax == null || c.getDuree() <= dureeMax)
                 .filter(c -> nbrEcoute == null || c.getNbrEcoute() <= nbrEcoute)
                 .collect(Collectors.toList());

@@ -26,7 +26,7 @@ public class ChansonDAO implements SourceDonnees {
             ps.setString(2, c.getTitre());
             ps.setString(3, c.getArtiste());
             ps.setString(4, c.getAlbum());
-            ps.setObject(5, Genre.fromNomBrut(c.getGenre()).name(), Types.OTHER);
+            ps.setObject(5, c.getGenre().name(), Types.OTHER);
             ps.setString(6, c.getLabel());
             ps.setInt(7, c.getAnneeSortie());
             ps.setInt(8, c.getDuree());
@@ -74,7 +74,7 @@ public class ChansonDAO implements SourceDonnees {
                 c.setTitre(rs.getString("titre"));
                 c.setArtiste(rs.getString("artiste"));
                 c.setAlbum(rs.getString("album"));
-                c.setGenre(rs.getString("genre"));
+                c.setGenre(Genre.valueOf((rs.getString("genre"))));
                 c.setLabel(rs.getString("label"));
                 c.setAnneeSortie(rs.getInt("anneeSortie"));
                 c.setDuree(rs.getInt("duree"));
@@ -104,7 +104,7 @@ public class ChansonDAO implements SourceDonnees {
                     String titre = rs.getString("titre");
                     String artiste = rs.getString("artiste");
                     String album = rs.getString("album");
-                    String genre = rs.getString("genre");
+                    Genre genre = (Genre) rs.getObject("genre");
                     String label = rs.getString("label");
                     int anneeSortie = rs.getInt("anneeSortie");
                     int duree = rs.getInt("duree");

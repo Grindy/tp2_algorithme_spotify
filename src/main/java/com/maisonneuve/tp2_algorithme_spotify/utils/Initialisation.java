@@ -34,6 +34,8 @@ public class Initialisation {
                 playlistDAO.ajouterChanson(toutesLesChansons, c);
             }
             System.out.println("Chansons associées à la playlist bibliothèque avec succès.");
+        } else {
+            toutesLesChansons.getChansons().addAll(biblio.getChansons());
         }
     }
 

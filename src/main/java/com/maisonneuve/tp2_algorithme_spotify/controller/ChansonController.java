@@ -44,7 +44,7 @@ public class ChansonController {
         labelAlbum.setText(chanson.getAlbum());
         labelArtiste.setText(chanson.getArtiste());
         imgAlbum.setImage(new Image (chanson.getImageUrl()));
-        labelGenre.setText(chanson.getGenre());
+        labelGenre.setText(chanson.getGenre().getNomBrut());
         labelAnnee.setText(Integer.toString(chanson.getAnneeSortie()));
         labelMaisonDisques.setText(chanson.getLabel());
         labelDuree.setText(TimeUtils.msToMinutes(chanson.getDuree()));

@@ -9,7 +9,7 @@ public class Chanson {
     private String titre;
     private String artiste;
     private String album;
-    private String genre;
+    private Genre genre;
     private String label;
     private int anneeSortie;
     private int duree;
@@ -20,7 +20,7 @@ public class Chanson {
     // Object Anemique
     public Chanson(){}
 
-    public Chanson(String id, String titre, String artiste, String album, String genre, String label, int anneeSortie, int duree, int nbrEcoute, float dansabilitee, String imageUrl) {
+    public Chanson(String id, String titre, String artiste, String album, Genre genre, String label, int anneeSortie, int duree, int nbrEcoute, float dansabilitee, String imageUrl) {
         this.id = id;
         this.titre = titre;
         this.artiste = artiste;
@@ -50,7 +50,7 @@ public class Chanson {
         this.album = album;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(Genre genre) {
         this.genre = genre;
     }
 
@@ -98,7 +98,7 @@ public class Chanson {
         return album;
     }
 
-    public String getGenre() {
+    public Genre getGenre() {
         return genre;
     }
 

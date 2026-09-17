@@ -176,7 +176,7 @@ public class MainController {
 
     public void creerPlaylistBilio() {
         try {
-            toutesLesChansons = new Playlist("11111111-1111-1111-1111-111111111111", "Toutes les chansons", new ArrayList<>(biblio.getChansons()));
+            toutesLesChansons = new Playlist("11111111-1111-1111-1111-111111111111", "Toutes les chansons", new ArrayList<>());
             playlistDao.ajouter(toutesLesChansons);
         } catch (SQLException e) {
             afficherAlertErreur("Erreur lors de la création de la playlist bibliothèque !", e);

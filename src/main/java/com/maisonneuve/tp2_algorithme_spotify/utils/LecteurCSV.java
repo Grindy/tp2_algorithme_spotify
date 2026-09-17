@@ -1,6 +1,8 @@
 package com.maisonneuve.tp2_algorithme_spotify.utils;
 
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
+import com.maisonneuve.tp2_algorithme_spotify.model.Genre;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class LecteurCSV implements SourceDonnees {
                         donnees[1],
                         donnees[2],
                         donnees[3],
-                        donnees[8],
+                        Genre.fromNomBrut(donnees[8]),
                         donnees[10],
                         Integer.parseInt(donnees[4]),
                         Integer.parseInt(donnees[6]),

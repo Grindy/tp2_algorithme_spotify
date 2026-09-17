@@ -3,6 +3,7 @@ package com.maisonneuve.tp2_algorithme_spotify.DAO;
 import java.util.UUID;
 
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
+import com.maisonneuve.tp2_algorithme_spotify.model.Genre;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.utils.Connexion;
 
@@ -101,7 +102,7 @@ public class PlaylistDAO {
                 // Si la chanson existait bien, on comble le trou
                 if (positionSupprimee != -1) {
                     try (PreparedStatement psShift = co.prepareStatement(sqlShift)) {
-                        psShift.setObject(1, p.getId());
+                        psShift.setObject(1,UUID.fromString(p.getId()));
                         psShift.setInt(2, positionSupprimee);
                         psShift.executeUpdate();
                     }
@@ -184,7 +185,7 @@ public class PlaylistDAO {
                     c.setTitre(rs.getString("titre"));
                     c.setArtiste(rs.getString("artiste"));
                     c.setAlbum(rs.getString("album"));
-                    c.setGenre(rs.getString("genre"));
+                    c.setGenre((Genre) rs.getObject("genre"));
                     c.setLabel(rs.getString("label"));
                     c.setAnneeSortie(rs.getInt("anneeSortie"));
                     c.setDuree(rs.getInt("duree"));
