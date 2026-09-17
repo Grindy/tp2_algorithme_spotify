@@ -54,7 +54,7 @@ public class PlaylistDAO {
              PreparedStatement ps = co.prepareStatement(sql)) {
 
             ps.setObject(1, UUID.fromString(p.getId()));
-            ps.setObject(2, c.getId());
+            ps.setString(2, c.getId());
             ps.setInt(3, nouvellePosition);
 
             ps.executeUpdate();
@@ -146,18 +146,23 @@ public class PlaylistDAO {
                 "END " +
                 //on cherche dans quelle playlist et dans les 2 position donnees
                 "WHERE id_playlist = ? AND position IN (?,?)";
-        try (Connection co = Connexion.getConnexion();
-             PreparedStatement ps = co.prepareStatement(sql)) {
-            ps.setInt(1, posX);
-            ps.setInt(2, posY);
-            ps.setInt(3, posY);
-            ps.setInt(4, posX);
-            ps.setObject(5, UUID.fromString(p.getId()));
-            ps.setInt(6, posX);
-            ps.setInt(7, posY);
+        try (Connection co = Connexion.getConnexion()) {
+            co.setAutoCommit(false);
+            try (PreparedStatement ps = co.prepareStatement(sql)) {
+                ps.setInt(1, posX);
+                ps.setInt(2, posY);
+                ps.setInt(3, posY);
+                ps.setInt(4, posX);
+                ps.setObject(5, UUID.fromString(p.getId()));
+                ps.setInt(6, posX);
+                ps.setInt(7, posY);
 
-            ps.executeUpdate();
-
+                ps.executeUpdate();
+                co.commit();
+            } catch (SQLException e) {
+                co.rollback();
+                throw e;
+            }
         }
     }
 
@@ -185,13 +190,14 @@ public class PlaylistDAO {
                     c.setTitre(rs.getString("titre"));
                     c.setArtiste(rs.getString("artiste"));
                     c.setAlbum(rs.getString("album"));
-                    c.setGenre((Genre) rs.getObject("genre"));
+                    String genreStr = rs.getString("genre");
+                    c.setGenre(genreStr != null ? Genre.valueOf(genreStr) : null);
                     c.setLabel(rs.getString("label"));
-                    c.setAnneeSortie(rs.getInt("anneeSortie"));
+                    c.setAnneeSortie(rs.getInt("annee_sortie"));
                     c.setDuree(rs.getInt("duree"));
-                    c.setNbrEcoute(rs.getInt("nbrEcoute"));
+                    c.setNbrEcoute(rs.getInt("nbr_ecoute"));
                     c.setDansabilitee(rs.getFloat("dansabilitee"));
-                    c.setImageUrl(rs.getString("imageurl"));
+                    c.setImageUrl(rs.getString("image_url"));
 
                     liste.add(c);
                 }
@@ -207,7 +213,7 @@ public class PlaylistDAO {
 
     public List<Playlist> getToutesLesPlaylists() throws SQLException {
         List<Playlist> liste = new ArrayList<>();
-        String sql = "SELECT id, nom, datecreation FROM playlist WHERE id!='11111111-1111-1111-1111-111111111111' ORDER BY nom ASC";
+        String sql = "SELECT id, nom, date_creation FROM playlist WHERE id!='11111111-1111-1111-1111-111111111111' ORDER BY nom ASC";
 
         try (Connection co = Connexion.getConnexion();
              PreparedStatement ps = co.prepareStatement(sql);
