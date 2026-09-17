@@ -2,7 +2,7 @@ package com.maisonneuve.tp2_algorithme_spotify.service;
 
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
-import com.maisonneuve.tp2_algorithme_spotify.model.PlaylistDAO;
+import com.maisonneuve.tp2_algorithme_spotify.DAO.PlaylistDAO;
 
 import java.util.List;
 import java.sql.SQLException;
@@ -12,9 +12,18 @@ public class PlaylistManager {
     private final Bibliotheque bibliotheque;
     private final PlaylistDAO playlistDAO;
 
-    public PlaylistManager(Bibliotheque bibliotheque) {
+    public PlaylistManager(Bibliotheque bibliotheque) throws SQLException {
         this.playlistDAO = new PlaylistDAO();
         this.bibliotheque = bibliotheque;
+        chargerPlaylistsDepuisBD();
+    }
+
+    private void chargerPlaylistsDepuisBD() throws SQLException {
+
+            List<Playlist> playlistsBD = playlistDAO.getToutesLesPlaylists();
+            bibliotheque.getPlaylists().clear();
+            bibliotheque.getPlaylists().addAll(playlistsBD);
+
     }
 
     public void ajouterPlaylist(Playlist playlist) throws SQLException {
@@ -38,28 +47,19 @@ public class PlaylistManager {
                 .orElse(null);
     }
 
-    public void ajouterChanson(Playlist p, Chanson c) {
-        try {
+    public void ajouterChanson(Playlist p, Chanson c) throws SQLException {
+        if (!p.getChansons().contains(c)) {
             playlistDAO.ajouterChanson(p, c);
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
-    public void retirerChanson(Playlist p, Chanson c) {
-        try {
+    public void retirerChanson(Playlist p, Chanson c) throws SQLException {
             playlistDAO.retirerChanson(p, c);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    public void deplacerChanson(Playlist p, Chanson c, String direction) {
-        try {
+    public void deplacerChanson(Playlist p, Chanson c, String direction) throws SQLException {
             playlistDAO.deplacerChanson(p, c, direction);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
 }

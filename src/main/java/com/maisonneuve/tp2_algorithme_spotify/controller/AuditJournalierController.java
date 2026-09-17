@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
-import com.maisonneuve.tp2_algorithme_spotify.model.AuditJournalierDAO;
+import com.maisonneuve.tp2_algorithme_spotify.DAO.AuditJournalierDAO;
 import javafx.stage.Window;
 
 

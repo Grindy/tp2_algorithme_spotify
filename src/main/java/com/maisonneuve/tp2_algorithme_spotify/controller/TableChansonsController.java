@@ -5,6 +5,7 @@ import com.maisonneuve.tp2_algorithme_spotify.model.Genre;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
+import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -23,12 +24,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 
 public class TableChansonsController {
     @FXML
@@ -81,9 +81,14 @@ public class TableChansonsController {
     private TableView<Playlist> tablePlaylists;
     private Playlist toutesLesChansons;
     private ChansonController chansonController;
+    private MainController mainController;
     private PlaylistService playlistService;
     private Bibliotheque biblio;
-    private MainController mainController;
+    private PlaylistManager playlistManager;
+
+    public void setPlaylistManager(PlaylistManager playlistManager) {
+        this.playlistManager = playlistManager;
+    }
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -249,14 +254,20 @@ public class TableChansonsController {
                 });
 
                 btnSupprimer.setOnAction(event -> {
-                    Chanson chanson = recupererChansonCourante();
-                    if (chanson != null && toutesLesChansonsEstSelectionne != null && !toutesLesChansonsEstSelectionne.get()) {
-                        playListSelectionne.retirerChanson(chanson);
-                        if (playlistsController != null) {
-                            playlistsController.rafraichirListePlaylist();
+                    try {
+                        Chanson chanson = recupererChansonCourante();
+                        if (chanson != null && toutesLesChansonsEstSelectionne != null && !toutesLesChansonsEstSelectionne.get()) {
+                            playlistManager.retirerChanson(playListSelectionne, chanson);
+                            if (playlistsController != null) {
+                                playlistsController.rafraichirListePlaylist();
+                            }
+                            rafraichirListeChansons(playListSelectionne, pageCourante);
                         }
-                        rafraichirListeChansons(playListSelectionne, pageCourante);
+                    } catch (Exception e) {
+                        mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson !", e);
+                        throw new RuntimeException(e);
                     }
+
                 });
             }
 
@@ -396,6 +407,7 @@ public class TableChansonsController {
         }
 
         tableChansons.setItems(FXCollections.observableArrayList(chansons.subList(indexDebut, indexFin)));
+        configurerColonnesTable();
     }
 
     public void recupererFiltresEtTri() {
@@ -430,15 +442,27 @@ public class TableChansonsController {
             MenuItem monterChanson = new MenuItem("Monter d'une position");
             monterChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
-                playListSelectionne.deplacerChanson(chanson, "up");
-                rafraichirListeChansons(playListSelectionne, pageCourante);
+                if (chanson != null) {
+                    try {
+                        playlistManager.deplacerChanson(playListSelectionne, chanson, "up");
+                        rafraichirListeChansons(playListSelectionne, pageCourante);
+                    } catch (SQLException ex) {
+                        mainController.afficherAlertErreur("Erreur lors du déplacement", ex);
+                    }
+                }
             });
 
             MenuItem descendreChanson = new MenuItem("Descendre d'une position");
             descendreChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
-                playListSelectionne.deplacerChanson(chanson, "down");
-                rafraichirListeChansons(playListSelectionne, pageCourante);
+                if (chanson != null) {
+                    try {
+                        playlistManager.deplacerChanson(playListSelectionne, chanson, "down");
+                        rafraichirListeChansons(playListSelectionne, pageCourante);
+                    } catch (SQLException ex) {
+                        mainController.afficherAlertErreur("Erreur lors du déplacement", ex);
+                    }
+                }
             });
 
             // Désactiver les boutons de réordonnage si la liste est filtrée ou triée
@@ -452,13 +476,20 @@ public class TableChansonsController {
                 rafraichirListeChansons(playListSelectionne, pageCourante);
             });
 
-
             MenuItem supprimerChanson = new MenuItem("Supprimer de la playlist");
             supprimerChanson.setOnAction(e -> {
                 Chanson chanson = row.getItem();
-                playListSelectionne.retirerChanson(chanson);
-                playlistsController.rafraichirListePlaylist();
-                rafraichirListeChansons(playListSelectionne, pageCourante);
+                if (chanson != null) {
+                    try {
+                        playlistManager.retirerChanson(playListSelectionne, chanson);
+                        if (playlistsController != null) {
+                            playlistsController.rafraichirListePlaylist();
+                        }
+                        rafraichirListeChansons(playListSelectionne, pageCourante);
+                    } catch (SQLException ex) {
+                        mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson", ex);
+                    }
+                }
             });
 
             // Désactiver le bouton de supression et vider la playlist si on est dans la bibliothèque
@@ -495,7 +526,7 @@ public class TableChansonsController {
         // Construire le contenu
         Label message = new Label("À quelle playlist voulez-vous ajouter cette chanson ?");
         ComboBox<Playlist> playlists = new ComboBox<>();
-        playlists.getItems().addAll(biblio.getPlaylists());
+        playlists.getItems().addAll(playlistManager.getPlaylists());
         playlists.setPromptText("Sélectionnez une playlist");
         Button btnAjouter = new Button("Ajouter");
         playlists.setMaxWidth(Double.MAX_VALUE);
@@ -506,20 +537,21 @@ public class TableChansonsController {
         btnAjouter.setOnAction(e -> {
             Playlist playlistSelectionne = playlists.getSelectionModel().getSelectedItem();
 
+            if (playlistSelectionne == null) {
+                mainController.afficherAlertErreur("Sélection requise", new Exception("Veuillez sélectionner une playlist."));
+                return;
+            }
+
             try {
-                playlistSelectionne.ajouterChanson(chanson);
+                if (playlistSelectionne.getChansons().contains(chanson)) {
+                    throw new Exception("Cette chanson figure déjà dans cette playlist !");
+                }
+                playlistManager.ajouterChanson(playlistSelectionne, chanson);
                 playlistsController.rafraichirListePlaylist();
                 popupStage.close();
-            } catch (Error er) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Attention");
-                alert.setContentText(er.getMessage());
-
-                // Attache la popup à la fenêtre principale
-                alert.initOwner(popupStage);
-
-                // showAndWait() bloque jusqu'au clic de l'utilisateur
-                alert.showAndWait();
+            } catch (Exception ex) {
+                mainController.afficherAlertErreur("Erreur lors de l'ajout de la chanson à la playlist !", ex);
+                ex.printStackTrace();
             }
         });
 

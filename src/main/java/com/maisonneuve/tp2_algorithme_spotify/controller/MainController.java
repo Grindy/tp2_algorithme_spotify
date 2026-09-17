@@ -1,12 +1,13 @@
 package com.maisonneuve.tp2_algorithme_spotify.controller;
 
-import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
-import com.maisonneuve.tp2_algorithme_spotify.model.ChansonDAO;
+import com.maisonneuve.tp2_algorithme_spotify.DAO.ChansonDAO;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
-import com.maisonneuve.tp2_algorithme_spotify.model.PlaylistDAO;
+import com.maisonneuve.tp2_algorithme_spotify.DAO.PlaylistDAO;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
+import com.maisonneuve.tp2_algorithme_spotify.utils.Initialisation;
+import com.maisonneuve.tp2_algorithme_spotify.utils.SourceDonnees;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -17,7 +18,6 @@ import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Formatter;
 
 public class MainController {
 
@@ -67,21 +67,30 @@ public class MainController {
         accueilLeft = rootPane.getLeft();
         accueilCentre = rootPane.getCenter();
         accueilRight = rootPane.getRight();
+
         creerBibliotheque();
         creerPlaylistBilio();
-        creerChansonPlaylistBiblio();
+
+        try {
+            this.playlistManager = new PlaylistManager(biblio);
+            Initialisation.peuplerPlaylistBiblioSiVide(this.biblio, this.toutesLesChansons, this.playlistDao);
+        } catch (SQLException e) {
+            afficherAlertErreur("Erreur lors de l'initialisation des playlists", e);
+        }
+
         afficherLecteur();
         initplaylistsController();
         initTableChansonController();
 
         definirEcouteursDEvenements();
 
-        // Au démarrage, la liste d'accueil est sélectionnée (Votre Bibliothèque)
+
         playListSelectionne = toutesLesChansons;
         sectionTableChansonsController.rafraichirListeChansons(playListSelectionne, pageCourante);
     }
 
     private void initTableChansonController() {
+        sectionTableChansonsController.setPlaylistManager(this.playlistManager);
         sectionTableChansonsController.setChansonController(chansonController);
         sectionTableChansonsController.setFieldRecherche(fieldRecherche);
         sectionTableChansonsController.setplaylistsController(playlistsController);
@@ -93,6 +102,7 @@ public class MainController {
         sectionTableChansonsController.setBiblio(biblio);
         sectionTableChansonsController.setPageCourante(pageCourante);
         sectionTableChansonsController.setMainController(this);
+        sectionTableChansonsController.setPlaylistManager(playlistManager);
     }
 
     private void initplaylistsController() {
@@ -100,6 +110,9 @@ public class MainController {
         playlistsController.setPlaylistManager(playlistManager);
         playlistsController.setToutesLesChansons(toutesLesChansons);
         playlistsController.rafraichirListePlaylist();
+        playlistsController.setPlaylistManager(playlistManager);
+        playlistsController.setMainController(this);
+        playlistsController.setTableChansonsController(sectionTableChansonsController);
     }
 
     @FXML
@@ -137,32 +150,7 @@ public class MainController {
             sectionTableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
         });
 
-        playlistsController.getBtnAjouterPlaylist().setOnAction(e -> {
-            playlistsController.ouvrirFenetreActionPlaylist(
-                    "Créer une nouvelle playlist",
-                    "Entrez un nom pour votre playlist",
-                    "",
-                    "Créer",
-                    playlistsController::creerEtAjouterPlaylist
-            );
-        });
-
         btnAuditJournalier.setOnAction( e -> auditJournalierController.afficherAuditJournalier(btnAuditJournalier.getScene().getWindow()));
-
-
-        playlistsController.playlistSelectionneeProperty().addListener((obs, anciennePlaylist, nouvellePlaylist) -> {
-            if (nouvellePlaylist != null) {
-                sectionTableChansonsController.rafraichirListeChansons(nouvellePlaylist, 1);
-            } else {
-                // Si la playlist est supprimée et la sélection devient nulle
-                sectionTableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
-            }
-        });
-
-        playlistsController.getBtnVotreBibliotheque().setOnAction(e -> {
-            sectionTableChansonsController.rafraichirListeChansons(toutesLesChansons, 1);
-        });
-
     }
 
     private void afficherAccueil() {
@@ -172,36 +160,30 @@ public class MainController {
     }
 
     public void creerBibliotheque() {
-        // Créer la bibliothèque
         try {
-            biblio = new Bibliotheque("src/main/resources/data/spotifyData.csv");
-        } catch (SQLException e) {
-            afficherAlertErreur("Erreur lors de la création de la Bibliothèque !", e);
+            // Mode BDD :
+            Initialisation.peuplerChansonsSiVide("src/main/resources/data/spotifyData.csv", this.chansonDAO);
+            SourceDonnees source = this.chansonDAO;
+
+            // Mode CSV :
+            // SourceDonnees source = new LecteurCSV("src/main/resources/data/spotifyData.csv");
+
+            this.biblio = new Bibliotheque(source);
+        } catch (Exception e) {
+            afficherAlertErreur("Erreur lors de l'initialisation de la bibliothèque", e);
         }
     }
 
     public void creerPlaylistBilio() {
         try {
-            // Créer une playlist qui contiendra toutes les chansons
-            toutesLesChansons = new Playlist("11111111-1111-1111-1111-111111111111", "Toutes les chansons", new ArrayList<>());
+            toutesLesChansons = new Playlist("11111111-1111-1111-1111-111111111111", "Toutes les chansons", new ArrayList<>(biblio.getChansons()));
             playlistDao.ajouter(toutesLesChansons);
         } catch (SQLException e) {
             afficherAlertErreur("Erreur lors de la création de la playlist bibliothèque !", e);
         }
     }
 
-    public void creerChansonPlaylistBiblio() {
-        try {
-            // Ajouter toutes les chansons de la biblio à la playlist "Toutes les chansons"
-            for (Chanson c : biblio.getChansons()) {
-                playlistDao.ajouterChanson(toutesLesChansons, c);
-            }
-            System.out.println(toutesLesChansons.getChansons());
-        } catch (SQLException e) {
-            afficherAlertErreur("Erreur lors de l'ajout des chansons dans la playlist bibliothèque !", e);
-            e.printStackTrace();
-        }
-    }
+
 
     public void afficherAlertErreur(String titre, Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -209,5 +191,6 @@ public class MainController {
         alert.setHeaderText("Erreur !");
         alert.setContentText(e.getMessage());
         alert.showAndWait();
+        e.printStackTrace();
     }
 }
