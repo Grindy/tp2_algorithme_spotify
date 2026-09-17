@@ -143,13 +143,11 @@ Depuis IntelliJ IDEA :
 
 🎁 <u>BONUS IMPLEMENTES</u> (Lab 3)
 
-1. Transactions SQL & Contrainte differee (+3%) :
+1. Transactions SQL & Contrainte differee :
     - Encadrement transactionnel (setAutoCommit(false), commit(), rollback()) des operations multi-etapes dans PlaylistDAO.
     - Utilisation de la contrainte UNIQUE (id_playlist, position) DEFERRABLE INITIALLY DEFERRED : permet d'inverser deux positions en une requete CASE sans declencher de collision d'unicite prematuree.
     - Suppression propre avec RETURNING position suivi d'un reajustement automatique (UPDATE ... position = position - 1) pour eviter les trous d'index.
-2. Graphiques (+2%) :
-    - Vue d'analyse graphique JavaFX (GraphiqueController / Graphique.fxml) affichant la distribution des donnees.
-3. Audit Journalier (Historique des ecoutes) :
+2. Audit Journalier (Historique des ecoutes) :
     - Table audit_journalier tracant chaque piste lue avec horodatage.
     - Interface modale permettant de consulter l'historique complet de la session.
 
@@ -196,17 +194,15 @@ tp2_algorithme_spotify/
 - Decoupage relationnel :  
   &emsp;Une table chanson separee de playlist_chanson evite la duplication
   d'informations des morceaux (artiste, titre, duree) lors de la creation de playlists multiples.  
-  <br>
 - Choix de suppression (ON DELETE) :
     * playlist_chanson.id_playlist possede ON DELETE CASCADE : la suppression d'une playlist
       nettoie automatiquement les lignes de liaison correspondantes.
     * chanson(id) ne possede PAS de cascade : les morceaux de la bibliotheque sont
       sanctuarises et proteges contre toute suppression accidentelle.  
-<br>
 - Protection contre les injections SQL :  
   &emsp;L'utilisation systematique de PreparedStatement separe l'analyse syntaxique SQL
   des donnees saisies, neutralisant totalement les tentatives d'injections.  
-<br>
+
 - Role de l'interface SourceDonnees :  
   &emsp;Permet a la classe Bibliotheque d'appliquer le principe d'inversion des dependances (DIP) :
   le metier depend d'une abstraction et non d'une source physique.   
