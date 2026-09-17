@@ -2,10 +2,7 @@ package com.maisonneuve.tp2_algorithme_spotify.model;
 
 import com.maisonneuve.tp2_algorithme_spotify.utils.Connexion;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,9 +68,13 @@ public class AuditJournalierDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+                    // traitement du timestamp pour éliminer les nanosecondes
+                    Timestamp ts = rs.getTimestamp("date_lecture");
+                    ts.setNanos(0);
+
                     String idChanson = rs.getString("id_chanson");
                     AuditJournalier historique = new AuditJournalier(idChanson);
-                    historique.setDateLecture(rs.getTimestamp("date_lecture"));
+                    historique.setDateLecture(ts);
                     historique.setTitre(rs.getString("titre"));
 
                     toutHistorique.add(historique);
