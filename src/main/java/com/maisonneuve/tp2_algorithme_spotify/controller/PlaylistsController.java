@@ -171,6 +171,7 @@ public class PlaylistsController {
         btnAction.setMaxWidth(Double.MAX_VALUE);
         HBox hbox = new HBox(8, nomPlaylist, btnAction);
         HBox.setHgrow(nomPlaylist, Priority.ALWAYS);
+        hbox.setAlignment(Pos.CENTER);
 
         btnAction.setOnAction(e -> {
             String saisie = nomPlaylist.getText().trim();
@@ -185,7 +186,10 @@ public class PlaylistsController {
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(8));
 
-        Scene scene = new Scene(layout, 300, 200);
+        Scene scene = new Scene(layout, 300, 120);
+        scene.getStylesheets().add(getClass().getResource("/vues/style.css").toExternalForm());
+        layout.getStyleClass().add("nouv-playlist");
+
         popupStage.setScene(scene);
         popupStage.setResizable(false);
         popupStage.showAndWait();
@@ -196,6 +200,7 @@ public class PlaylistsController {
         alert.setTitle("Confirmation");
         alert.setHeaderText("Supprimer la playlist ?");
         alert.setContentText("Cette action est irréversible. Voulez-vous continuer ?");
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/vues/style.css").toExternalForm());
 
         alert.initOwner(btnAjouterPlaylist.getScene().getWindow());
 

@@ -4,7 +4,8 @@
 .combo-box,
 .combo-box .list-cell,
 .menu-button,
-.menu-item .label {
+.menu-item .label,
+.alerte {
     -fx-font-family: "Tahoma";
 }
 
@@ -30,7 +31,7 @@
 
 /* Cette section gère l'apparence des champs, combo box et menu items */
 
-.champ-texte {
+.champ-texte, .nouv-playlist .text-field {
     -fx-background-color: #757575;
     -fx-border-color: #2f2f2f;
     -fx-border-width: 3px;
@@ -39,6 +40,10 @@
     -fx-text-fill: #dddddd;
     -fx-effect: dropshadow(gaussian, rgb(0,0,0,0.6), 8,0,0,0,5);
     -fx-padding: 0 0 0 18px;
+}
+
+.nouv-playlist .text-field {
+    -fx-min-height: 3em;
 }
 
 .champ-tri, .combo-box, .menu-button {
@@ -493,4 +498,34 @@
     -fx-text-fill: #dddddd;
 }
 
+/* alertes et popups */
 
+.alert .header-panel .label, .alert .content.label{
+    -fx-text-fill: #dddddd;
+}
+
+.alert .header-panel {
+    -fx-background-color: #2f2f2f;
+}
+
+.alert .button-bar .button, .nouv-playlist .button {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 24px;
+    -fx-background-radius: 24px;
+    -fx-background-color: #005c0a;
+    -fx-alignment: CENTER;
+}
+
+.alert .button-bar .button:hover, .nouv-playlist .button:hover {
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+}
+
+.nouv-playlist {
+    -fx-background-color: #2f2f2f;
+}
+
+.nouv-playlist .label {
+    -fx-text-fill: #dddddd;
+}

@@ -583,7 +583,9 @@ public class TableChansonsController {
         layout.setPadding(new Insets(8));
 
         // Afficher la fenêtre avec des dimensions fixes
-        Scene scene = new Scene(layout, 300, 200);
+        Scene scene = new Scene(layout, 300, 120);
+        scene.getStylesheets().add(getClass().getResource("/vues/style.css").toExternalForm());
+        layout.getStyleClass().add("nouv-playlist");
         popupStage.setScene(scene);
         popupStage.setResizable(false);
 
