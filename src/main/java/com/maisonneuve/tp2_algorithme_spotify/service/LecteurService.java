@@ -58,7 +58,7 @@ public class LecteurService {
     public void demarrerLecture(Chanson chanson, Playlist contexte) {
         this.contexteEnLecture = contexte;
         this.chansonEnLecture = chanson;
-        Platform.runLater(() -> chansonEnCours.set(chanson));
+        chansonEnCours.set(chanson);
         this.indexEnLecture = contexte.getChansons().indexOf(chanson);
         this.tempsEcouleMs = 0;
         this.estEnLecture = true;
@@ -73,20 +73,22 @@ public class LecteurService {
 
         // Incrémente le nombre d'écoutes de 1
         chanson.incrementerNbEcoutes();
-        String trackId = chanson.getId();
-        try {
-            if (trackId != null && !trackId.isEmpty()){
-                String urlSpotify = "spotify:track:" + trackId + ":play";
 
-                URI uri = new URI(urlSpotify);
-                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                    Desktop.getDesktop().browse(uri);
-                }
-
-            }
-            } catch (Exception e) {
-                throw new RuntimeException("Erreur lors de la lecture de la chanson");
-            }
+        // ****Ici pour faire jouer la chanson dans spotify par le web browser****
+//        String trackId = chanson.getId();
+//        try {
+//            if (trackId != null && !trackId.isEmpty()){
+//                String urlSpotify = "spotify:track:" + trackId + ":play";
+//
+//                URI uri = new URI(urlSpotify);
+//                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+//                    Desktop.getDesktop().browse(uri);
+//                }
+//
+//            }
+//            } catch (Exception e) {
+//                throw new RuntimeException("Erreur lors de la lecture de la chanson");
+//            }
     }
 
     public void togglePlayPause() {
