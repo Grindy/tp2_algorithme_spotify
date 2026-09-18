@@ -45,7 +45,7 @@ public class MainController {
     private Bibliotheque biblio;
     private Playlist toutesLesChansons;
     private PlaylistManager playlistManager;
-    private PlaylistService playlistService = new PlaylistService();
+    private final PlaylistService playlistService = new PlaylistService();
     private final int pageCourante = 1;
     private Playlist playListSelectionne;
     public static final String IMAGE_PAR_DEFAUT = "https://i.pinimg.com/736x/ba/8e/4d/ba8e4de740a641feb1709ce713889ea5.jpg";
@@ -55,14 +55,14 @@ public class MainController {
     private final BooleanProperty toutesLesChansonsEstSelectionne = new SimpleBooleanProperty(true);
     private final PlaylistDAO playlistDao = new PlaylistDAO();
     private final ChansonDAO chansonDAO = new ChansonDAO();
-    private AuditJournalierController auditJournalierController = new AuditJournalierController();
+    private final AuditJournalierController auditJournalierController = new AuditJournalierController();
 
     @FXML
     private ChansonController chansonController;
     @FXML
     private TableChansonsController sectionTableChansonsController;
-    @FXML
-    private LecteurController lecteurController = new LecteurController();
+
+    private LecteurController lecteurController;
 
     @FXML
     public void initialize() {
@@ -84,17 +84,12 @@ public class MainController {
         initplaylistsController();
         initTableChansonController();
         auditJournalierController.setMainController(this);
-        lecteurController.setMainController(this);
-
         definirEcouteursDEvenements();
-
-
         playListSelectionne = toutesLesChansons;
         sectionTableChansonsController.rafraichirListeChansons(playListSelectionne, pageCourante);
     }
 
     private void initTableChansonController() {
-        sectionTableChansonsController.setPlaylistManager(this.playlistManager);
         sectionTableChansonsController.setChansonController(chansonController);
         sectionTableChansonsController.setFieldRecherche(fieldRecherche);
         sectionTableChansonsController.setplaylistsController(playlistsController);
@@ -111,7 +106,6 @@ public class MainController {
 
     private void initplaylistsController() {
         playlistsController.setBibliotheque(biblio);
-        playlistsController.setPlaylistManager(playlistManager);
         playlistsController.setToutesLesChansons(toutesLesChansons);
         playlistsController.rafraichirListePlaylist();
         playlistsController.setPlaylistManager(playlistManager);
@@ -132,17 +126,23 @@ public class MainController {
             rootPane.setCenter(graphique.getCenter());
             rootPane.setRight(null);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            afficherAlertErreur("Erreur lors de l'affichage des graphiques", e);
         }
     }
 
     private void afficherLecteur() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/vues/Lecteur.fxml"));
-            BorderPane lecteur = (BorderPane) loader.load();
+            BorderPane lecteur = loader.load();
+
+            this.lecteurController = loader.getController();
+            if (this.lecteurController != null) {
+                this.lecteurController.setMainController(this);
+            }
+
             rootPane.setBottom(lecteur.getBottom());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            afficherAlertErreur("Erreur lors de l'affichage du lecteur", e);
         }
     }
 
@@ -173,6 +173,8 @@ public class MainController {
             // SourceDonnees source = new LecteurCSV("src/main/resources/data/spotifyData.csv");
 
             this.biblio = new Bibliotheque(source);
+        } catch (SQLException e) {
+            afficherAlertErreur("Erreur SQL lors de l'initialisation de la bibliothèque", e);
         } catch (Exception e) {
             afficherAlertErreur("Erreur lors de l'initialisation de la bibliothèque", e);
         }

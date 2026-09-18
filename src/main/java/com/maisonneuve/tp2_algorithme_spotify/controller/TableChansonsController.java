@@ -193,7 +193,6 @@ public class TableChansonsController {
         // Écouteur sur le combo nombre de pages
         comboNbPages.setOnAction(e -> {
             nbChansonsParPage = comboNbPages.getValue();
-            configurerColonnesTable();
             rafraichirListeChansons(playListSelectionne, 1);
         });
 
@@ -242,7 +241,7 @@ public class TableChansonsController {
                             Playlist contexte = (tablePlaylists != null && tablePlaylists.getSelectionModel().getSelectedItem() != null) ? tablePlaylists.getSelectionModel().getSelectedItem() : toutesLesChansons;
                             LecteurService.getInstance().demarrerLecture(chanson, contexte);
                         } catch (Exception e) {
-                            mainController.afficherAlertErreur("Erreur lors du lancement de Spotify", e);
+                            mainController.afficherAlertErreur("Erreur lors du lancement de Spotifly", e);
                         }
                     }
                 });
@@ -266,8 +265,10 @@ public class TableChansonsController {
                                     }
                                     rafraichirListeChansons(playListSelectionne, pageCourante);
                                 });
+                            } catch (SQLException e) {
+                                Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors de la suppression de la chanson !", e));
                             } catch (Exception e) {
-                                Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson !", e));
+                                Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors de la suppression de la chanson !", e));
                             }
                         }).start();
                     }
@@ -428,6 +429,7 @@ public class TableChansonsController {
         fieldNombreEcoutes.setText("");
         dropTri.setText("---");
         dataFiltreTri.clear();
+        dataFiltreTri.putAll(templateDataFiltreTri);
     }
 
     public void chargerChoixGenres() {
@@ -451,7 +453,9 @@ public class TableChansonsController {
                             playlistManager.deplacerChanson(playListSelectionne, chanson, "up");
                             Platform.runLater(() -> rafraichirListeChansons(playListSelectionne, pageCourante));
                         } catch (SQLException ex) {
-                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors du déplacement", ex));
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors du déplacement", ex));
+                        } catch (Exception ex) {
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors du déplacement", ex));
                         }
                     }).start();
                 }
@@ -466,7 +470,9 @@ public class TableChansonsController {
                             playlistManager.deplacerChanson(playListSelectionne, chanson, "down");
                             Platform.runLater(() -> rafraichirListeChansons(playListSelectionne, pageCourante));
                         } catch (SQLException ex) {
-                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors du déplacement", ex));
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors du déplacement", ex));
+                        } catch (Exception ex) {
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors du déplacement", ex));
                         }
                     }).start();
                 }
@@ -486,7 +492,9 @@ public class TableChansonsController {
                             rafraichirListeChansons(playListSelectionne, pageCourante);
                         });
                     } catch (SQLException ex) {
-                        Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors du videment de la playlist !", ex));
+                        Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors du videment de la playlist !", ex));
+                    } catch (Exception ex) {
+                        Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors du videment de la playlist !", ex));
                     }
                 }).start();
             });
@@ -505,7 +513,9 @@ public class TableChansonsController {
                                 rafraichirListeChansons(playListSelectionne, pageCourante);
                             });
                         } catch (SQLException ex) {
-                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson", ex));
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors de la suppression de la chanson", ex));
+                        } catch (Exception ex) {
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors de la suppression de la chanson", ex));
                         }
                     }).start();
                 }
@@ -572,8 +582,10 @@ public class TableChansonsController {
                         playlistsController.rafraichirListePlaylist();
                         popupStage.close();
                     });
+                } catch (SQLException ex) {
+                    Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors de l'ajout de la chanson à la playlist !", ex));
                 } catch (Exception ex) {
-                    Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors de l'ajout de la chanson à la playlist !", ex));
+                    Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors de l'ajout de la chanson à la playlist !", ex));
                 }
             }).start();
         });
