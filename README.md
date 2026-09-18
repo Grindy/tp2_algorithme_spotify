@@ -151,24 +151,28 @@ tp2_algorithme_spotify/
 ### Etapes (reproductibles sur une base vierge) :
 
 - ### 1.  Creation de la base de donnees dans PostgreSQL :  
-   - Ouvrez pgAdmin 4 et executez la requête suivante :  
-   - CREATE DATABASE "playlist-manager";  
+   - Ouvrez pgAdmin 4 et créer une nouvelle Database nommée "playlist-manager" 
 
-- ### 2.  Execution du script de structure (schema.sql) :
-   - Connectez-vous a la base "playlist-manager" et executez l'integralite du script situe dans : src/main/resources/sql/schema.sql  
-
-
-- ### 3. Peuplement des donnees :
-   L'application dispose d'un systeme d'amorcage automatique, au premier démarrage si la table chanson est vide lle sera automatiquement peuplée à partir des morceaux du CSV.
-
-- ### 4. Installation du projet :
+- ### 2. Installation du projet :
     Cloner le dépôt à partir de Github
 ```
 git clone https://github.com/Grindy/tp2_algorithme_spotify.git
 cd tp2_algorithme_spotify
 ```
+ou dans IntelliJ:
+```
+1. Cloner le projet dans IntelliJ (File > New > Project from Version Control...)
+2. Donner l'URL du repo dans le champ URL ( https://github.com/Grindy/tp2_algorithme_spotify.git )
+3. Changer le dossier cible au besoin 
+```
 
-- ### 5. Configuration des identifiants (database.properties)   
+
+- ### 3.  Execution du script de structure (schema.sql) :
+   - Connectez-vous a la base "playlist-manager" et executez l'integralite du script situe dans : src/main/resources/sql/schema.sql  
+
+   L'application dispose d'un systeme d'amorcage automatique, au premier démarrage si la table chanson est vide elle sera automatiquement peuplée à partir des chansons du CSV.
+
+- ### 4. Configuration des identifiants (database.properties)   
   À la racine du projet, créez un fichier nomme "database.properties" et remplissez-le avec vos informations.
 
   ##### Un fichier modèle "database.properties.example" est versionné a la racine.  
@@ -180,7 +184,7 @@ cd tp2_algorithme_spotify
   db.password=votre_mot_de_passe_local
  ```
 
-- ### 6. Compilation et lancement de l'application
+- ### 5. Compilation et lancement de l'application
 
 ```
 En ligne de commande :
@@ -192,16 +196,15 @@ En ligne de commande :
 2. Lancer l'application JavaFX :
 
    mvn javafx:run
-   
+
+Note: Si l'affichage dans le terminal bogue avec les accents, entrez d'abord chcp 65001 avant de lancer l'application. 
  ```
 
-Depuis IntelliJ IDEA :
-1. Cloner le projet dans IntelliJ (File > New > Project from Version Control...)
-2. Donner l'URL du repo dans le champ URL ( https://github.com/Grindy/tp2_algorithme_spotify.git )
-3. Changer le dossier cible au besoin 
-4. S'assurer que le fichier database.properties est renseigne a la racine.
-5. Ouvrir `MainFx.java`
-5. Cliquer sur le bouton Run
+Ou dans IntelliJ:
+```
+1. Ouvrir `MainFx.java`
+2. Cliquer sur le bouton Run
+```
 
 ---
 
