@@ -8,6 +8,7 @@ import com.maisonneuve.tp2_algorithme_spotify.utils.SourceDonnees;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ChansonDAO implements SourceDonnees {
 
@@ -94,7 +95,7 @@ public class ChansonDAO implements SourceDonnees {
 
 
     // trouver une chanson par ID
-    public Chanson listerParId(String id) throws SQLException {
+    public Optional<Chanson> chargerParId(String id) throws SQLException {
         String sql = "SELECT * FROM chanson WHERE id = ?";
         Chanson chansonTrouvee = null;
 
@@ -120,7 +121,7 @@ public class ChansonDAO implements SourceDonnees {
                 }
             }
         }
-        return chansonTrouvee;
+        return Optional.ofNullable(chansonTrouvee);
     }
 
     public boolean estVide() throws SQLException {
