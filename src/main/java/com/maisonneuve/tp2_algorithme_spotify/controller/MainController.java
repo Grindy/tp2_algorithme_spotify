@@ -191,8 +191,8 @@ public class MainController {
 
     public void afficherAlertErreur(String titre, Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(titre);
-        alert.setHeaderText("Erreur !");
+        alert.setTitle("Erreur !");
+        alert.setHeaderText(titre);
         alert.setContentText(e.getMessage());
         alert.showAndWait();
         e.printStackTrace();
