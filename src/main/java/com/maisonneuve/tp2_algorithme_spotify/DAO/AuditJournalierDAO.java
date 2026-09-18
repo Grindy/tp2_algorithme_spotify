@@ -77,6 +77,7 @@ public class AuditJournalierDAO {
                     Timestamp ts = rs.getTimestamp("date_lecture");
                     ts.setNanos(0);
 
+
                     String idChanson = rs.getString("id_chanson");
                     AuditJournalier historique = new AuditJournalier(idChanson);
                     historique.setDateLecture(ts);
