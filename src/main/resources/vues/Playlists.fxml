@@ -11,7 +11,7 @@
 
 <VBox prefHeight="620.0" prefWidth="337.0" style="-fx-border-width: 0 3px 0 0;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.PlaylistsController">
     <children>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+        <HBox alignment="CENTER" prefHeight="74.0" prefWidth="337.0" spacing="10.0">
             <children>
                 <Button id="btn-biblio" fx:id="btnVotreBibliotheque" mnemonicParsing="false" styleClass="degrade-vert" text="Votre Bibliothèque">
                     <padding>
@@ -38,7 +38,7 @@
         <TableView fx:id="tablePlaylists" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="colPlaylists" maxWidth="1.7976931348623157E308" resizable="false" styleClass="col-playlist" text="Vos Playlists" />
-                <TableColumn fx:id="colSupprimerPlaylist" resizable="false" minWidth="38.0" styleClass="col-btn-supprimer"  />
+                <TableColumn fx:id="colSupprimerPlaylist" minWidth="38.0" resizable="false" styleClass="col-btn-supprimer" />
 
             </columns>
             <columnResizePolicy>
