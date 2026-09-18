@@ -1,5 +1,4 @@
 package com.maisonneuve.tp2_algorithme_spotify.controller;
-
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.Genre;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
@@ -7,6 +6,7 @@ import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.LecteurService;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
+import com.maisonneuve.tp2_algorithme_spotify.utils.FormaterFieldDureeMax;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -23,12 +23,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.UnaryOperator;
 
 public class TableChansonsController {
     @FXML
@@ -140,11 +138,22 @@ public class TableChansonsController {
     @FXML
     public void initialize() {
         initComboPages();
-        formaterFieldDureeMax();
+        FormaterFieldDureeMax.appliquerFormatDuree(fieldDureeMax);
         configurerColonnesTable();
         definirEcouteursDEvenements();
         chargerChoixGenres();
         creerContextMenu();
+        //mettre a jour l'affichage a droite si la chanson qui joue est celle qui est selectionnee pour mettre a jour en temp reel
+        LecteurService.getInstance().chansonEnCoursProperty().addListener((obs, ancienneChanson, nouvelleChanson) -> {
+            if (nouvelleChanson != null) {
+                Platform.runLater(() -> {
+                    Chanson chansonSelectionnee = tableChansons.getSelectionModel().getSelectedItem();
+                    if (chansonController != null && chansonSelectionnee != null && chansonSelectionnee.equals(nouvelleChanson)) {
+                        chansonController.afficherChansonSelectionnee(nouvelleChanson);
+                    }
+                });
+            }
+        });
     }
 
     private void definirEcouteursDEvenements() {
@@ -193,7 +202,6 @@ public class TableChansonsController {
         // Écouteur sur le combo nombre de pages
         comboNbPages.setOnAction(e -> {
             nbChansonsParPage = comboNbPages.getValue();
-            configurerColonnesTable();
             rafraichirListeChansons(playListSelectionne, 1);
         });
 
@@ -242,7 +250,7 @@ public class TableChansonsController {
                             Playlist contexte = (tablePlaylists != null && tablePlaylists.getSelectionModel().getSelectedItem() != null) ? tablePlaylists.getSelectionModel().getSelectedItem() : toutesLesChansons;
                             LecteurService.getInstance().demarrerLecture(chanson, contexte);
                         } catch (Exception e) {
-                            mainController.afficherAlertErreur("Erreur lors du lancement de Spotify", e);
+                            mainController.afficherAlertErreur("Erreur lors du lancement du lecteur", e);
                         }
                     }
                 });
@@ -266,8 +274,10 @@ public class TableChansonsController {
                                     }
                                     rafraichirListeChansons(playListSelectionne, pageCourante);
                                 });
+                            } catch (SQLException e) {
+                                Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors de la suppression de la chanson !", e));
                             } catch (Exception e) {
-                                Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson !", e));
+                                Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors de la suppression de la chanson !", e));
                             }
                         }).start();
                     }
@@ -303,83 +313,6 @@ public class TableChansonsController {
     private void initComboPages() {
         comboNbPages.getItems().addAll(10, 25, 50, 100);
         comboNbPages.setValue(25);
-    }
-
-    // Fonction générée par Gemini
-    private void formaterFieldDureeMax() {
-
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            // Autorise la réinitialisation directe via setText("00:00") ou toute valeur valide complète
-            if (change.getText().matches("^[0-9]{2}:[0-5][0-9]$")) {
-                return change;
-            }
-            // Récupère le texte actuel ou "00:00" s'il est vide/incomplet
-            String currentText = change.getControlText();
-            if (currentText.length() != 5) {
-                currentText = "00:00";
-            }
-
-            // 1. Touche Backspace / Delete
-            if (change.getText().isEmpty()) {
-                int start = change.getRangeStart();
-                int end = change.getRangeEnd();
-
-                if (start != end) {
-                    char[] chars = currentText.toCharArray();
-                    for (int i = start; i < end; i++) {
-                        if (i != 2) {
-                            chars[i] = '0';
-                        }
-                    }
-                    change.setRange(0, change.getControlText().length());
-                    change.setText(new String(chars));
-                    change.setCaretPosition(start);
-                    change.setAnchor(start);
-                    return change;
-                }
-                return change;
-            }
-
-            // 2. Frappe d'un chiffre
-            if (change.getText().matches("[0-9]")) {
-                int pos = change.getRangeStart();
-
-                // Si le curseur est sur le ':', on passe directement au chiffre des secondes
-                if (pos == 2) {
-                    pos = 3;
-                }
-
-                // Bloque si le curseur est au-delà du 5e caractère
-                if (pos >= 5) {
-                    return null;
-                }
-
-                char digit = change.getText().charAt(0);
-
-                // Validation des dizaines de secondes (index 3 : max 59 secondes)
-                if (pos == 3 && digit > '5') {
-                    return null;
-                }
-
-                char[] chars = currentText.toCharArray();
-                chars[pos] = digit;
-
-                int nextCaret = (pos + 1 == 2) ? 3 : pos + 1;
-
-                change.setRange(0, change.getControlText().length());
-                change.setText(new String(chars));
-                change.setCaretPosition(nextCaret);
-                change.setAnchor(nextCaret);
-                return change;
-            }
-
-            // Rejette toute autre touche non numérique
-            return null;
-        };
-
-        // Initialise le TextFormatter avec "00:00" par défaut
-        fieldDureeMax.setTextFormatter(new TextFormatter<>(filter));
-        fieldDureeMax.setText("00:00");
     }
 
     public void rafraichirListeChansons(Playlist playlist, int page) {
@@ -428,6 +361,7 @@ public class TableChansonsController {
         fieldNombreEcoutes.setText("");
         dropTri.setText("---");
         dataFiltreTri.clear();
+        dataFiltreTri.putAll(templateDataFiltreTri);
     }
 
     public void chargerChoixGenres() {
@@ -451,7 +385,9 @@ public class TableChansonsController {
                             playlistManager.deplacerChanson(playListSelectionne, chanson, "up");
                             Platform.runLater(() -> rafraichirListeChansons(playListSelectionne, pageCourante));
                         } catch (SQLException ex) {
-                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors du déplacement", ex));
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors du déplacement", ex));
+                        } catch (Exception ex) {
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors du déplacement", ex));
                         }
                     }).start();
                 }
@@ -466,7 +402,9 @@ public class TableChansonsController {
                             playlistManager.deplacerChanson(playListSelectionne, chanson, "down");
                             Platform.runLater(() -> rafraichirListeChansons(playListSelectionne, pageCourante));
                         } catch (SQLException ex) {
-                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors du déplacement", ex));
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors du déplacement", ex));
+                        } catch (Exception ex) {
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors du déplacement", ex));
                         }
                     }).start();
                 }
@@ -486,7 +424,9 @@ public class TableChansonsController {
                             rafraichirListeChansons(playListSelectionne, pageCourante);
                         });
                     } catch (SQLException ex) {
-                        Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors du videment de la playlist !", ex));
+                        Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors du videment de la playlist !", ex));
+                    } catch (Exception ex) {
+                        Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors du videment de la playlist !", ex));
                     }
                 }).start();
             });
@@ -505,7 +445,9 @@ public class TableChansonsController {
                                 rafraichirListeChansons(playListSelectionne, pageCourante);
                             });
                         } catch (SQLException ex) {
-                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors de la suppression de la chanson", ex));
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors de la suppression de la chanson", ex));
+                        } catch (Exception ex) {
+                            Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors de la suppression de la chanson", ex));
                         }
                     }).start();
                 }
@@ -572,8 +514,10 @@ public class TableChansonsController {
                         playlistsController.rafraichirListePlaylist();
                         popupStage.close();
                     });
+                } catch (SQLException ex) {
+                    Platform.runLater(() -> mainController.afficherAlertErreur("Erreur SQL lors de l'ajout de la chanson à la playlist !", ex));
                 } catch (Exception ex) {
-                    Platform.runLater(() -> mainController.afficherAlertErreur("Erreur lors de l'ajout de la chanson à la playlist !", ex));
+                    Platform.runLater(() -> mainController.afficherAlertErreur("Erreur inattendue lors de l'ajout de la chanson à la playlist !", ex));
                 }
             }).start();
         });

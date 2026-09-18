@@ -3,7 +3,6 @@ package com.maisonneuve.tp2_algorithme_spotify.controller;
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

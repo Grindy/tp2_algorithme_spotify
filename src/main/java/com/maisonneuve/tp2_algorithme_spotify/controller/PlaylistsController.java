@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
@@ -119,9 +120,13 @@ public class PlaylistsController {
                                     // On vide la sélection, le MainController s'occupera d'afficher "Toutes les chansons"
                                     tablePlaylists.getSelectionModel().clearSelection();
                                 });
+                            } catch (SQLException e) {
+                                Platform.runLater(() -> {
+                                mainController.afficherAlertErreur("Erreur SQL lors de la suppression de la playlist", e);
+                                });
                             } catch (Exception e) {
                                 Platform.runLater(() -> {
-                                mainController.afficherAlertErreur("Erreur lors de la suppression de la playlist", e);
+                                    mainController.afficherAlertErreur("Erreur lors de la suppression de la playlist", e);
                                 });
                             }
                         }).start();
@@ -232,11 +237,16 @@ public class PlaylistsController {
                         new ArrayList<>()
                 ));
                 Platform.runLater(this::rafraichirListePlaylist);
+            } catch (SQLException e) {
+                Platform.runLater(() -> {
+                mainController.afficherAlertErreur("Erreur SQL lors de la création de la playlist", e);
+                });
             } catch (Exception e) {
                 Platform.runLater(() -> {
-                mainController.afficherAlertErreur("Erreur lors de la création de la playlist", e);
+                    mainController.afficherAlertErreur("Erreur innatendue lors de la création de la playlist", e);
                 });
             }
+
         }).start();
     }
 

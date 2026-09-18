@@ -45,4 +45,8 @@ public class AuditJournalier {
     public void setTitre(String titre) {
         this.titre = titre;
     }
+
+    public String getDateLectureFormatee() {
+        return (dateLecture != null) ? dateLecture.toString().substring(0, 19) : "";
+    }
 }

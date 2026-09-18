@@ -38,7 +38,7 @@ public class AuditJournalierController {
     @FXML
     public void initialize() {
         colTitre.setCellValueFactory(new PropertyValueFactory<>("titre"));
-        colTimestamp.setCellValueFactory(new PropertyValueFactory<>("dateLecture"));
+        colTimestamp.setCellValueFactory(new PropertyValueFactory<>("dateLectureFormatee"));
 
         colTitre.prefWidthProperty().bind(tableView.widthProperty().multiply(0.6));
         colTimestamp.prefWidthProperty().bind(tableView.widthProperty().multiply(0.4));

@@ -61,8 +61,8 @@ public class MainController {
     private ChansonController chansonController;
     @FXML
     private TableChansonsController sectionTableChansonsController;
-    @FXML
-    private LecteurController lecteurController = new LecteurController();
+
+    private LecteurController lecteurController;
 
     @FXML
     public void initialize() {
@@ -84,17 +84,12 @@ public class MainController {
         initplaylistsController();
         initTableChansonController();
         auditJournalierController.setMainController(this);
-        lecteurController.setMainController(this);
-
         definirEcouteursDEvenements();
-
-
         playListSelectionne = toutesLesChansons;
         sectionTableChansonsController.rafraichirListeChansons(playListSelectionne, pageCourante);
     }
 
     private void initTableChansonController() {
-        sectionTableChansonsController.setPlaylistManager(this.playlistManager);
         sectionTableChansonsController.setChansonController(chansonController);
         sectionTableChansonsController.setFieldRecherche(fieldRecherche);
         sectionTableChansonsController.setplaylistsController(playlistsController);
@@ -111,7 +106,6 @@ public class MainController {
 
     private void initplaylistsController() {
         playlistsController.setBibliotheque(biblio);
-        playlistsController.setPlaylistManager(playlistManager);
         playlistsController.setToutesLesChansons(toutesLesChansons);
         playlistsController.rafraichirListePlaylist();
         playlistsController.setPlaylistManager(playlistManager);
@@ -132,17 +126,23 @@ public class MainController {
             rootPane.setCenter(graphique.getCenter());
             rootPane.setRight(null);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            afficherAlertErreur("Erreur lors de l'affichage des graphiques", e);
         }
     }
 
     private void afficherLecteur() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/vues/Lecteur.fxml"));
-            BorderPane lecteur = (BorderPane) loader.load();
+            BorderPane lecteur = loader.load();
+
+            this.lecteurController = loader.getController();
+            if (this.lecteurController != null) {
+                this.lecteurController.setMainController(this);
+            }
+
             rootPane.setBottom(lecteur.getBottom());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            afficherAlertErreur("Erreur lors de l'affichage du lecteur", e);
         }
     }
 
@@ -173,6 +173,8 @@ public class MainController {
             // SourceDonnees source = new LecteurCSV("src/main/resources/data/spotifyData.csv");
 
             this.biblio = new Bibliotheque(source);
+        } catch (SQLException e) {
+            afficherAlertErreur("Erreur SQL lors de l'initialisation de la bibliothèque", e);
         } catch (Exception e) {
             afficherAlertErreur("Erreur lors de l'initialisation de la bibliothèque", e);
         }
@@ -189,8 +191,8 @@ public class MainController {
 
     public void afficherAlertErreur(String titre, Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(titre);
-        alert.setHeaderText("Erreur !");
+        alert.setTitle("Erreur !");
+        alert.setHeaderText(titre);
         alert.setContentText(e.getMessage());
         alert.getDialogPane().getStylesheets().add(getClass().getResource("/vues/style.css").toExternalForm());
         alert.showAndWait();
