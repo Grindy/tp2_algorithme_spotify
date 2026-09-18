@@ -37,8 +37,9 @@
         </HBox>
         <TableView fx:id="tablePlaylists" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn fx:id="colPlaylists" prefWidth="75.0" styleClass="col-playlist" text="Vos Playlists" />
-                <TableColumn fx:id="colSupprimerPlaylist" prefWidth="75.0" />
+                <TableColumn fx:id="colPlaylists" maxWidth="1.7976931348623157E308" resizable="false" styleClass="col-playlist" text="Vos Playlists" />
+                <TableColumn fx:id="colSupprimerPlaylist" resizable="false" minWidth="38.0" styleClass="col-btn-supprimer"  />
+
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

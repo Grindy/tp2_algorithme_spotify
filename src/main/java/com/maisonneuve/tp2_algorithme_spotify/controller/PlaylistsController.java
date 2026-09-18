@@ -141,8 +141,8 @@ public class PlaylistsController {
         });
 
         // Définir les proportions des colonnes de la liste des playlists
-        colPlaylists.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.90));
-        colSupprimerPlaylist.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.1));
+        colPlaylists.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.85));
+        colSupprimerPlaylist.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.15));
 
         // Empêcher les comportements par défaut (tri natif, déplacer les colonnes)
         for (TableColumn<?, ?> col : tablePlaylists.getColumns()) {
