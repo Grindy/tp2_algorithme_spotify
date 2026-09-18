@@ -5,12 +5,14 @@ import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.control.Alert;
 import javafx.util.Duration;
 import java.util.List;
 import java.util.function.Consumer;
 import java.awt.Desktop;
 import java.net.URI;
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 
 public class LecteurService {
@@ -29,6 +31,8 @@ public class LecteurService {
     private Consumer<Integer> onTick;
     private Consumer<Chanson> onChansonChangee;
     private Consumer<Boolean> onEtatLectureChangee;
+    private final ObjectProperty<Chanson> chansonEnCours = new SimpleObjectProperty<>();
+
 
     private LecteurService() {
         // on crée un timeline d'une seconde, qui après avoir joué crée une autre timeline
@@ -54,6 +58,7 @@ public class LecteurService {
     public void demarrerLecture(Chanson chanson, Playlist contexte) {
         this.contexteEnLecture = contexte;
         this.chansonEnLecture = chanson;
+        Platform.runLater(() -> chansonEnCours.set(chanson));
         this.indexEnLecture = contexte.getChansons().indexOf(chanson);
         this.tempsEcouleMs = 0;
         this.estEnLecture = true;
@@ -144,5 +149,9 @@ public class LecteurService {
 
     public Chanson getChansonEnLecture() {
         return chansonEnLecture;
+    }
+
+    public ObjectProperty<Chanson> chansonEnCoursProperty() {
+        return chansonEnCours;
     }
 }
