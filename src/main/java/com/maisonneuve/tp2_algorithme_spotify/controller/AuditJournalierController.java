@@ -28,7 +28,7 @@ public class AuditJournalierController {
     @FXML
     private TableColumn<AuditJournalier, Timestamp> colTimestamp;
 
-    private AuditJournalierDAO auditJournalierDAO = new AuditJournalierDAO();
+    private final AuditJournalierDAO auditJournalierDAO = new AuditJournalierDAO();
     private MainController mainController;
 
     public void setMainController(MainController mainController) {

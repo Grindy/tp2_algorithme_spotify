@@ -17,7 +17,6 @@ public class LecteurService {
     private static final LecteurService INSTANCE = new LecteurService();
     public static LecteurService getInstance() { return INSTANCE; }
 
-    private MainController mainController;
     private Chanson chansonEnLecture;
     private Playlist contexteEnLecture;
     private int indexEnLecture;
@@ -47,9 +46,6 @@ public class LecteurService {
 
     public void setOnEtatLectureChangee(Consumer<Boolean> callback) { this.onEtatLectureChangee = callback; }
 
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
-    }
 
     public void demarrerLecture(Chanson chanson, Playlist contexte) {
         this.contexteEnLecture = contexte;

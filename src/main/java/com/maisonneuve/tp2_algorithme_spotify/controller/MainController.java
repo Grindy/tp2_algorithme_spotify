@@ -45,7 +45,7 @@ public class MainController {
     private Bibliotheque biblio;
     private Playlist toutesLesChansons;
     private PlaylistManager playlistManager;
-    private PlaylistService playlistService = new PlaylistService();
+    private final PlaylistService playlistService = new PlaylistService();
     private final int pageCourante = 1;
     private Playlist playListSelectionne;
     public static final String IMAGE_PAR_DEFAUT = "https://i.pinimg.com/736x/ba/8e/4d/ba8e4de740a641feb1709ce713889ea5.jpg";
@@ -55,7 +55,7 @@ public class MainController {
     private final BooleanProperty toutesLesChansonsEstSelectionne = new SimpleBooleanProperty(true);
     private final PlaylistDAO playlistDao = new PlaylistDAO();
     private final ChansonDAO chansonDAO = new ChansonDAO();
-    private AuditJournalierController auditJournalierController = new AuditJournalierController();
+    private final AuditJournalierController auditJournalierController = new AuditJournalierController();
 
     @FXML
     private ChansonController chansonController;
