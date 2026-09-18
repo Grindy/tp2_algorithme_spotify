@@ -1,5 +1,6 @@
 package com.maisonneuve.tp2_algorithme_spotify.controller;
 
+import com.maisonneuve.tp2_algorithme_spotify.DAO.PlaylistDAO;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
@@ -249,19 +250,30 @@ public class PlaylistsController {
 
             ContextMenu contextMenu = new ContextMenu();
 
-            MenuItem modifierNomChanson = new MenuItem("Modifier le nom de la playlist");
-            modifierNomChanson.setOnAction(e -> {
+            MenuItem modifierNomPlaylist = new MenuItem("Modifier le nom de la playlist");
+            modifierNomPlaylist.setOnAction(e -> {
                 Playlist playlist = row.getItem();
                 ouvrirFenetreActionPlaylist(
                         "Modifier le nom de la playlist",
                         "Entrez le nouveau nom de votre playlist",
                         playlist.getNom(),
                         "Modifier",
-                        playlist::setNom
+                        nouveauNom -> {
+                            playlist.setNom(nouveauNom);
+                            new Thread(() -> {
+                                try {
+                                    new PlaylistDAO().modifier(playlist);
+                                    Platform.runLater(this::rafraichirListePlaylist);
+                                } catch (SQLException ex) {
+                                    Platform.runLater(() -> {mainController.afficherAlertErreur("Erreur SQL lors du renommage", ex);
+                                    });
+                                }
+                            }).start();
+                        }
                         );
             });
 
-            contextMenu.getItems().add(modifierNomChanson);
+            contextMenu.getItems().add(modifierNomPlaylist);
 
             // Ne s'affiche pas si la ligne est vide
             row.emptyProperty().addListener((obs, wasEmpty, isEmpty) -> {

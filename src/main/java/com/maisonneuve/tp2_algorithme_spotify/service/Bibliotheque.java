@@ -19,7 +19,7 @@ public class Bibliotheque {
 
         // On charge via l'interface : pas d'addition, juste la source sélectionnée !
         this.chansons = sourceDonnees.charger();
-        this.playlists = playlistDAO.getToutesLesPlaylists();
+        this.playlists = playlistDAO.trouverTous();
     }
 
     public SourceDonnees getSourceDonnees() {

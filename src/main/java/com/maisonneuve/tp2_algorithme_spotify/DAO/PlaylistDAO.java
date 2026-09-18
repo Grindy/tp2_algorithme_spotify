@@ -12,10 +12,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PlaylistDAO {
+public class PlaylistDAO implements PlaylistDAOInterface {
     public static final String uuidInitial = "11111111-1111-1111-1111-111111111111";
 
     // ajouter Playlist
+    @Override
     public void ajouter(Playlist p) throws SQLException {
         String sql =
                 "INSERT INTO playlist"
@@ -32,16 +33,50 @@ public class PlaylistDAO {
     }
 
     // supprimer Playlist
-    public void retirerPlaylist(Playlist p) throws SQLException {
+    @Override
+    public void supprimer(String id) throws SQLException {
         String sql =
                 "DELETE FROM playlist WHERE id = ?";
 
         try (Connection co = Connexion.getConnexion();
              PreparedStatement ps = co.prepareStatement(sql)) {
-            ps.setObject(1, UUID.fromString(p.getId()));
+            ps.setObject(1, UUID.fromString(id));
             ps.executeUpdate();
             System.out.println("La playlist a été supprimée!");
         }
+    }
+
+    // modifier une playlist
+    @Override
+    public void modifier(Playlist p) throws SQLException {
+        String sql = "UPDATE playlist SET nom = ? WHERE id = ?";
+        try (Connection co = Connexion.getConnexion();
+             PreparedStatement ps = co.prepareStatement(sql)) {
+            ps.setString(1, p.getNom());
+            ps.setObject(2, UUID.fromString(p.getId()));
+            ps.executeUpdate();
+        }
+    }
+
+    @Override
+    public Playlist trouverParId(String id) throws SQLException {
+        String sql = "SELECT id, nom, date_creation FROM playlist WHERE id = ?";
+        try (Connection co = Connexion.getConnexion();
+             PreparedStatement ps = co.prepareStatement(sql)) {
+            ps.setObject(1, UUID.fromString(id));
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Playlist p = new Playlist(
+                            rs.getString("id"),
+                            rs.getString("nom"),
+                            new ArrayList<>()
+                    );
+                    getChansons(p);
+                    return p;
+                }
+            }
+        }
+        return null;
     }
 
     // ajouter chanson dans une Playlist
@@ -211,7 +246,7 @@ public class PlaylistDAO {
         return liste;
     }
 
-    public List<Playlist> getToutesLesPlaylists() throws SQLException {
+    public List<Playlist> trouverTous() throws SQLException {
         List<Playlist> liste = new ArrayList<>();
         String sql = "SELECT id, nom, date_creation FROM playlist WHERE id!='11111111-1111-1111-1111-111111111111' ORDER BY nom ASC";
 

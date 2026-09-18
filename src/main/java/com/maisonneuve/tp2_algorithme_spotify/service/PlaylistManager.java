@@ -20,7 +20,7 @@ public class PlaylistManager {
 
     private void chargerPlaylistsDepuisBD() throws SQLException {
 
-            List<Playlist> playlistsBD = playlistDAO.getToutesLesPlaylists();
+            List<Playlist> playlistsBD = playlistDAO.trouverTous();
             bibliotheque.getPlaylists().clear();
             bibliotheque.getPlaylists().addAll(playlistsBD);
 
@@ -32,7 +32,7 @@ public class PlaylistManager {
     }
 
     public void retirerPlaylist(Playlist playlist) throws SQLException {
-            playlistDAO.retirerPlaylist(playlist);
+            playlistDAO.supprimer(playlist.getId());
             bibliotheque.getPlaylists().remove(playlist);
     }
 
