@@ -145,6 +145,17 @@ public class TableChansonsController {
         definirEcouteursDEvenements();
         chargerChoixGenres();
         creerContextMenu();
+
+
+        LecteurService.getInstance().chansonEnCoursProperty().addListener((obs, ancienneChanson, nouvelleChanson) -> {
+            if (nouvelleChanson != null) {
+                Platform.runLater(() -> {
+                    if (chansonController != null) {
+                        chansonController.afficherChansonSelectionnee(nouvelleChanson);
+                    }
+                });
+            }
+        });
     }
 
     private void definirEcouteursDEvenements() {
@@ -241,7 +252,7 @@ public class TableChansonsController {
                             Playlist contexte = (tablePlaylists != null && tablePlaylists.getSelectionModel().getSelectedItem() != null) ? tablePlaylists.getSelectionModel().getSelectedItem() : toutesLesChansons;
                             LecteurService.getInstance().demarrerLecture(chanson, contexte);
                         } catch (Exception e) {
-                            mainController.afficherAlertErreur("Erreur lors du lancement de Spotifly", e);
+                            mainController.afficherAlertErreur("Erreur lors du lancement du lecteur", e);
                         }
                     }
                 });
