@@ -27,11 +27,11 @@
 
 <u>Equipe et repartition du travail</u> :
 
-Nom complet      | Adresse courriel            | Contribution principale                                                           | % estime
------------------|-----------------------------|-----------------------------------------------------------------------------------|---------
-Francis Boisvert | e2595782@cmaisonneuve.qc.ca | Conception DDL SQL, couche DAO, transactions ACID, interface SourceDonnees, Audit | 33%
-Clement Laflamme | e2595952@cmaisonneuve.qc.ca | Operations CRUD IHM, validations des entrees, liaison controleurs/PlaylistManager | 33%
-Mathieu Gosselin | e2596321@cmaisonneuve.qc.ca | Vues FXML (Audit, CRUD), gestion visuelle des alertes JavaFX, documentation       | 33%
+Nom complet      | Adresse courriel            | Contribution principale                                                                                                                                | % estime
+-----------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|---------
+Francis Boisvert | e2595782@cmaisonneuve.qc.ca | Conception DDL SQL, couche DAO (Playlist), interface SourceDonnees, Initialisation et peuplement automatique de la bdd, Gestion des erreurs, README.md | 33%
+Clement Laflamme | e2595952@cmaisonneuve.qc.ca | Operations CRUD IHM, validations des entrees, liaison controleurs/PlaylistManager, Threads                                                             | 33%
+Mathieu Gosselin | e2596321@cmaisonneuve.qc.ca | Vues FXML (Audit, CRUD), gestion visuelle des alertes JavaFX, documentation                                                                            | 33%
 
 ---
 
