@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1310.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.LecteurController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.maisonneuve.tp2_algorithme_spotify.controller.LecteurController">
    <bottom>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" styleClass="bg-black" BorderPane.alignment="CENTER">
          <children>
@@ -21,7 +21,7 @@
                <ImageView fx:id="imgLecteurAlbum" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
             </StackPane>
 
-            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="295.0" spacing="4.0">
+            <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="255.0" spacing="4.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label fx:id="labelLecteurTitre" text="Titre">
                      <font>
@@ -91,7 +91,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Region maxWidth="-Infinity" prefHeight="100.0" prefWidth="335.0" />
+            <Region maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="335.0" HBox.hgrow="ALWAYS" />
          </children>
          <padding>
             <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />

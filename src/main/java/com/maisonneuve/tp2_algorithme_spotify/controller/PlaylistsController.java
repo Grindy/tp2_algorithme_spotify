@@ -3,6 +3,7 @@ package com.maisonneuve.tp2_algorithme_spotify.controller;
 import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -144,8 +146,8 @@ public class PlaylistsController {
         });
 
         // Définir les proportions des colonnes de la liste des playlists
-        colPlaylists.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.90));
-        colSupprimerPlaylist.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.1));
+        colPlaylists.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.85));
+        colSupprimerPlaylist.prefWidthProperty().bind(tablePlaylists.widthProperty().subtract(4).multiply(0.15));
 
         // Empêcher les comportements par défaut (tri natif, déplacer les colonnes)
         for (TableColumn<?, ?> col : tablePlaylists.getColumns()) {
@@ -174,6 +176,7 @@ public class PlaylistsController {
         btnAction.setMaxWidth(Double.MAX_VALUE);
         HBox hbox = new HBox(8, nomPlaylist, btnAction);
         HBox.setHgrow(nomPlaylist, Priority.ALWAYS);
+        hbox.setAlignment(Pos.CENTER);
 
         btnAction.setOnAction(e -> {
             String saisie = nomPlaylist.getText().trim();
@@ -188,7 +191,10 @@ public class PlaylistsController {
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(8));
 
-        Scene scene = new Scene(layout, 300, 200);
+        Scene scene = new Scene(layout, 300, 120);
+        scene.getStylesheets().add(getClass().getResource("/vues/style.css").toExternalForm());
+        layout.getStyleClass().add("nouv-playlist");
+
         popupStage.setScene(scene);
         popupStage.setResizable(false);
         popupStage.showAndWait();
@@ -199,6 +205,7 @@ public class PlaylistsController {
         alert.setTitle("Confirmation");
         alert.setHeaderText("Supprimer la playlist ?");
         alert.setContentText("Cette action est irréversible. Voulez-vous continuer ?");
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/vues/style.css").toExternalForm());
 
         alert.initOwner(btnAjouterPlaylist.getScene().getWindow());
 

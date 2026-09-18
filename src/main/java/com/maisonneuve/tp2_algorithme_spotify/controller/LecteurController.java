@@ -31,7 +31,7 @@ public class LecteurController {
     @FXML private Label labelLecteurArtiste;
 
     private final LecteurService lecteurService = LecteurService.getInstance();
-    private AuditJournalierDAO auditJournalierDAO = new AuditJournalierDAO();
+    private final AuditJournalierDAO auditJournalierDAO = new AuditJournalierDAO();
     private MainController mainController;
 
     public void setMainController(MainController mainController) {

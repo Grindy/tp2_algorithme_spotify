@@ -194,7 +194,10 @@ public class MainController {
         alert.setTitle("Erreur !");
         alert.setHeaderText(titre);
         alert.setContentText(e.getMessage());
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/vues/style.css").toExternalForm());
         alert.showAndWait();
         e.printStackTrace();
+
+
     }
 }
