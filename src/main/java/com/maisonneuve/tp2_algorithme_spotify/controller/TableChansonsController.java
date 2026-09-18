@@ -138,17 +138,17 @@ public class TableChansonsController {
     @FXML
     public void initialize() {
         initComboPages();
-
+        FormaterFieldDureeMax.appliquerFormatDuree(fieldDureeMax);
         configurerColonnesTable();
         definirEcouteursDEvenements();
         chargerChoixGenres();
         creerContextMenu();
-        FormaterFieldDureeMax.appliquerFormatDuree(fieldDureeMax);
-
+        //mettre a jour l'affichage a droite si la chanson qui joue est celle qui est selectionnee pour mettre a jour en temp reel
         LecteurService.getInstance().chansonEnCoursProperty().addListener((obs, ancienneChanson, nouvelleChanson) -> {
             if (nouvelleChanson != null) {
                 Platform.runLater(() -> {
-                    if (chansonController != null) {
+                    Chanson chansonSelectionnee = tableChansons.getSelectionModel().getSelectedItem();
+                    if (chansonController != null && chansonSelectionnee != null && chansonSelectionnee.equals(nouvelleChanson)) {
                         chansonController.afficherChansonSelectionnee(nouvelleChanson);
                     }
                 });
