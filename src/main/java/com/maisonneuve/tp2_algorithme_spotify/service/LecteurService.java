@@ -71,20 +71,20 @@ public class LecteurService {
         chanson.incrementerNbEcoutes();
 
         // ****Ici pour faire jouer la chanson dans spotify par le web browser****
-//        String trackId = chanson.getId();
-//        try {
-//            if (trackId != null && !trackId.isEmpty()){
-//                String urlSpotify = "spotify:track:" + trackId + ":play";
-//
-//                URI uri = new URI(urlSpotify);
-//                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-//                    Desktop.getDesktop().browse(uri);
-//                }
-//
-//            }
-//            } catch (Exception e) {
-//                throw new RuntimeException("Erreur lors de la lecture de la chanson");
-//            }
+        String trackId = chanson.getId();
+        try {
+            if (trackId != null && !trackId.isEmpty()){
+                String urlSpotify = "spotify:track:" + trackId + ":play";
+
+                URI uri = new URI(urlSpotify);
+                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    Desktop.getDesktop().browse(uri);
+                }
+
+            }
+            } catch (Exception e) {
+                throw new RuntimeException("Erreur lors de la lecture de la chanson");
+            }
     }
 
     public void togglePlayPause() {
