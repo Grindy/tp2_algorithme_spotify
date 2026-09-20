@@ -7,6 +7,8 @@ import com.maisonneuve.tp2_algorithme_spotify.service.Bibliotheque;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistManager;
 import com.maisonneuve.tp2_algorithme_spotify.service.PlaylistService;
 import com.maisonneuve.tp2_algorithme_spotify.utils.Initialisation;
+// cet import est utilse que lorsqu'on utilise le mode de chargement avec le CSV
+import com.maisonneuve.tp2_algorithme_spotify.utils.LecteurCSV;
 import com.maisonneuve.tp2_algorithme_spotify.utils.SourceDonnees;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -165,8 +167,10 @@ public class MainController {
 
     public void creerBibliotheque() {
         try {
-            // Mode BDD :
+
             Initialisation.peuplerChansonsSiVide("src/main/resources/data/spotifyData.csv", this.chansonDAO);
+
+            // Mode BDD :
             SourceDonnees source = this.chansonDAO;
 
             // Mode CSV :
