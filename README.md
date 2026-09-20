@@ -89,7 +89,8 @@ Par manque de temps nous n'avons pas réalisé les bonus suivants:
 - ✅ Interface DAO + implémentation PostgreSQL (CRUD complet)
 - ✅ Schéma SQL
 - ✅ Intégration sans régression (TP2 toujours fonctionnel)
-- ✅ Opérations CRUD depuis l'interface graphique
+- ✅ Opérations CRUD depuis l'interface graphique 
+  - ❗ trouverParId programmé dans le DAO mais nous n'avons pas trouvé de cas d'utilisation pertient pour l'ajouter à notre interface
 - ✅ PreparedStatement, try-with-resources, gestion des SQLException
 - ✅ Classe de connexion isolée avec configuration externalisée hors du dépôt
 
