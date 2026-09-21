@@ -3,7 +3,6 @@ package com.maisonneuve.tp2_algorithme_spotify.controller;
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
 import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,7 +43,7 @@ public class ChansonController {
         labelAlbum.setText(chanson.getAlbum());
         labelArtiste.setText(chanson.getArtiste());
         imgAlbum.setImage(new Image (chanson.getImageUrl()));
-        labelGenre.setText(chanson.getGenre());
+        labelGenre.setText(chanson.getGenre().getNomBrut());
         labelAnnee.setText(Integer.toString(chanson.getAnneeSortie()));
         labelMaisonDisques.setText(chanson.getLabel());
         labelDuree.setText(TimeUtils.msToMinutes(chanson.getDuree()));

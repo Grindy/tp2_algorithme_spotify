@@ -4,7 +4,8 @@
 .combo-box,
 .combo-box .list-cell,
 .menu-button,
-.menu-item .label {
+.menu-item .label,
+.alerte {
     -fx-font-family: "Tahoma";
 }
 
@@ -30,7 +31,7 @@
 
 /* Cette section gère l'apparence des champs, combo box et menu items */
 
-.champ-texte {
+.champ-texte, .nouv-playlist .text-field {
     -fx-background-color: #757575;
     -fx-border-color: #2f2f2f;
     -fx-border-width: 3px;
@@ -39,6 +40,10 @@
     -fx-text-fill: #dddddd;
     -fx-effect: dropshadow(gaussian, rgb(0,0,0,0.6), 8,0,0,0,5);
     -fx-padding: 0 0 0 18px;
+}
+
+.nouv-playlist .text-field {
+    -fx-min-height: 3em;
 }
 
 .champ-tri, .combo-box, .menu-button {
@@ -232,6 +237,17 @@
     -fx-max-height: 24px;
 }
 
+
+
+#icone-audit-journalier {
+  -fx-shape: "M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 32 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 128C0 92.7 28.7 64 64 64l32 0 0-32c0-17.7 14.3-32 32-32zM64 240l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm128 0l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM64 368l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zm112 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16z";
+  -fx-background-color: #757575;
+  -fx-pref-width: 24px;
+  -fx-pref-height: 24px;
+  -fx-max-width: 24px;
+  -fx-max-height: 24px;
+}
+
 #icone-accueil {
     -fx-shape: "M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272l16 0 0 176c0 35.3 28.7 64 64 64l288 0c35.3 0 64-28.7 64-64l0-176 16 0c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1l-224-208zM240 320l32 0c26.5 0 48 21.5 48 48l0 96-128 0 0-96c0-26.5 21.5-48 48-48z";
     -fx-background-color: #757575;
@@ -316,7 +332,7 @@
     -fx-scale-y: 1.1;
 }
 
-.btn-round:hover #icone-accueil, .btn-round:hover #icone-graph, .btn-round:hover #icone-ajout-playlist {
+.btn-round:hover #icone-accueil, .btn-round:hover #icone-graph, .btn-round:hover #icone-ajout-playlist, .btn-round:hover #icone-audit-journalier {
     -fx-background-color: #008F16;
     -fx-border-color: rgba(255,255,255,0.2);
 }
@@ -482,4 +498,34 @@
     -fx-text-fill: #dddddd;
 }
 
+/* alertes et popups */
 
+.alert .header-panel .label, .alert .content.label{
+    -fx-text-fill: #dddddd;
+}
+
+.alert .header-panel {
+    -fx-background-color: #2f2f2f;
+}
+
+.alert .button-bar .button, .nouv-playlist .button {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 24px;
+    -fx-background-radius: 24px;
+    -fx-background-color: #005c0a;
+    -fx-alignment: CENTER;
+}
+
+.alert .button-bar .button:hover, .nouv-playlist .button:hover {
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+}
+
+.nouv-playlist {
+    -fx-background-color: #2f2f2f;
+}
+
+.nouv-playlist .label {
+    -fx-text-fill: #dddddd;
+}

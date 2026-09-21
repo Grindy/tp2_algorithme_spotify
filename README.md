@@ -59,12 +59,19 @@ _Comparateur de tris — visualisation du temps d'exécution de chaque algorithm
 git clone https://github.com/clementlaflamme/Spoutify.git
 cd Spoutify
 
-# 2. Compiler
-mvn clean compile
+   L'application dispose d'un systeme d'amorcage automatique, au premier démarrage si la table chanson est vide elle sera automatiquement peuplée à partir des chansons du CSV.
 
-# 3. Lancer l'application
-mvn javafx:run
+- ### 4. Configuration des identifiants (database.properties)   
+  À la racine du projet, créez un fichier nomme "database.properties" et remplissez-le avec vos informations.
+
+  ##### Un fichier modèle "database.properties.example" est versionné a la racine.  
+
+  Cles attendues dans database.properties :
 ```
+  db.url=jdbc:postgresql://localhost:5432/playlist-manager  
+  db.user=postgres  
+  db.password=votre_mot_de_passe_local
+ ```
 
 **Avec IntelliJ IDEA**
 

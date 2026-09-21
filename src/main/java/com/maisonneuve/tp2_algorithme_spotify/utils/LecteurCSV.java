@@ -1,52 +1,51 @@
 package com.maisonneuve.tp2_algorithme_spotify.utils;
 
 import com.maisonneuve.tp2_algorithme_spotify.model.Chanson;
+import com.maisonneuve.tp2_algorithme_spotify.model.Genre;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LecteurCSV {
+public class LecteurCSV implements SourceDonnees {
+    private final String chemin;
 
-        public List<Chanson> charger(String chemin)  {
-            List<Chanson> chansons = new ArrayList<>();
+    public LecteurCSV(String chemin) {
+        this.chemin = chemin;
+    }
 
-            try (BufferedReader br = new BufferedReader(new FileReader(chemin))) {
-                String ligne;
+    @Override
+    public List<Chanson> charger() {
+        List<Chanson> chansons = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(this.chemin))) {
+            String ligne;
+            br.readLine(); // saute l'en-tête
 
-                br.readLine();
-
-                while ((ligne = br.readLine()) != null) {
-                    // Sépare uniquement là où les virgules ne sont pas entourées de guillemets
-                    String[] donnees = ligne.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-
-                    // Nettoie les guillemets
-                    for (int i = 0; i < donnees.length; i++) {
-                        donnees[i] = donnees[i].replace("\"", "").trim();
-                    }
-
-                    Chanson c = new Chanson(
-                            donnees[0],                      // Track URI → id
-                            donnees[1],                      // Track Name → titre
-                            donnees[2],                      // Artist Name(s) → artiste
-                            donnees[3],                      // Album Name → album
-                            donnees[8],                      // Artist Genres → genre
-                            donnees[10],                    // Label
-                            Integer.parseInt(donnees[4]), // Album Release Date → anneeSortie
-                            Integer.parseInt(donnees[6]),    // Track Duration (ms) → duree
-                            Integer.parseInt(donnees[7]),    // Popularity → nbrEcoute
-                            Float.parseFloat(donnees[9]),    // Danceability → dansabilitee
-                            donnees[5]                       // Album Image URL → imageUrl
-                    );
-                    chansons.add(c);
-
+            while ((ligne = br.readLine()) != null) {
+                String[] donnees = ligne.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                for (int i = 0; i < donnees.length; i++) {
+                    donnees[i] = donnees[i].replace("\"", "").trim();
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                Chanson c = new Chanson(
+                        donnees[0],
+                        donnees[1],
+                        donnees[2],
+                        donnees[3],
+                        Genre.fromNomBrut(donnees[8]),
+                        donnees[10],
+                        Integer.parseInt(donnees[4]),
+                        Integer.parseInt(donnees[6]),
+                        Integer.parseInt(donnees[7]),
+                        Float.parseFloat(donnees[9]),
+                        donnees[5]
+                );
+                chansons.add(c);
             }
-            return chansons;
+        } catch (Exception e) {
+           throw new RuntimeException("Erreur lors de la lecture du CSV !", e);
         }
-
+        return chansons;
+    }
 }

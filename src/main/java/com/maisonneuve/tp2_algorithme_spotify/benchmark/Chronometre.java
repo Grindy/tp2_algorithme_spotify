@@ -23,7 +23,5 @@ public class Chronometre {
 
         return (fin - debut) / repetitions;
     }
-
-
 }
 

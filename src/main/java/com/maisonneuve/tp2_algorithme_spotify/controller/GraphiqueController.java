@@ -120,8 +120,11 @@ public class GraphiqueController {
         return algos;
     }
 
-    private void afficherAlert(String msg){
-        new Alert(Alert.AlertType.WARNING, msg).showAndWait();
+        private void afficherAlert(String msg){
+            Alert alert = new Alert(Alert.AlertType.WARNING, msg);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/vues/style.css").toExternalForm());
+            alert.showAndWait();
+
     }
 
     private void afficherComplexiteTheorique() {

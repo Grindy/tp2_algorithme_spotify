@@ -6,10 +6,7 @@ import com.maisonneuve.tp2_algorithme_spotify.model.Playlist;
 import com.maisonneuve.tp2_algorithme_spotify.model.TriMap;
 import com.maisonneuve.tp2_algorithme_spotify.utils.TimeUtils;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PlaylistService {
@@ -47,7 +44,7 @@ public class PlaylistService {
                     return texte.contains(recherchePropre);
                 })
                 .filter(c -> genre == null || genre.isBlank() ||
-                        (c.getGenre() != null && c.getGenre().equalsIgnoreCase(genre.trim())))
+                        (c.getGenre() != null && Objects.equals(c.getGenre().getNomBrut(), genre)))
                 .filter(c -> dureeMaxInt <= 0 || c.getDuree() <= dureeMaxInt)
                 .filter(c -> nbEcoutesInt == null || c.getNbrEcoute() >= nbEcoutesInt)
                 .collect(Collectors.toList()));

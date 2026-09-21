@@ -9,7 +9,7 @@ public class Chanson {
     private String titre;
     private String artiste;
     private String album;
-    private String genre;
+    private Genre genre;
     private String label;
     private int anneeSortie;
     private int duree;
@@ -20,7 +20,7 @@ public class Chanson {
     // Object Anemique
     public Chanson(){}
 
-    public Chanson(String id, String titre, String artiste, String album, String genre, String label, int anneeSortie, int duree, int nbrEcoute, float dansabilitee, String imageUrl) {
+    public Chanson(String id, String titre, String artiste, String album, Genre genre, String label, int anneeSortie, int duree, int nbrEcoute, float dansabilitee, String imageUrl) {
         this.id = id;
         this.titre = titre;
         this.artiste = artiste;
@@ -31,6 +31,50 @@ public class Chanson {
         this.duree = duree;
         this.nbrEcoute = nbrEcoute;
         this.dansabilitee = dansabilitee;
+        this.imageUrl = imageUrl;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public void setArtiste(String artiste) {
+        this.artiste = artiste;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setAnneeSortie(int anneeSortie) {
+        this.anneeSortie = anneeSortie;
+    }
+
+    public void setDuree(int duree) {
+        this.duree = duree;
+    }
+
+    public void setNbrEcoute(int nbrEcoute) {
+        this.nbrEcoute = nbrEcoute;
+    }
+
+    public void setDansabilitee(float dansabilitee) {
+        this.dansabilitee = dansabilitee;
+    }
+
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -54,7 +98,7 @@ public class Chanson {
         return album;
     }
 
-    public String getGenre() {
+    public Genre getGenre() {
         return genre;
     }
 
@@ -91,5 +135,19 @@ public class Chanson {
 
     public void incrementerNbEcoutes() {
         nbrEcoute++;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Chanson chanson = (Chanson) o;
+        return id != null && id.equals(chanson.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }
